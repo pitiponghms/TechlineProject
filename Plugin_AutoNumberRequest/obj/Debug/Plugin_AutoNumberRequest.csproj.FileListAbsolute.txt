@@ -1,0 +1,11 @@
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.csproj.AssemblyReference.cache
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.csproj.CoreCompileInputs.cache
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\bin\Debug\Plugin_AutoNumberRequest.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\bin\Debug\Plugin_AutoNumberRequest.pdb
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\bin\Debug\microsoft.crm.sdk.proxy.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\bin\Debug\microsoft.xrm.client.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\bin\Debug\Microsoft.Xrm.Sdk.Deployment.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\bin\Debug\Microsoft.Xrm.Sdk.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.csproj.CopyComplete
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.pdb

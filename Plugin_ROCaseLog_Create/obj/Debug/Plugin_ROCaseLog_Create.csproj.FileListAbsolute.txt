@@ -1,0 +1,12 @@
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\bin\Debug\Plugin_ROCaseLog_Create.dll.config
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\bin\Debug\Plugin_ROCaseLog_Create.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\bin\Debug\Plugin_ROCaseLog_Create.pdb
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\bin\Debug\microsoft.crm.sdk.proxy.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\bin\Debug\microsoft.xrm.client.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\bin\Debug\Microsoft.Xrm.Sdk.Deployment.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\bin\Debug\Microsoft.Xrm.Sdk.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.csproj.CoreCompileInputs.cache
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.csproj.CopyComplete
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.dll
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.pdb
+D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.csproj.AssemblyReference.cache

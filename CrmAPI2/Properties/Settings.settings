@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CrmAPI2.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="UserName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">hms-cloud\administrator</Value>
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">pass@word1</Value>
+    </Setting>
+    <Setting Name="SoapOrgServiceUri" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://phoebe.hms-cloud.com:5555/MMTHQAS/XRMServices/2011/Organization.svc</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
