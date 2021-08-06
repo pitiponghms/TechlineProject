@@ -1,0 +1,584 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.css">
+    <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_rofontawesome470min.css">
+    <script src="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_rojquery3.5.1.min.js"></script>
+    <script src="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.js"></script>
+
+    <title>Rating</title>
+    <style>
+        body {
+            font-size: 12px;
+            color: #777;
+            background: #D1D1D1;
+            font-family: 'Open Sans',sans-serif;
+            margin-top: 0px;
+            padding-top: 0px;
+        }
+
+        .attatchfile {
+            background-color: whitesmoke;
+            padding: 3px;
+            cursor: pointer;
+        }
+
+        .attatchimage {
+            cursor: pointer;
+        }
+
+        .bg-white {
+            padding: 10px;
+            background-color: white;
+        }
+
+        h2 {
+            margin: 0px;
+        }
+
+        small, .small {
+            font-size: 85%;
+        }
+
+        .chat-message {
+            padding: 0px 20px 0px 20px;
+            height: 525px;
+            max-height: 525px;
+            overflow-y: scroll;
+        }
+
+        .chat {
+            list-style: none;
+            margin: 0px;
+        }
+
+        .chat-message {
+            background: #f9f9f9;
+        }
+
+        .chat li img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50em;
+            -moz-border-radius: 50em;
+            -webkit-border-radius: 50em;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .chat-body {
+            padding-bottom: 20px;
+        }
+
+        .chat li.left .chat-body {
+            margin-left: 70px;
+            margin-right: 25%;
+            background-color: #fff;
+        }
+
+        .chat li .chat-body {
+            position: relative;
+            font-size: 14px;
+            padding: 12px;
+            border: 1px solid #f1f5fc;
+            box-shadow: 0 1px 1px rgba(0,0,0,.05);
+            -moz-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+            -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        }
+
+            .chat li .chat-body .header {
+                padding-bottom: 5px;
+                border-bottom: 1px solid #f1f5fc;
+            }
+
+            .chat li .chat-body p {
+                margin: 0;
+            }
+
+            .chat li .chat-body .content {
+                padding-top: 5px;
+            }
+
+        .chat li.left .chat-body:before {
+            position: absolute;
+            top: 10px;
+            left: -8px;
+            display: inline-block;
+            background: #fff;
+            width: 16px;
+            height: 16px;
+            border-top: 1px solid #f1f5fc;
+            border-left: 1px solid #f1f5fc;
+            content: '';
+            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+        }
+
+        .chat li.right .chat-body:before {
+            position: absolute;
+            top: 10px;
+            right: -8px;
+            display: inline-block;
+            background: #fff;
+            width: 16px;
+            height: 16px;
+            border-top: 1px solid #f1f5fc;
+            border-right: 1px solid #f1f5fc;
+            content: '';
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+        }
+
+        .chat li {
+            margin: 15px 0;
+        }
+
+            .chat li.right .chat-body {
+                margin-left: 25%;
+                margin-right: 70px;
+                background-color: #fff;
+            }
+
+        .chat-box {
+            /*
+          position: fixed;
+          bottom: 0;
+          left: 444px;
+          right: 0;
+        */
+            padding: 15px;
+            border-top: 1px solid #eee;
+            transition: all .5s ease;
+            -webkit-transition: all .5s ease;
+            -moz-transition: all .5s ease;
+            /*-ms-transition: all .5s ease;*/
+            -webkit-transition: all .5s ease;
+            -o-transition: all .5s ease;
+        }
+
+        ul.chat {
+            padding: 0px 30px 0px 30px;
+        }
+
+        .primary-font {
+            color: #3c8dbc;
+        }
+
+        a:hover, a:active, a:focus {
+            text-decoration: none;
+            outline: 0;
+        }
+
+        .loader {
+            position: fixed;
+            left: 45%;
+            top: 35%;
+            width: 150px;
+            height: 150px;
+            z-index: 9999;
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .styled-table {
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 1.2em;
+            font-family: sans-serif;
+            min-width: 400px;
+            /*box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);*/
+        }
+
+            .styled-table th,
+            .styled-table td {
+                padding: 12px 15px;
+            }
+
+        /* Ratings widget */
+        .rate {
+            display: inline-block;
+            border: 0;
+        }
+            /* Hide radio */
+            .rate > input {
+                display: none;
+            }
+            /* Order correctly by floating highest to the right */
+            .rate > label {
+                float: right;
+            }
+                /* The star of the show */
+                .rate > label:before {
+                    display: inline-block;
+                    /*font-size: 2rem;*/
+                    padding: .0rem .2rem;
+                    margin: 0;
+                    cursor: pointer;
+                    font-family: FontAwesome;
+                    content: "\f005 "; /* full star */
+                }
+
+            /* Half star trick */
+            .rate .half:before {
+                content: "\f089 "; /* half star no outline */
+                position: absolute;
+                padding-right: 0;
+            }
+        /* Click + hover color */
+        input:checked ~ label, /* color current and previous stars on checked */
+        label:hover, label:hover ~ label {
+            color: gold;
+        }
+            /* color previous stars on hover */
+
+            /* Hover highlights */
+            input:checked + label:hover, input:checked ~ label:hover, /* highlight current and previous stars */
+            input:checked ~ label:hover ~ label, /* highlight previous selected stars for new rating */
+            label:hover ~ input:checked ~ label /* highlight previous selected stars */ {
+                color: gold;
+            }
+
+        .overlay {
+            background-color: #EFEFEF;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            top: 0px;
+            left: 0px;
+            opacity: .30; /* in FireFox */
+            filter: alpha(opacity=30); /* in IE */
+        }
+    </style>
+</head>
+<body style="overflow-wrap: break-word;">
+    <div id="loader" class="loader"></div>
+    <div id="container" class="container bootstrap snippets bootdey">
+        <div class="row">
+            <div class="col-md-8 bg-white">
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #f1f5fc;">
+                    <h2>การประเมิณคุณภาพรายงานเทคนิค</h2>
+                    <div>
+                        <button id="SaveBtn"><i class="fa fa-save"></i></button>
+                    </div>
+                </div>
+                <div style="overflow-y: auto; justify-content: space-between; border-bottom: 1px solid #f1f5fc;">
+                    <table id="mytable" class="styled-table"></table>
+                </div>
+                <div>
+                    <h5>ความคิดเห็นเพิ่มเติม</h5>
+                    <textarea id="CommentArea" cols="100" rows="4" maxlength="250"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+        //let api = "http://phoebe.hms-cloud.com:8033/api";
+        //let api = "https://phoebe.hms-cloud.com:4430/api";
+        let api = "https://phoebe.hms-cloud.com:4430/api";
+        let caseid = window.opener.Xrm.Page.getAttribute("hms_rocaseid").getValue();
+        let userid = 2;
+
+        $(document).ready(function () {
+            if (isUpdate(caseid)) {
+                renderUpdate();
+                disableScreen();
+            }
+            else {
+                renderCreate();
+            }
+        });
+
+        function showLoader(status) {
+            if (status) {
+                $("#loader").show();
+            }
+            else {
+                $("#loader").hide();
+            }
+        }
+
+        function isUpdate(id) {
+            var isupdate = false;
+
+            showLoader(true);
+
+            $.ajax({
+                type: 'GET',
+                url: api + '/rating/count/' + id,
+                async: false,
+                success: function (result) {
+                    if (result > 0) {
+                        isupdate = true;
+                    }
+                },
+                error: function (xhr, status, error) {
+                    //alert(xhr.responseText);
+                    alert(status);
+                    //alert(error);
+                },
+                complete: function () {
+                    showLoader(false);
+                }
+            });
+
+            return isupdate;
+        }
+
+        function renderCreate() {
+            showLoader(true);
+
+            $.ajax({
+                type: 'GET',
+                url: api + '/rating/master/get/all',
+                async: false,
+                success: function (result) {
+                    $("#mytable").empty();
+
+                    var header = '<tr><th>หัวข้อ</th><th>คะแนน</th></tr>';
+                    var maxstar = 10;
+
+                    $("#mytable").append(header);
+
+                    $.each(result, function (index, item) {
+                        var detail = '<tr class="record" id="' + item.id + '" maxscore=' + item.maxscore + '>' +
+                            '<td id="subject">' + item.subject + '</td>' +
+                            '<td id="starscore">' + renderStar(item.id, 0, item.maxscore, maxstar) + '</td>' +
+                            '</tr>';
+                        $("#mytable").append(detail);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    //alert(xhr.responseText);
+                    alert(status);
+                    //alert(error);
+                },
+                complete: function () {
+                    showLoader(false);
+                }
+            });
+        }
+
+        function renderUpdate() {
+            showLoader(true);
+
+            $.ajax({
+                type: 'GET',
+                url: api + '/rating/get/rocase/' + caseid,
+                async: false,
+                success: function (result) {
+                    $("#mytable").empty();
+
+                    var header = '<tr><th>หัวข้อ</th><th>คะแนน</th></tr>';
+                    var maxstar = 10;
+
+                    $("#mytable").append(header);
+
+                    $.each(result.SubjectModel, function (index, item) {
+                        var detail = '<tr class="record" id="' + item.Id + '" maxscore=' + item.MaxScore + '>' +
+                            '<td id="subject">' + item.Subject + '</td>' +
+                            '<td id="starscore">' + renderStar(item.Id, item.Score, item.MaxScore, maxstar) + '</td>' +
+                            '</tr>';
+                        $("#mytable").append(detail);
+                    });
+
+                    $('#CommentArea').val(result.Comment);
+                },
+                error: function (xhr, status, error) {
+                    //alert(xhr.responseText);
+                    alert(status);
+                    //alert(error);
+                },
+                complete: function () {
+                    showLoader(false);
+                }
+            });
+        }
+
+        function renderStar(id, score, maxscore, maxstar) {
+            var set = 'starset' + id;
+            var star = convertStar(score, maxscore, maxstar);
+
+            return '<fieldset id="' + set + '" class="rate">' +
+                drawStar(id, star, maxstar) +
+                '</fieldset>';
+        }
+
+        function drawStar(id, star, maxstar) {
+            var result = "";
+
+            for (var i = maxstar; i > 0; i--) {
+                var myid = 'star' + id + '-' + i;
+                var group = 'rating' + id;
+
+                if (i == star) {
+                    result += '<input type="radio" id="' + myid + '" name="' + group + '" checked value="' + i + '" />';
+                }
+                else {
+                    result += '<input type="radio" id="' + myid + '" name="' + group + '" value="' + i + '" />';
+                }
+
+                if (i % 2 == 0) {
+                    result += '<label for="' + myid + '"></label>';
+                }
+                else {
+                    result += '<label class="half" for="' + myid + '"></label>';
+                }
+            }
+            return result;
+        }
+
+        $('#SaveBtn').click(function () {
+            if (confirm('ยืนยันการบันทึก ?')) {
+                var formdata = new FormData();
+                var ratingid;
+                var maxstar = 10;
+
+                if (!isCheckAll()) {
+                    alert("กรุณาประเมิณคะแนนให้ครบทุกหัวข้อ");
+                    return;
+                }
+
+                ///////////////////////////////////////////////////////////////
+
+                var data = {
+                    'Category': 'Dealer',
+                    'Comment': $('#CommentArea').val(),
+                    'ROCaseId': caseid,
+                    'CreatedBy': userid,
+                };
+
+                formdata.append('Model', JSON.stringify(data));
+
+                $.ajax({
+                    type: 'POST',
+                    url: api + '/rating/create',
+                    data: formdata,
+                    contentType: false,
+                    processData: false,
+                    async: false,
+                    success: function (result) {
+                        //alert(result.Message);
+                        ratingid = result.Value;
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr.responseText);
+                        //alert(status);
+                        //alert(error);
+                        return;
+                    },
+                });
+
+                ///////////////////////////////////////////////////////////////
+
+                $('.record').each(function (index, item) {
+                    //var id = $(this).attr("id");
+                    var subject = $(this).find('#subject').text();
+                    var maxscore = $(this).attr("maxscore");
+                    var score = 0;
+
+                    $(this).find('input').each(function (index, item) {
+                        if ($(item).prop("checked")) {
+                            score = calculateScore($(item).val(), maxstar, maxscore);
+                        }
+                    });
+
+                    var formdata = new FormData();
+
+                    var data = {
+                        'Subject': subject,
+                        'Score': score,
+                        'MaxScore': maxscore,
+                        'RatingId': ratingid,
+                        'CreatedBy': userid,
+                    };
+
+                    formdata.append('Model', JSON.stringify(data));
+
+                    $.ajax({
+                        type: 'POST',
+                        url: api + '/rating/subject/create',
+                        data: formdata,
+                        contentType: false,
+                        processData: false,
+                        async: false,
+                        success: function (result) {
+                            //alert(result.Message);
+                        },
+                        error: function (xhr, status, error) {
+                            //alert(xhr.responseText);
+                            //alert(status);
+                            //alert(error);
+                        }
+                    });
+                });
+
+                disableScreen();
+            }
+        });
+
+        function calculateScore(score, maxstar, maxscore) {
+            return ((score / maxstar) * maxscore).toFixed(2);
+        }
+
+        function convertStar(score, maxscore, maxstar) {
+            return ((score / maxscore) * maxstar).toFixed(0);
+        }
+
+        function isCheckAll() {
+            var pass = true;
+
+            $('.record').each(function (index, item) {
+                var score = 0;
+
+                $(this).find('input').each(function (index, item) {
+                    if ($(item).prop("checked")) {
+                        score = 1;
+                    }
+                });
+
+                if (score == 0) {
+                    pass = false;
+                    return false;
+                }
+            });
+
+            return pass;
+        }
+
+        function disableScreen() {
+            // creates <div class="overlay"></div> and
+            // adds it to the DOM
+            var div = document.createElement("div");
+            div.className += "overlay";
+            document.body.appendChild(div);
+
+            $("#SaveBtn").hide();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1693 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="mmthapiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="a_code">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="code" Type="nvarchar(max)" />
+          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="assessmentform">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ro_caseid" Type="int" />
+          <Property Name="assessmentform_type" Type="nvarchar" MaxLength="50" />
+          <Property Name="groupno" Type="int" />
+          <Property Name="seqno" Type="int" />
+          <Property Name="choicevalue" Type="int" />
+          <Property Name="message" Type="nvarchar" MaxLength="250" />
+          <Property Name="iscomment" Type="bit" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="assessmentform_master">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="assessmentform_type" Type="nvarchar" MaxLength="50" />
+          <Property Name="groupno" Type="int" />
+          <Property Name="seqno" Type="int" />
+          <Property Name="subject" Type="nvarchar(max)" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+          <Property Name="choicename1" Type="nvarchar(max)" />
+          <Property Name="choicevalue1" Type="int" />
+          <Property Name="isradio1" Type="bit" />
+          <Property Name="isother1" Type="bit" />
+          <Property Name="choicename2" Type="nvarchar(max)" />
+          <Property Name="choicevalue2" Type="int" />
+          <Property Name="isradio2" Type="bit" />
+          <Property Name="isother2" Type="bit" />
+          <Property Name="choicename3" Type="nvarchar(max)" />
+          <Property Name="choicevalue3" Type="int" />
+          <Property Name="isradio3" Type="bit" />
+          <Property Name="isother3" Type="bit" />
+        </EntityType>
+        <EntityType Name="attachfile">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" MaxLength="40" />
+          <Property Name="ObjectId" Type="int" />
+          <Property Name="IsImage" Type="bit" />
+          <Property Name="Thumbnail" Type="varbinary(max)" />
+          <Property Name="DocumentBody" Type="varbinary(max)" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="255" />
+          <Property Name="MimeType" Type="nvarchar" MaxLength="256" />
+          <Property Name="FileSize" Type="int" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+          <Property Name="tempkey" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="b_code">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="code" Type="nvarchar(max)" />
+          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="c_code">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="code" Type="nvarchar(max)" />
+          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="incident">
+          <Key>
+            <PropertyRef Name="case_id" />
+          </Key>
+          <Property Name="case_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="mobiles">
+          <Key>
+            <PropertyRef Name="mobile_id" />
+          </Key>
+          <Property Name="mobile_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="uid" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="rating">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category" Type="nvarchar" MaxLength="40" />
+          <Property Name="comment" Type="nvarchar" MaxLength="250" />
+          <Property Name="ro_caseid" Type="int" />
+          <Property Name="CASEID" Type="nvarchar(max)" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="rating_master">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subject" Type="nvarchar(max)" />
+          <Property Name="maxscore" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+          <Property Name="order_seq" Type="int" />
+        </EntityType>
+        <EntityType Name="rating_subject">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subject" Type="nvarchar(max)" />
+          <Property Name="score" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="maxscore" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="ratingid" Type="int" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="ro_case">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CASEID" Type="nvarchar(max)" />
+          <Property Name="DEALER" Type="nvarchar(max)" />
+          <Property Name="OUT_OFFCDE" Type="nvarchar(max)" />
+          <Property Name="OUT_CMPCDE" Type="nvarchar(max)" />
+          <Property Name="OUT_ROCODE" Type="nvarchar(max)" />
+          <Property Name="OUT_CUST_DATE" Type="nvarchar(max)" />
+          <Property Name="OUT_RO_STATUS" Type="nvarchar(max)" />
+          <Property Name="OUT_RODATE" Type="nvarchar(max)" />
+          <Property Name="OUT_ROTIME" Type="nvarchar(max)" />
+          <Property Name="OUT_WARRANTY_DATE" Type="nvarchar(max)" />
+          <Property Name="OUT_EXPIRY_DATE" Type="nvarchar(max)" />
+          <Property Name="OUT_LICENSE" Type="nvarchar(max)" />
+          <Property Name="OUT_PRDCDE" Type="nvarchar(max)" />
+          <Property Name="OUT_CHASNO" Type="nvarchar(max)" />
+          <Property Name="OUT_ENGNO" Type="nvarchar(max)" />
+          <Property Name="OUT_MODEL" Type="nvarchar(max)" />
+          <Property Name="OUT_KILO_LAST" Type="nvarchar(max)" />
+          <Property Name="OUT_LAST_DATE" Type="nvarchar(max)" />
+          <Property Name="OUT_IDNO" Type="nvarchar(max)" />
+          <Property Name="OUT_CUSNAME" Type="nvarchar(max)" />
+          <Property Name="OUT_MOBILE" Type="nvarchar(max)" />
+          <Property Name="OUT_ADDRESS" Type="nvarchar(max)" />
+          <Property Name="OUT_PROVINCE" Type="nvarchar(max)" />
+          <Property Name="OUT_ZIPCODE" Type="nvarchar(max)" />
+          <Property Name="OUT_CUSTYPE" Type="nvarchar(max)" />
+          <Property Name="A_CODE" Type="nvarchar" MaxLength="100" />
+          <Property Name="B_CODE" Type="nvarchar" MaxLength="100" />
+          <Property Name="C_CODE" Type="nvarchar" MaxLength="100" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="6" />
+          <Property Name="LevelofProblem" Type="nvarchar" MaxLength="10" />
+          <Property Name="CaseTitle" Type="nvarchar" MaxLength="150" />
+          <Property Name="CaseType" Type="nvarchar" MaxLength="10" />
+          <Property Name="CaseSubject" Type="nvarchar" MaxLength="36" />
+          <Property Name="CaseDescription" Type="nvarchar(max)" />
+          <Property Name="Problem" Type="nvarchar" MaxLength="200" />
+          <Property Name="TimeOccur" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeFreq" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeFreqAmount" Type="int" />
+          <Property Name="TimeFreqIn" Type="nvarchar" MaxLength="50" />
+          <Property Name="Weather" Type="nvarchar" MaxLength="50" />
+          <Property Name="WeatherOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="RoadCondition" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoadConditionOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="RoadFloor" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoadFloorOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="Gear" Type="nvarchar" MaxLength="50" />
+          <Property Name="GearOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="Tire" Type="nvarchar" MaxLength="50" />
+          <Property Name="TireOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="Tread" Type="nvarchar" MaxLength="50" />
+          <Property Name="TreadOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="MaintenanceHistory" Type="nvarchar" MaxLength="50" />
+          <Property Name="MaintenanceHistoryOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="Accident" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccidentOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="TransformCar" Type="nvarchar" MaxLength="50" />
+          <Property Name="TransformCarOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="MicrosoftTeamLink" Type="nvarchar(max)" />
+          <Property Name="SolutionForDealer" Type="nvarchar(max)" />
+          <Property Name="IsRating" Type="nvarchar" MaxLength="4" />
+          <Property Name="tafyear" Type="nvarchar" MaxLength="4" />
+          <Property Name="tafno" Type="nvarchar" MaxLength="20" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ro_case_log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CASEID" Type="nvarchar(max)" />
+          <Property Name="STATUS_CODE_FROM" Type="nvarchar" MaxLength="2" />
+          <Property Name="STATUS_CODE_TO" Type="nvarchar" MaxLength="2" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ro_dealer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="50" />
+          <Property Name="name" Type="nvarchar(max)" />
+          <Property Name="englishname" Type="nvarchar(max)" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="ro_images">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImageName" Type="varchar" MaxLength="50" />
+          <Property Name="varBinaryData" Type="varbinary(max)" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="ro_messages">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="caseid" Type="int" />
+          <Property Name="sender_id" Type="nvarchar" MaxLength="50" />
+          <Property Name="sender_name" Type="nvarchar" MaxLength="150" />
+          <Property Name="text" Type="nvarchar" MaxLength="500" />
+          <Property Name="attachfileid" Type="int" />
+          <Property Name="time" Type="datetime" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="ro_operation">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="case_id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="case_id" Type="int" Nullable="false" />
+          <Property Name="OUT_COMMANDCODE" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="OUT_COMMANDDESC" Type="nvarchar(max)" />
+          <Property Name="OUT_SERVICE_TYPE" Type="nvarchar(max)" />
+          <Property Name="OUT_OPTCODE" Type="nvarchar(max)" />
+          <Property Name="OUT_OPT_DESC" Type="nvarchar(max)" />
+          <Property Name="OUT_EXPENSE_TYPE" Type="nvarchar(max)" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="ro_subject">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subjectid" Type="uniqueidentifier" />
+          <Property Name="subject" Type="nvarchar(max)" />
+          <Property Name="name" Type="nvarchar(max)" />
+          <Property Name="englishname" Type="nvarchar(max)" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="ro_user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_mail" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="150" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="250" />
+          <Property Name="profile_photo_url" Type="nvarchar" MaxLength="250" />
+          <Property Name="token" Type="nvarchar(max)" />
+          <Property Name="id_token" Type="nvarchar(max)" />
+          <Property Name="refresh_token" Type="nvarchar(max)" />
+          <Property Name="dealer" Type="nvarchar" MaxLength="10" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+          <Property Name="MOBILE_KEY" Type="nvarchar(max)" />
+          <Property Name="PIN" Type="nvarchar" MaxLength="6" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'mmthapi.dbo.vAssessmentForm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vAssessmentForm">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="assessmentform_type" Type="nvarchar" MaxLength="50" />
+          <Property Name="groupno" Type="int" />
+          <Property Name="seqno" Type="int" />
+          <Property Name="subject" Type="nvarchar(max)" />
+          <Property Name="choicename1" Type="nvarchar(max)" />
+          <Property Name="choicevalue1" Type="int" />
+          <Property Name="isradio1" Type="bit" />
+          <Property Name="isother1" Type="bit" />
+          <Property Name="choicename2" Type="nvarchar(max)" />
+          <Property Name="choicevalue2" Type="int" />
+          <Property Name="isradio2" Type="bit" />
+          <Property Name="isother2" Type="bit" />
+          <Property Name="choicename3" Type="nvarchar(max)" />
+          <Property Name="choicevalue3" Type="int" />
+          <Property Name="isradio3" Type="bit" />
+          <Property Name="isother3" Type="bit" />
+          <Property Name="ro_caseid" Type="int" />
+          <Property Name="choicevalue" Type="int" />
+          <Property Name="message" Type="nvarchar" MaxLength="250" />
+          <Property Name="iscomment" Type="bit" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'mmthapi.dbo.vRoCase' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vRoCase">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="CASEID" />
+            <PropertyRef Name="DEALER" />
+            <PropertyRef Name="CaseTitle" />
+            <PropertyRef Name="CaseDescription" />
+            <PropertyRef Name="statusCodeText" />
+            <PropertyRef Name="LevelofProblem" />
+            <PropertyRef Name="CaseType" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="CASEID" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DEALER" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="OUT_OFFCDE" Type="nvarchar(max)" />
+          <Property Name="OUT_CMPCDE" Type="nvarchar(max)" />
+          <Property Name="OUT_ROCODE" Type="nvarchar(max)" />
+          <Property Name="OUT_CUST_DATE" Type="nvarchar(max)" />
+          <Property Name="OUT_RO_STATUS" Type="nvarchar(max)" />
+          <Property Name="OUT_RODATE" Type="nvarchar(max)" />
+          <Property Name="OUT_ROTIME" Type="nvarchar(max)" />
+          <Property Name="OUT_WARRANTY_DATE" Type="nvarchar(max)" />
+          <Property Name="OUT_EXPIRY_DATE" Type="nvarchar(max)" />
+          <Property Name="OUT_LICENSE" Type="nvarchar(max)" />
+          <Property Name="OUT_PRDCDE" Type="nvarchar(max)" />
+          <Property Name="OUT_CHASNO" Type="nvarchar(max)" />
+          <Property Name="OUT_ENGNO" Type="nvarchar(max)" />
+          <Property Name="OUT_MODEL" Type="nvarchar(max)" />
+          <Property Name="OUT_KILO_LAST" Type="nvarchar(max)" />
+          <Property Name="OUT_LAST_DATE" Type="nvarchar(max)" />
+          <Property Name="OUT_IDNO" Type="nvarchar(max)" />
+          <Property Name="OUT_CUSNAME" Type="nvarchar(max)" />
+          <Property Name="OUT_MOBILE" Type="nvarchar(max)" />
+          <Property Name="OUT_ADDRESS" Type="nvarchar(max)" />
+          <Property Name="OUT_PROVINCE" Type="nvarchar(max)" />
+          <Property Name="OUT_ZIPCODE" Type="nvarchar(max)" />
+          <Property Name="OUT_CUSTYPE" Type="nvarchar(max)" />
+          <Property Name="A_CODE" Type="nvarchar" MaxLength="100" />
+          <Property Name="B_CODE" Type="nvarchar" MaxLength="100" />
+          <Property Name="C_CODE" Type="nvarchar" MaxLength="100" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="6" />
+          <Property Name="LevelofProblem" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CaseTitle" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="CaseType" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CaseSubject" Type="nvarchar" MaxLength="36" />
+          <Property Name="CaseDescription" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="statusCodeText" Type="varchar" MaxLength="19" Nullable="false" />
+          <Property Name="Problem" Type="nvarchar" MaxLength="200" />
+          <Property Name="TimeOccur" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeFreq" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeFreqAmount" Type="int" />
+          <Property Name="TimeFreqIn" Type="nvarchar" MaxLength="50" />
+          <Property Name="Weather" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoadCondition" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoadFloor" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gear" Type="nvarchar" MaxLength="50" />
+          <Property Name="Tire" Type="nvarchar" MaxLength="50" />
+          <Property Name="Tread" Type="nvarchar" MaxLength="50" />
+          <Property Name="MaintenanceHistory" Type="nvarchar" MaxLength="50" />
+          <Property Name="Accident" Type="nvarchar" MaxLength="50" />
+          <Property Name="TransformCar" Type="nvarchar" MaxLength="50" />
+          <Property Name="WeatherOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="RoadConditionOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="RoadFloorOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="GearOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="TireOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="TreadOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="MaintenanceHistoryOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="AccidentOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="TransformCarOther" Type="nvarchar" MaxLength="200" />
+          <Property Name="MicrosoftTeamLink" Type="nvarchar(max)" />
+          <Property Name="subject" Type="nvarchar(max)" />
+          <Property Name="SolutionForDealer" Type="nvarchar(max)" />
+          <Property Name="tafno" Type="char" MaxLength="20" />
+          <Property Name="tafyear" Type="nvarchar" MaxLength="4" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'mmthapi.dbo.vROMessage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vROMessage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="caseid" Type="int" />
+          <Property Name="sender_id" Type="nvarchar" MaxLength="50" />
+          <Property Name="sender_name" Type="nvarchar" MaxLength="150" />
+          <Property Name="text" Type="nvarchar" MaxLength="500" />
+          <Property Name="attachfileid" Type="int" />
+          <Property Name="time" Type="datetime" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+          <Property Name="Category" Type="nvarchar" MaxLength="40" />
+          <Property Name="IsImage" Type="bit" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="255" />
+          <Property Name="MimeType" Type="nvarchar" MaxLength="256" />
+          <Property Name="Thumbnail" Type="varbinary(max)" />
+        </EntityType>
+        <EntityContainer Name="mmthapiModelStoreContainer">
+          <EntitySet Name="a_code" EntityType="Self.a_code" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="assessmentform" EntityType="Self.assessmentform" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="assessmentform_master" EntityType="Self.assessmentform_master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="attachfile" EntityType="Self.attachfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="b_code" EntityType="Self.b_code" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="c_code" EntityType="Self.c_code" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="incident" EntityType="Self.incident" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mobiles" EntityType="Self.mobiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rating" EntityType="Self.rating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rating_master" EntityType="Self.rating_master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rating_subject" EntityType="Self.rating_subject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ro_case" EntityType="Self.ro_case" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ro_case_log" EntityType="Self.ro_case_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ro_dealer" EntityType="Self.ro_dealer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ro_images" EntityType="Self.ro_images" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ro_messages" EntityType="Self.ro_messages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ro_operation" EntityType="Self.ro_operation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ro_subject" EntityType="Self.ro_subject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ro_user" EntityType="Self.ro_user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vAssessmentForm" EntityType="Self.vAssessmentForm" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[vAssessmentForm].[id] AS [id], 
+[vAssessmentForm].[assessmentform_type] AS [assessmentform_type], 
+[vAssessmentForm].[groupno] AS [groupno], 
+[vAssessmentForm].[seqno] AS [seqno], 
+[vAssessmentForm].[subject] AS [subject], 
+[vAssessmentForm].[choicename1] AS [choicename1], 
+[vAssessmentForm].[choicevalue1] AS [choicevalue1], 
+[vAssessmentForm].[isradio1] AS [isradio1], 
+[vAssessmentForm].[isother1] AS [isother1], 
+[vAssessmentForm].[choicename2] AS [choicename2], 
+[vAssessmentForm].[choicevalue2] AS [choicevalue2], 
+[vAssessmentForm].[isradio2] AS [isradio2], 
+[vAssessmentForm].[isother2] AS [isother2], 
+[vAssessmentForm].[choicename3] AS [choicename3], 
+[vAssessmentForm].[choicevalue3] AS [choicevalue3], 
+[vAssessmentForm].[isradio3] AS [isradio3], 
+[vAssessmentForm].[isother3] AS [isother3], 
+[vAssessmentForm].[ro_caseid] AS [ro_caseid], 
+[vAssessmentForm].[choicevalue] AS [choicevalue], 
+[vAssessmentForm].[message] AS [message], 
+[vAssessmentForm].[iscomment] AS [iscomment], 
+[vAssessmentForm].[CREATED_BY] AS [CREATED_BY], 
+[vAssessmentForm].[CREATED_ON] AS [CREATED_ON], 
+[vAssessmentForm].[MODIFIED_BY] AS [MODIFIED_BY], 
+[vAssessmentForm].[MODIFIED_ON] AS [MODIFIED_ON], 
+[vAssessmentForm].[STATUS_CODE] AS [STATUS_CODE]
+FROM [dbo].[vAssessmentForm] AS [vAssessmentForm]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vRoCase" EntityType="Self.vRoCase" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[vRoCase].[id] AS [id], 
+[vRoCase].[CASEID] AS [CASEID], 
+[vRoCase].[DEALER] AS [DEALER], 
+[vRoCase].[OUT_OFFCDE] AS [OUT_OFFCDE], 
+[vRoCase].[OUT_CMPCDE] AS [OUT_CMPCDE], 
+[vRoCase].[OUT_ROCODE] AS [OUT_ROCODE], 
+[vRoCase].[OUT_CUST_DATE] AS [OUT_CUST_DATE], 
+[vRoCase].[OUT_RO_STATUS] AS [OUT_RO_STATUS], 
+[vRoCase].[OUT_RODATE] AS [OUT_RODATE], 
+[vRoCase].[OUT_ROTIME] AS [OUT_ROTIME], 
+[vRoCase].[OUT_WARRANTY_DATE] AS [OUT_WARRANTY_DATE], 
+[vRoCase].[OUT_EXPIRY_DATE] AS [OUT_EXPIRY_DATE], 
+[vRoCase].[OUT_LICENSE] AS [OUT_LICENSE], 
+[vRoCase].[OUT_PRDCDE] AS [OUT_PRDCDE], 
+[vRoCase].[OUT_CHASNO] AS [OUT_CHASNO], 
+[vRoCase].[OUT_ENGNO] AS [OUT_ENGNO], 
+[vRoCase].[OUT_MODEL] AS [OUT_MODEL], 
+[vRoCase].[OUT_KILO_LAST] AS [OUT_KILO_LAST], 
+[vRoCase].[OUT_LAST_DATE] AS [OUT_LAST_DATE], 
+[vRoCase].[OUT_IDNO] AS [OUT_IDNO], 
+[vRoCase].[OUT_CUSNAME] AS [OUT_CUSNAME], 
+[vRoCase].[OUT_MOBILE] AS [OUT_MOBILE], 
+[vRoCase].[OUT_ADDRESS] AS [OUT_ADDRESS], 
+[vRoCase].[OUT_PROVINCE] AS [OUT_PROVINCE], 
+[vRoCase].[OUT_ZIPCODE] AS [OUT_ZIPCODE], 
+[vRoCase].[OUT_CUSTYPE] AS [OUT_CUSTYPE], 
+[vRoCase].[A_CODE] AS [A_CODE], 
+[vRoCase].[B_CODE] AS [B_CODE], 
+[vRoCase].[C_CODE] AS [C_CODE], 
+[vRoCase].[CREATED_BY] AS [CREATED_BY], 
+[vRoCase].[CREATED_ON] AS [CREATED_ON], 
+[vRoCase].[MODIFIED_ON] AS [MODIFIED_ON], 
+[vRoCase].[MODIFIED_BY] AS [MODIFIED_BY], 
+[vRoCase].[STATUS_CODE] AS [STATUS_CODE], 
+[vRoCase].[LevelofProblem] AS [LevelofProblem], 
+[vRoCase].[CaseTitle] AS [CaseTitle], 
+[vRoCase].[CaseType] AS [CaseType], 
+[vRoCase].[CaseSubject] AS [CaseSubject], 
+[vRoCase].[CaseDescription] AS [CaseDescription], 
+[vRoCase].[statusCodeText] AS [statusCodeText], 
+[vRoCase].[Problem] AS [Problem], 
+[vRoCase].[TimeOccur] AS [TimeOccur], 
+[vRoCase].[TimeFreq] AS [TimeFreq], 
+[vRoCase].[TimeFreqAmount] AS [TimeFreqAmount], 
+[vRoCase].[TimeFreqIn] AS [TimeFreqIn], 
+[vRoCase].[Weather] AS [Weather], 
+[vRoCase].[RoadCondition] AS [RoadCondition], 
+[vRoCase].[RoadFloor] AS [RoadFloor], 
+[vRoCase].[Gear] AS [Gear], 
+[vRoCase].[Tire] AS [Tire], 
+[vRoCase].[Tread] AS [Tread], 
+[vRoCase].[MaintenanceHistory] AS [MaintenanceHistory], 
+[vRoCase].[Accident] AS [Accident], 
+[vRoCase].[TransformCar] AS [TransformCar], 
+[vRoCase].[WeatherOther] AS [WeatherOther], 
+[vRoCase].[RoadConditionOther] AS [RoadConditionOther], 
+[vRoCase].[RoadFloorOther] AS [RoadFloorOther], 
+[vRoCase].[GearOther] AS [GearOther], 
+[vRoCase].[TireOther] AS [TireOther], 
+[vRoCase].[TreadOther] AS [TreadOther], 
+[vRoCase].[MaintenanceHistoryOther] AS [MaintenanceHistoryOther], 
+[vRoCase].[AccidentOther] AS [AccidentOther], 
+[vRoCase].[TransformCarOther] AS [TransformCarOther], 
+[vRoCase].[MicrosoftTeamLink] AS [MicrosoftTeamLink], 
+[vRoCase].[subject] AS [subject], 
+[vRoCase].[SolutionForDealer] AS [SolutionForDealer], 
+[vRoCase].[tafno] AS [tafno], 
+[vRoCase].[tafyear] AS [tafyear]
+FROM [dbo].[vRoCase] AS [vRoCase]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vROMessage" EntityType="Self.vROMessage" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[vROMessage].[id] AS [id], 
+[vROMessage].[caseid] AS [caseid], 
+[vROMessage].[sender_id] AS [sender_id], 
+[vROMessage].[sender_name] AS [sender_name], 
+[vROMessage].[text] AS [text], 
+[vROMessage].[attachfileid] AS [attachfileid], 
+[vROMessage].[time] AS [time], 
+[vROMessage].[CREATED_BY] AS [CREATED_BY], 
+[vROMessage].[CREATED_ON] AS [CREATED_ON], 
+[vROMessage].[MODIFIED_BY] AS [MODIFIED_BY], 
+[vROMessage].[MODIFIED_ON] AS [MODIFIED_ON], 
+[vROMessage].[STATUS_CODE] AS [STATUS_CODE], 
+[vROMessage].[Category] AS [Category], 
+[vROMessage].[IsImage] AS [IsImage], 
+[vROMessage].[FileName] AS [FileName], 
+[vROMessage].[MimeType] AS [MimeType], 
+[vROMessage].[Thumbnail] AS [Thumbnail]
+FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="mmthapiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="mmthapiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="a_code" EntityType="mmthapiModel.a_code" />
+          <EntitySet Name="attachfiles" EntityType="mmthapiModel.attachfile" />
+          <EntitySet Name="b_code" EntityType="mmthapiModel.b_code" />
+          <EntitySet Name="c_code" EntityType="mmthapiModel.c_code" />
+          <EntitySet Name="incidents" EntityType="mmthapiModel.incident" />
+          <EntitySet Name="mobiles" EntityType="mmthapiModel.mobile" />
+          <EntitySet Name="ratings" EntityType="mmthapiModel.rating" />
+          <EntitySet Name="rating_master" EntityType="mmthapiModel.rating_master" />
+          <EntitySet Name="rating_subject" EntityType="mmthapiModel.rating_subject" />
+          <EntitySet Name="ro_case" EntityType="mmthapiModel.ro_case" />
+          <EntitySet Name="ro_case_log" EntityType="mmthapiModel.ro_case_log" />
+          <EntitySet Name="ro_dealer" EntityType="mmthapiModel.ro_dealer" />
+          <EntitySet Name="ro_images" EntityType="mmthapiModel.ro_images" />
+          <EntitySet Name="ro_messages" EntityType="mmthapiModel.ro_messages" />
+          <EntitySet Name="ro_operation" EntityType="mmthapiModel.ro_operation" />
+          <EntitySet Name="ro_subject" EntityType="mmthapiModel.ro_subject" />
+          <EntitySet Name="ro_user" EntityType="mmthapiModel.ro_user" />
+          <EntitySet Name="vRoCases" EntityType="mmthapiModel.vRoCase" />
+          <EntitySet Name="vROMessages" EntityType="mmthapiModel.vROMessage" />
+          <EntitySet Name="assessmentform_master" EntityType="mmthapiModel.assessmentform_master" />
+          <EntitySet Name="assessmentforms" EntityType="mmthapiModel.assessmentform" />
+          <EntitySet Name="vAssessmentForms" EntityType="mmthapiModel.vAssessmentForm" />
+        </EntityContainer>
+        <EntityType Name="a_code">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="attachfile">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="ObjectId" Type="Int32" />
+          <Property Name="IsImage" Type="Boolean" />
+          <Property Name="Thumbnail" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="DocumentBody" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MimeType" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="FileSize" Type="Int32" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="tempkey" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="b_code">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="c_code">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="incident">
+          <Key>
+            <PropertyRef Name="case_id" />
+          </Key>
+          <Property Name="case_id" Type="Guid" Nullable="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="mobile">
+          <Key>
+            <PropertyRef Name="mobile_id" />
+          </Key>
+          <Property Name="mobile_id" Type="Guid" Nullable="false" />
+          <Property Name="uid" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="rating">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="comment" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ro_caseid" Type="Int32" />
+          <Property Name="CASEID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="rating_master">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="maxscore" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="order_seq" Type="Int32" />
+        </EntityType>
+        <EntityType Name="rating_subject">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="score" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="maxscore" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="ratingid" Type="Int32" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ro_case">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CASEID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DEALER" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_OFFCDE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_CMPCDE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_ROCODE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_CUST_DATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_RO_STATUS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_RODATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_ROTIME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_WARRANTY_DATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_EXPIRY_DATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_LICENSE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_PRDCDE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_CHASNO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_ENGNO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_MODEL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_KILO_LAST" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_LAST_DATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_IDNO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_CUSNAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_MOBILE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_PROVINCE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_ZIPCODE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_CUSTYPE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="A_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="B_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="C_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="LevelofProblem" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CaseTitle" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CaseType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CaseSubject" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="CaseDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Problem" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TimeOccur" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeFreq" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeFreqAmount" Type="Int32" />
+          <Property Name="TimeFreqIn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Weather" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WeatherOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RoadCondition" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoadConditionOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RoadFloor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoadFloorOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Gear" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GearOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Tire" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TireOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Tread" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TreadOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="MaintenanceHistory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MaintenanceHistoryOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Accident" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccidentOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TransformCar" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TransformCarOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="MicrosoftTeamLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SolutionForDealer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsRating" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="tafno" Type="String" MaxLength="20" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="tafyear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ro_case_log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CASEID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="STATUS_CODE_FROM" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="STATUS_CODE_TO" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ro_dealer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="englishname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ro_images">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ImageName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="varBinaryData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ro_messages">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="caseid" Type="Int32" />
+          <Property Name="sender_id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="text" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="attachfileid" Type="Int32" />
+          <Property Name="time" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ro_operation">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="case_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="case_id" Type="Int32" Nullable="false" />
+          <Property Name="OUT_COMMANDCODE" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_COMMANDDESC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_SERVICE_TYPE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_OPTCODE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_OPT_DESC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_EXPENSE_TYPE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ro_subject">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subjectid" Type="Guid" />
+          <Property Name="subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="englishname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ro_user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_mail" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="first_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="profile_photo_url" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="id_token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="refresh_token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="dealer" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="MOBILE_KEY" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PIN" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vRoCase">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="CASEID" />
+            <PropertyRef Name="DEALER" />
+            <PropertyRef Name="LevelofProblem" />
+            <PropertyRef Name="CaseTitle" />
+            <PropertyRef Name="CaseType" />
+            <PropertyRef Name="CaseDescription" />
+            <PropertyRef Name="statusCodeText" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="CASEID" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DEALER" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_OFFCDE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_CMPCDE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_ROCODE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_CUST_DATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_RO_STATUS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_RODATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_ROTIME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_WARRANTY_DATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_EXPIRY_DATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_LICENSE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_PRDCDE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_CHASNO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_ENGNO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_MODEL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_KILO_LAST" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_LAST_DATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_IDNO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_CUSNAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_MOBILE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_PROVINCE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_ZIPCODE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OUT_CUSTYPE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="A_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="B_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="C_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="LevelofProblem" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CaseTitle" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CaseType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CaseSubject" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="CaseDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="statusCodeText" Type="String" Nullable="false" MaxLength="19" FixedLength="false" Unicode="false" />
+          <Property Name="Problem" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TimeOccur" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeFreq" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeFreqAmount" Type="Int32" />
+          <Property Name="TimeFreqIn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Weather" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoadCondition" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoadFloor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gear" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tire" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tread" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MaintenanceHistory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Accident" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TransformCar" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WeatherOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RoadConditionOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RoadFloorOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GearOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TireOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TreadOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="MaintenanceHistoryOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AccidentOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TransformCarOther" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="MicrosoftTeamLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SolutionForDealer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="tafno" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="tafyear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vROMessage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="caseid" Type="Int32" />
+          <Property Name="sender_id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="text" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="attachfileid" Type="Int32" />
+          <Property Name="time" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Category" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IsImage" Type="Boolean" />
+          <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MimeType" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Thumbnail" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="assessmentform_master">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="assessmentform_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="groupno" Type="Int32" />
+          <Property Name="seqno" Type="Int32" />
+          <Property Name="subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="choicename1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="choicevalue1" Type="Int32" />
+          <Property Name="isradio1" Type="Boolean" />
+          <Property Name="isother1" Type="Boolean" />
+          <Property Name="choicename2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="choicevalue2" Type="Int32" />
+          <Property Name="isradio2" Type="Boolean" />
+          <Property Name="isother2" Type="Boolean" />
+          <Property Name="choicename3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="choicevalue3" Type="Int32" />
+          <Property Name="isradio3" Type="Boolean" />
+          <Property Name="isother3" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="assessmentform">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ro_caseid" Type="Int32" />
+          <Property Name="assessmentform_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="groupno" Type="Int32" />
+          <Property Name="seqno" Type="Int32" />
+          <Property Name="choicevalue" Type="Int32" />
+          <Property Name="message" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="iscomment" Type="Boolean" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vAssessmentForm">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="assessmentform_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="groupno" Type="Int32" />
+          <Property Name="seqno" Type="Int32" />
+          <Property Name="subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="choicename1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="choicevalue1" Type="Int32" />
+          <Property Name="isradio1" Type="Boolean" />
+          <Property Name="isother1" Type="Boolean" />
+          <Property Name="choicename2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="choicevalue2" Type="Int32" />
+          <Property Name="isradio2" Type="Boolean" />
+          <Property Name="isother2" Type="Boolean" />
+          <Property Name="choicename3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="choicevalue3" Type="Int32" />
+          <Property Name="isradio3" Type="Boolean" />
+          <Property Name="isother3" Type="Boolean" />
+          <Property Name="ro_caseid" Type="Int32" />
+          <Property Name="choicevalue" Type="Int32" />
+          <Property Name="message" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="iscomment" Type="Boolean" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="mmthapiModelStoreContainer" CdmEntityContainer="mmthapiEntities">
+          <EntitySetMapping Name="a_code">
+            <EntityTypeMapping TypeName="mmthapiModel.a_code">
+              <MappingFragment StoreEntitySet="a_code">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="attachfiles">
+            <EntityTypeMapping TypeName="mmthapiModel.attachfile">
+              <MappingFragment StoreEntitySet="attachfile">
+                <ScalarProperty Name="tempkey" ColumnName="tempkey" />
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="MimeType" ColumnName="MimeType" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="DocumentBody" ColumnName="DocumentBody" />
+                <ScalarProperty Name="Thumbnail" ColumnName="Thumbnail" />
+                <ScalarProperty Name="IsImage" ColumnName="IsImage" />
+                <ScalarProperty Name="ObjectId" ColumnName="ObjectId" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="b_code">
+            <EntityTypeMapping TypeName="mmthapiModel.b_code">
+              <MappingFragment StoreEntitySet="b_code">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="c_code">
+            <EntityTypeMapping TypeName="mmthapiModel.c_code">
+              <MappingFragment StoreEntitySet="c_code">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="incidents">
+            <EntityTypeMapping TypeName="mmthapiModel.incident">
+              <MappingFragment StoreEntitySet="incident">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="case_id" ColumnName="case_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mobiles">
+            <EntityTypeMapping TypeName="mmthapiModel.mobile">
+              <MappingFragment StoreEntitySet="mobiles">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
+                <ScalarProperty Name="mobile_id" ColumnName="mobile_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ratings">
+            <EntityTypeMapping TypeName="mmthapiModel.rating">
+              <MappingFragment StoreEntitySet="rating">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CASEID" ColumnName="CASEID" />
+                <ScalarProperty Name="ro_caseid" ColumnName="ro_caseid" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rating_master">
+            <EntityTypeMapping TypeName="mmthapiModel.rating_master">
+              <MappingFragment StoreEntitySet="rating_master">
+                <ScalarProperty Name="order_seq" ColumnName="order_seq" />
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="maxscore" ColumnName="maxscore" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rating_subject">
+            <EntityTypeMapping TypeName="mmthapiModel.rating_subject">
+              <MappingFragment StoreEntitySet="rating_subject">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ratingid" ColumnName="ratingid" />
+                <ScalarProperty Name="maxscore" ColumnName="maxscore" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ro_case">
+            <EntityTypeMapping TypeName="mmthapiModel.ro_case">
+              <MappingFragment StoreEntitySet="ro_case">
+                <ScalarProperty Name="tafyear" ColumnName="tafyear" />
+                <ScalarProperty Name="tafno" ColumnName="tafno" />
+                <ScalarProperty Name="IsRating" ColumnName="IsRating" />
+                <ScalarProperty Name="SolutionForDealer" ColumnName="SolutionForDealer" />
+                <ScalarProperty Name="MicrosoftTeamLink" ColumnName="MicrosoftTeamLink" />
+                <ScalarProperty Name="TransformCarOther" ColumnName="TransformCarOther" />
+                <ScalarProperty Name="TransformCar" ColumnName="TransformCar" />
+                <ScalarProperty Name="AccidentOther" ColumnName="AccidentOther" />
+                <ScalarProperty Name="Accident" ColumnName="Accident" />
+                <ScalarProperty Name="MaintenanceHistoryOther" ColumnName="MaintenanceHistoryOther" />
+                <ScalarProperty Name="MaintenanceHistory" ColumnName="MaintenanceHistory" />
+                <ScalarProperty Name="TreadOther" ColumnName="TreadOther" />
+                <ScalarProperty Name="Tread" ColumnName="Tread" />
+                <ScalarProperty Name="TireOther" ColumnName="TireOther" />
+                <ScalarProperty Name="Tire" ColumnName="Tire" />
+                <ScalarProperty Name="GearOther" ColumnName="GearOther" />
+                <ScalarProperty Name="Gear" ColumnName="Gear" />
+                <ScalarProperty Name="RoadFloorOther" ColumnName="RoadFloorOther" />
+                <ScalarProperty Name="RoadFloor" ColumnName="RoadFloor" />
+                <ScalarProperty Name="RoadConditionOther" ColumnName="RoadConditionOther" />
+                <ScalarProperty Name="RoadCondition" ColumnName="RoadCondition" />
+                <ScalarProperty Name="WeatherOther" ColumnName="WeatherOther" />
+                <ScalarProperty Name="Weather" ColumnName="Weather" />
+                <ScalarProperty Name="TimeFreqIn" ColumnName="TimeFreqIn" />
+                <ScalarProperty Name="TimeFreqAmount" ColumnName="TimeFreqAmount" />
+                <ScalarProperty Name="TimeFreq" ColumnName="TimeFreq" />
+                <ScalarProperty Name="TimeOccur" ColumnName="TimeOccur" />
+                <ScalarProperty Name="Problem" ColumnName="Problem" />
+                <ScalarProperty Name="CaseDescription" ColumnName="CaseDescription" />
+                <ScalarProperty Name="CaseSubject" ColumnName="CaseSubject" />
+                <ScalarProperty Name="CaseType" ColumnName="CaseType" />
+                <ScalarProperty Name="CaseTitle" ColumnName="CaseTitle" />
+                <ScalarProperty Name="LevelofProblem" ColumnName="LevelofProblem" />
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="C_CODE" ColumnName="C_CODE" />
+                <ScalarProperty Name="B_CODE" ColumnName="B_CODE" />
+                <ScalarProperty Name="A_CODE" ColumnName="A_CODE" />
+                <ScalarProperty Name="OUT_CUSTYPE" ColumnName="OUT_CUSTYPE" />
+                <ScalarProperty Name="OUT_ZIPCODE" ColumnName="OUT_ZIPCODE" />
+                <ScalarProperty Name="OUT_PROVINCE" ColumnName="OUT_PROVINCE" />
+                <ScalarProperty Name="OUT_ADDRESS" ColumnName="OUT_ADDRESS" />
+                <ScalarProperty Name="OUT_MOBILE" ColumnName="OUT_MOBILE" />
+                <ScalarProperty Name="OUT_CUSNAME" ColumnName="OUT_CUSNAME" />
+                <ScalarProperty Name="OUT_IDNO" ColumnName="OUT_IDNO" />
+                <ScalarProperty Name="OUT_LAST_DATE" ColumnName="OUT_LAST_DATE" />
+                <ScalarProperty Name="OUT_KILO_LAST" ColumnName="OUT_KILO_LAST" />
+                <ScalarProperty Name="OUT_MODEL" ColumnName="OUT_MODEL" />
+                <ScalarProperty Name="OUT_ENGNO" ColumnName="OUT_ENGNO" />
+                <ScalarProperty Name="OUT_CHASNO" ColumnName="OUT_CHASNO" />
+                <ScalarProperty Name="OUT_PRDCDE" ColumnName="OUT_PRDCDE" />
+                <ScalarProperty Name="OUT_LICENSE" ColumnName="OUT_LICENSE" />
+                <ScalarProperty Name="OUT_EXPIRY_DATE" ColumnName="OUT_EXPIRY_DATE" />
+                <ScalarProperty Name="OUT_WARRANTY_DATE" ColumnName="OUT_WARRANTY_DATE" />
+                <ScalarProperty Name="OUT_ROTIME" ColumnName="OUT_ROTIME" />
+                <ScalarProperty Name="OUT_RODATE" ColumnName="OUT_RODATE" />
+                <ScalarProperty Name="OUT_RO_STATUS" ColumnName="OUT_RO_STATUS" />
+                <ScalarProperty Name="OUT_CUST_DATE" ColumnName="OUT_CUST_DATE" />
+                <ScalarProperty Name="OUT_ROCODE" ColumnName="OUT_ROCODE" />
+                <ScalarProperty Name="OUT_CMPCDE" ColumnName="OUT_CMPCDE" />
+                <ScalarProperty Name="OUT_OFFCDE" ColumnName="OUT_OFFCDE" />
+                <ScalarProperty Name="DEALER" ColumnName="DEALER" />
+                <ScalarProperty Name="CASEID" ColumnName="CASEID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ro_case_log">
+            <EntityTypeMapping TypeName="mmthapiModel.ro_case_log">
+              <MappingFragment StoreEntitySet="ro_case_log">
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="STATUS_CODE_TO" ColumnName="STATUS_CODE_TO" />
+                <ScalarProperty Name="STATUS_CODE_FROM" ColumnName="STATUS_CODE_FROM" />
+                <ScalarProperty Name="CASEID" ColumnName="CASEID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ro_dealer">
+            <EntityTypeMapping TypeName="mmthapiModel.ro_dealer">
+              <MappingFragment StoreEntitySet="ro_dealer">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="englishname" ColumnName="englishname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ro_images">
+            <EntityTypeMapping TypeName="mmthapiModel.ro_images">
+              <MappingFragment StoreEntitySet="ro_images">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="varBinaryData" ColumnName="varBinaryData" />
+                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ro_messages">
+            <EntityTypeMapping TypeName="mmthapiModel.ro_messages">
+              <MappingFragment StoreEntitySet="ro_messages">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="attachfileid" ColumnName="attachfileid" />
+                <ScalarProperty Name="text" ColumnName="text" />
+                <ScalarProperty Name="sender_name" ColumnName="sender_name" />
+                <ScalarProperty Name="sender_id" ColumnName="sender_id" />
+                <ScalarProperty Name="caseid" ColumnName="caseid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ro_operation">
+            <EntityTypeMapping TypeName="mmthapiModel.ro_operation">
+              <MappingFragment StoreEntitySet="ro_operation">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="OUT_EXPENSE_TYPE" ColumnName="OUT_EXPENSE_TYPE" />
+                <ScalarProperty Name="OUT_OPT_DESC" ColumnName="OUT_OPT_DESC" />
+                <ScalarProperty Name="OUT_OPTCODE" ColumnName="OUT_OPTCODE" />
+                <ScalarProperty Name="OUT_SERVICE_TYPE" ColumnName="OUT_SERVICE_TYPE" />
+                <ScalarProperty Name="OUT_COMMANDDESC" ColumnName="OUT_COMMANDDESC" />
+                <ScalarProperty Name="OUT_COMMANDCODE" ColumnName="OUT_COMMANDCODE" />
+                <ScalarProperty Name="case_id" ColumnName="case_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ro_subject">
+            <EntityTypeMapping TypeName="mmthapiModel.ro_subject">
+              <MappingFragment StoreEntitySet="ro_subject">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="englishname" ColumnName="englishname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="subjectid" ColumnName="subjectid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ro_user">
+            <EntityTypeMapping TypeName="mmthapiModel.ro_user">
+              <MappingFragment StoreEntitySet="ro_user">
+                <ScalarProperty Name="PIN" ColumnName="PIN" />
+                <ScalarProperty Name="MOBILE_KEY" ColumnName="MOBILE_KEY" />
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="dealer" ColumnName="dealer" />
+                <ScalarProperty Name="refresh_token" ColumnName="refresh_token" />
+                <ScalarProperty Name="id_token" ColumnName="id_token" />
+                <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="profile_photo_url" ColumnName="profile_photo_url" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="user_mail" ColumnName="user_mail" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vRoCases">
+            <EntityTypeMapping TypeName="mmthapiModel.vRoCase">
+              <MappingFragment StoreEntitySet="vRoCase">
+                <ScalarProperty Name="tafyear" ColumnName="tafyear" />
+                <ScalarProperty Name="tafno" ColumnName="tafno" />
+                <ScalarProperty Name="SolutionForDealer" ColumnName="SolutionForDealer" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="MicrosoftTeamLink" ColumnName="MicrosoftTeamLink" />
+                <ScalarProperty Name="TransformCarOther" ColumnName="TransformCarOther" />
+                <ScalarProperty Name="AccidentOther" ColumnName="AccidentOther" />
+                <ScalarProperty Name="MaintenanceHistoryOther" ColumnName="MaintenanceHistoryOther" />
+                <ScalarProperty Name="TreadOther" ColumnName="TreadOther" />
+                <ScalarProperty Name="TireOther" ColumnName="TireOther" />
+                <ScalarProperty Name="GearOther" ColumnName="GearOther" />
+                <ScalarProperty Name="RoadFloorOther" ColumnName="RoadFloorOther" />
+                <ScalarProperty Name="RoadConditionOther" ColumnName="RoadConditionOther" />
+                <ScalarProperty Name="WeatherOther" ColumnName="WeatherOther" />
+                <ScalarProperty Name="TransformCar" ColumnName="TransformCar" />
+                <ScalarProperty Name="Accident" ColumnName="Accident" />
+                <ScalarProperty Name="MaintenanceHistory" ColumnName="MaintenanceHistory" />
+                <ScalarProperty Name="Tread" ColumnName="Tread" />
+                <ScalarProperty Name="Tire" ColumnName="Tire" />
+                <ScalarProperty Name="Gear" ColumnName="Gear" />
+                <ScalarProperty Name="RoadFloor" ColumnName="RoadFloor" />
+                <ScalarProperty Name="RoadCondition" ColumnName="RoadCondition" />
+                <ScalarProperty Name="Weather" ColumnName="Weather" />
+                <ScalarProperty Name="TimeFreqIn" ColumnName="TimeFreqIn" />
+                <ScalarProperty Name="TimeFreqAmount" ColumnName="TimeFreqAmount" />
+                <ScalarProperty Name="TimeFreq" ColumnName="TimeFreq" />
+                <ScalarProperty Name="TimeOccur" ColumnName="TimeOccur" />
+                <ScalarProperty Name="Problem" ColumnName="Problem" />
+                <ScalarProperty Name="statusCodeText" ColumnName="statusCodeText" />
+                <ScalarProperty Name="CaseDescription" ColumnName="CaseDescription" />
+                <ScalarProperty Name="CaseSubject" ColumnName="CaseSubject" />
+                <ScalarProperty Name="CaseType" ColumnName="CaseType" />
+                <ScalarProperty Name="CaseTitle" ColumnName="CaseTitle" />
+                <ScalarProperty Name="LevelofProblem" ColumnName="LevelofProblem" />
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="C_CODE" ColumnName="C_CODE" />
+                <ScalarProperty Name="B_CODE" ColumnName="B_CODE" />
+                <ScalarProperty Name="A_CODE" ColumnName="A_CODE" />
+                <ScalarProperty Name="OUT_CUSTYPE" ColumnName="OUT_CUSTYPE" />
+                <ScalarProperty Name="OUT_ZIPCODE" ColumnName="OUT_ZIPCODE" />
+                <ScalarProperty Name="OUT_PROVINCE" ColumnName="OUT_PROVINCE" />
+                <ScalarProperty Name="OUT_ADDRESS" ColumnName="OUT_ADDRESS" />
+                <ScalarProperty Name="OUT_MOBILE" ColumnName="OUT_MOBILE" />
+                <ScalarProperty Name="OUT_CUSNAME" ColumnName="OUT_CUSNAME" />
+                <ScalarProperty Name="OUT_IDNO" ColumnName="OUT_IDNO" />
+                <ScalarProperty Name="OUT_LAST_DATE" ColumnName="OUT_LAST_DATE" />
+                <ScalarProperty Name="OUT_KILO_LAST" ColumnName="OUT_KILO_LAST" />
+                <ScalarProperty Name="OUT_MODEL" ColumnName="OUT_MODEL" />
+                <ScalarProperty Name="OUT_ENGNO" ColumnName="OUT_ENGNO" />
+                <ScalarProperty Name="OUT_CHASNO" ColumnName="OUT_CHASNO" />
+                <ScalarProperty Name="OUT_PRDCDE" ColumnName="OUT_PRDCDE" />
+                <ScalarProperty Name="OUT_LICENSE" ColumnName="OUT_LICENSE" />
+                <ScalarProperty Name="OUT_EXPIRY_DATE" ColumnName="OUT_EXPIRY_DATE" />
+                <ScalarProperty Name="OUT_WARRANTY_DATE" ColumnName="OUT_WARRANTY_DATE" />
+                <ScalarProperty Name="OUT_ROTIME" ColumnName="OUT_ROTIME" />
+                <ScalarProperty Name="OUT_RODATE" ColumnName="OUT_RODATE" />
+                <ScalarProperty Name="OUT_RO_STATUS" ColumnName="OUT_RO_STATUS" />
+                <ScalarProperty Name="OUT_CUST_DATE" ColumnName="OUT_CUST_DATE" />
+                <ScalarProperty Name="OUT_ROCODE" ColumnName="OUT_ROCODE" />
+                <ScalarProperty Name="OUT_CMPCDE" ColumnName="OUT_CMPCDE" />
+                <ScalarProperty Name="OUT_OFFCDE" ColumnName="OUT_OFFCDE" />
+                <ScalarProperty Name="DEALER" ColumnName="DEALER" />
+                <ScalarProperty Name="CASEID" ColumnName="CASEID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vROMessages">
+            <EntityTypeMapping TypeName="mmthapiModel.vROMessage">
+              <MappingFragment StoreEntitySet="vROMessage">
+                <ScalarProperty Name="Thumbnail" ColumnName="Thumbnail" />
+                <ScalarProperty Name="MimeType" ColumnName="MimeType" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="IsImage" ColumnName="IsImage" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="attachfileid" ColumnName="attachfileid" />
+                <ScalarProperty Name="text" ColumnName="text" />
+                <ScalarProperty Name="sender_name" ColumnName="sender_name" />
+                <ScalarProperty Name="sender_id" ColumnName="sender_id" />
+                <ScalarProperty Name="caseid" ColumnName="caseid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="assessmentform_master">
+            <EntityTypeMapping TypeName="mmthapiModel.assessmentform_master">
+              <MappingFragment StoreEntitySet="assessmentform_master">
+                <ScalarProperty Name="isother3" ColumnName="isother3" />
+                <ScalarProperty Name="isradio3" ColumnName="isradio3" />
+                <ScalarProperty Name="choicevalue3" ColumnName="choicevalue3" />
+                <ScalarProperty Name="choicename3" ColumnName="choicename3" />
+                <ScalarProperty Name="isother2" ColumnName="isother2" />
+                <ScalarProperty Name="isradio2" ColumnName="isradio2" />
+                <ScalarProperty Name="choicevalue2" ColumnName="choicevalue2" />
+                <ScalarProperty Name="choicename2" ColumnName="choicename2" />
+                <ScalarProperty Name="isother1" ColumnName="isother1" />
+                <ScalarProperty Name="isradio1" ColumnName="isradio1" />
+                <ScalarProperty Name="choicevalue1" ColumnName="choicevalue1" />
+                <ScalarProperty Name="choicename1" ColumnName="choicename1" />
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="seqno" ColumnName="seqno" />
+                <ScalarProperty Name="groupno" ColumnName="groupno" />
+                <ScalarProperty Name="assessmentform_type" ColumnName="assessmentform_type" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="assessmentforms">
+            <EntityTypeMapping TypeName="mmthapiModel.assessmentform">
+              <MappingFragment StoreEntitySet="assessmentform">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="iscomment" ColumnName="iscomment" />
+                <ScalarProperty Name="message" ColumnName="message" />
+                <ScalarProperty Name="choicevalue" ColumnName="choicevalue" />
+                <ScalarProperty Name="seqno" ColumnName="seqno" />
+                <ScalarProperty Name="groupno" ColumnName="groupno" />
+                <ScalarProperty Name="assessmentform_type" ColumnName="assessmentform_type" />
+                <ScalarProperty Name="ro_caseid" ColumnName="ro_caseid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vAssessmentForms">
+            <EntityTypeMapping TypeName="mmthapiModel.vAssessmentForm">
+              <MappingFragment StoreEntitySet="vAssessmentForm">
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="iscomment" ColumnName="iscomment" />
+                <ScalarProperty Name="message" ColumnName="message" />
+                <ScalarProperty Name="choicevalue" ColumnName="choicevalue" />
+                <ScalarProperty Name="ro_caseid" ColumnName="ro_caseid" />
+                <ScalarProperty Name="isother3" ColumnName="isother3" />
+                <ScalarProperty Name="isradio3" ColumnName="isradio3" />
+                <ScalarProperty Name="choicevalue3" ColumnName="choicevalue3" />
+                <ScalarProperty Name="choicename3" ColumnName="choicename3" />
+                <ScalarProperty Name="isother2" ColumnName="isother2" />
+                <ScalarProperty Name="isradio2" ColumnName="isradio2" />
+                <ScalarProperty Name="choicevalue2" ColumnName="choicevalue2" />
+                <ScalarProperty Name="choicename2" ColumnName="choicename2" />
+                <ScalarProperty Name="isother1" ColumnName="isother1" />
+                <ScalarProperty Name="isradio1" ColumnName="isradio1" />
+                <ScalarProperty Name="choicevalue1" ColumnName="choicevalue1" />
+                <ScalarProperty Name="choicename1" ColumnName="choicename1" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="seqno" ColumnName="seqno" />
+                <ScalarProperty Name="groupno" ColumnName="groupno" />
+                <ScalarProperty Name="assessmentform_type" ColumnName="assessmentform_type" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Default" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

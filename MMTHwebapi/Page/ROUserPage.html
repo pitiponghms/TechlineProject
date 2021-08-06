@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+            /* Hide default HTML checkbox */
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 16px;
+                width: 16px;
+                left: 2px;
+                bottom: 2px;
+                background-color: white;
+<<<<<<< Updated upstream
+                -webkit-transition: .4s;
+                transition: .4s;
+=======
+                -webkit-transition: .3s;
+                transition: .3s;
+>>>>>>> Stashed changes
+            }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(20px);
+            -ms-transform: translateX(20px);
+            transform: translateX(20px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+    </style>
+</head>
+<body>
+    <div id="loader" class="loader"></div>
+    <div id="container" class="container bootstrap snippets bootdey">
+        <div class="row">
+            <div class="col-md-8 bg-white">
+                <h2>RO User</h2>
+                <div style="overflow-y: auto;">
+                    <!--<h2>Select Number Of Rows</h2>-->
+                    <div class="form-group">
+                        <!--		Show Numbers Of Rows 		-->
+                        <select class="form-control" name="state" id="maxRows">
+                            <option value="5000">Show ALL Rows</option>
+                            <option value="3">3</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </div>
+                    <table id="mytable" class="table table-striped table-class">
+                        <thead>
+                        </thead>
+                    </table>
+
+                    <!--		Start Pagination -->
+                    <div class='pagination-container'>
+                        <nav>
+                            <ul class="pagination">
+                                <li data-page="prev">
+                                    <span> < <span class="sr-only">(current)</span></span>
+                                </li>
+                                <!--	Here the JS Function Will Add the Rows -->
+                                <li data-page="next" id="prev">
+                                    <span> > <span class="sr-only">(current)</span></span>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+<script type="text/javascript">
+    //let api = "http://phoebe.hms-cloud.com:8033/api";
+    let api = "https://phoebe.hms-cloud.com:4430/api";
+    let caseid = 8;
+    var userid = 2;
+
+    var recordCnt = 0;
+    var lastPage = 1;
+    var perPage = 5;
+
+    $(document).ready(function () {
+        renderTable();
+        getPagination('#mytable');
+    });
+
+    function showLoader(status) {
+        if (status) {
+            $("#loader").show();
+        }
+        else {
+            $("#loader").hide();
+        }
+    }
+
+    function renderTable() {
+        showLoader(true);
+
+        $.ajax({
+            type: 'GET',
+            url: api + '/rouser/get/all?startIndex=null&maxRows=null',
+            async: false,
+            success: function (result) {
+                $("#mytable").empty();
+
+                var header = '<thead>' +
+                    '<tr><th>First Name</th><th>Last Name</th><th>Mail</th><th>' + getSwitch('th', null) + '</th></tr>' +
+                    '</thead>';
+                var body = document.createElement('tbody');;
+
+                recordCnt = result.length;
+                $.each(result, function (index, item) {
+                    var detail = '<tr class="record" id="' + item.id + '">' +
+                        '<td id="firstname">' + item.first_name + '</td>' +
+                        '<td id="lastname">' + item.last_name + '</td>' +
+                        '<td id="mail">' + item.user_mail + '</td>' +
+                        '<td>' + getSwitch('td', item.STATUS_CODE) + '</td>' +
+                        '</tr>';
+                    $(body).append(detail);
+                });
+
+                $("#mytable").append(header);
+                $("#mytable").append(body);
+            },
+            error: function (xhr, status, error) {
+                //alert(xhr.responseText);
+                alert(status);
+                //alert(error);
+            },
+            complete: function () {
+                showLoader(false);
+            }
+        });
+    }
+
+    function getPagination(table) {
+        //var lastPage = 1;
+        lastPage = 1;
+
+        $('#maxRows')
+            .on('change', function (evt) {
+                //$('.paginationprev').html('');						// reset pagination
+
+                lastPage = 1;
+                $('.pagination')
+                    .find('li')
+                    .slice(1, -1)
+                    .remove();
+                var trnum = 0; // reset tr counter
+                var maxRows = parseInt($(this).val()); // get Max Rows from select option
+
+                if (maxRows == 5000) {
+                    $('.pagination').hide();
+                } else {
+                    $('.pagination').show();
+                }
+
+                var totalRows = $(table + ' tbody tr').length; // numbers of rows
+                $(table + ' tr:gt(0)').each(function () {
+                    // each TR in  table and not the header
+                    trnum++; // Start Counter
+                    if (trnum > maxRows) {
+                        // if tr number gt maxRows
+
+                        $(this).hide(); // fade it out
+                    }
+                    if (trnum <= maxRows) {
+                        $(this).show();
+                    } // else fade in Important in case if it ..
+                }); //  was fade out to fade it in
+                if (totalRows > maxRows) {
+                    // if tr total rows gt max rows option
+                    var pagenum = Math.ceil(totalRows / maxRows); // ceil total(rows/maxrows) to get ..
+                    //	numbers of pages
+                    for (var i = 1; i <= pagenum;) {
+                        // for each page append pagination li
+                        $('.pagination #prev')
+                            .before(
+                                '<li data-page="' +
+                                i +
+                                '">\
+                                  <span>' +
+                                i++ +
+                                '<span class="sr-only">(current)</span></span>\
+                                </li>'
+                            )
+                            .show();
+                    } // end for i
+                } // end if row count > max rows
+                $('.pagination [data-page="1"]').addClass('active'); // add active class to the first li
+                $('.pagination li').on('click', function (evt) {
+                    // on click each page
+                    evt.stopImmediatePropagation();
+                    evt.preventDefault();
+                    var pageNum = $(this).attr('data-page'); // get it's number
+<<<<<<< Updated upstream
+
+                    var maxRows = parseInt($('#maxRows').val()); // get Max Rows from select option
+
+=======
+                    
+                    var maxRows = parseInt($('#maxRows').val()); // get Max Rows from select option
+                    
+>>>>>>> Stashed changes
+                    if (pageNum == 'prev') {
+                        if (lastPage == 1) {
+                            return;
+                        }
+                        pageNum = --lastPage;
+                    }
+                    if (pageNum == 'next') {
+                        if (lastPage == $('.pagination li').length - 2) {
+                            return;
+                        }
+                        else if (maxRows >= recordCnt) {
+                            return;
+                        }
+                        pageNum = ++lastPage;
+                    }
+
+                    lastPage = pageNum;
+                    var trIndex = 0; // reset tr counter
+                    $('.pagination li').removeClass('active'); // remove active class from all li
+                    $('.pagination [data-page="' + lastPage + '"]').addClass('active'); // add active class to the clicked
+                    // $(this).addClass('active');					// add active class to the clicked
+                    limitPagging();
+                    $(table + ' tr:gt(0)').each(function () {
+                        // each tr in table not the header
+                        trIndex++; // tr index counter
+                        // if tr index gt maxRows*pageNum or lt maxRows*pageNum-maxRows fade if out
+                        if (
+                            trIndex > maxRows * pageNum ||
+                            trIndex <= maxRows * pageNum - maxRows
+                        ) {
+                            $(this).hide();
+                        } else {
+                            $(this).show();
+                        } //else fade in
+                    }); // end of for each tr in table
+
+                    isCheckedAll(lastPage);
+                }); // end of on click pagination list
+                limitPagging();
+
+                perPage = maxRows;
+                isCheckedAll(lastPage);
+            })
+            .val(perPage)
+            .change();
+
+        // end of on select change
+
+        // END OF PAGINATION
+    }
+
+    function limitPagging() {
+        // alert($('.pagination li').length)
+
+        if ($('.pagination li').length > 7) {
+            if ($('.pagination li.active').attr('data-page') <= 3) {
+                $('.pagination li:gt(5)').hide();
+                $('.pagination li:lt(5)').show();
+                $('.pagination [data-page="next"]').show();
+            } if ($('.pagination li.active').attr('data-page') > 3) {
+                $('.pagination li:gt(0)').hide();
+                $('.pagination [data-page="next"]').show();
+                for (let i = (parseInt($('.pagination li.active').attr('data-page')) - 2); i <= (parseInt($('.pagination li.active').attr('data-page')) + 2); i++) {
+                    $('.pagination [data-page="' + i + '"]').show();
+                }
+            }
+        }
+    }
+
+    $(function () {
+        // Just to append id number for each row
+        $('table tr:eq(0)').prepend('<th> No. </th>');
+
+        var id = 0;
+
+        $('table tr:gt(0)').each(function () {
+            id++;
+            $(this).prepend('<td>' + id + '</td>');
+        });
+
+        /////////////////////////////////////////////
+
+        //var thswitch = '<label class="switch">' +
+        //    '<input id="CheckboxHeader" type="checkbox">' +
+        //    '<span class="slider round"></span>' +
+        //    '</label>';
+
+        //var tdswitch = '<label class="switch">' +
+        //    '<input id="CheckboxDetail" type="checkbox">' +
+        //    '<span class="slider round"></span>' +
+        //    '</label>';
+
+        //$('table tr').each(function () {
+        //    $(this).find('th').eq(-1).after('<th>' + thswitch + '</th>');
+        //    $(this).find('td').eq(-1).after('<td>' + tdswitch + '</td>');
+        //});
+
+        $('th .switch').on('change', function () {
+            var ischecked = $("#CheckboxHeader").is(":checked");
+<<<<<<< Updated upstream
+
+            $('td .switch').each(function (index, item) {
+                if (Math.floor(index / perPage) + 1 == lastPage) {
+                    $(item).find("#CheckboxDetail").prop("checked", ischecked);
+
+                    updateUser($(item).closest('.record').attr('id'), ischecked, userid);
+=======
+            
+            $('td .switch').each(function (index, item) {
+                if (Math.floor(index/perPage) + 1 == lastPage) {
+                    $(item).find("#CheckboxDetail").prop("checked", ischecked);
+>>>>>>> Stashed changes
+                }
+            });
+        });
+
+        $('td .switch').on('change', function () {
+            var ischecked = $(this).find("#CheckboxDetail").is(":checked");
+
+            if (!ischecked) {
+                $("#CheckboxHeader").prop("checked", false);
+            }
+            else {
+                var hchecked = true;
+
+                $('td .switch').each(function (index, item) {
+                    if (Math.floor(index / perPage) + 1 == lastPage) {
+                        if (!$(this).find("#CheckboxDetail").is(":checked")) {
+                            hchecked = false;
+                            return false;
+                        }
+                    }
+                });
+
+                $("#CheckboxHeader").prop("checked", hchecked);
+            }
+
+<<<<<<< Updated upstream
+            updateUser($(this).closest('.record').attr('id'), ischecked, userid);
+        });
+    });
+
+    function updateUser(id, ischecked, userid) {
+        var formdata = new FormData();
+
+        var data = {
+            'Id': id,
+            'StatusCode': ischecked == true ? 1 : 0,
+            'ModifiedBy': userid,
+        };
+
+        formdata.append('Model', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: api + '/rouser/update',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (result) {
+                if (result.Status == 'E') {
+                    alert(result.Message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+                //alert(status);
+                //alert(error);
+                return;
+            },
+        });
+    }
+=======
+            //////////////////////////////////////////////////////////////
+
+            var formdata = new FormData();
+
+            var data = {
+                'Id': parseInt($(this).closest('.record').attr('id')),
+                'StatusCode': ischecked == true ? '1' : '0',
+                'ModifiedBy': userid,
+            };
+
+            formdata.append('Model', JSON.stringify(data));
+
+            $.ajax({
+                type: 'POST',
+                url: api + '/rouser/update',
+                data: formdata,
+                contentType: false,
+                processData: false,
+                async: false,
+                success: function (result) {
+                    //alert(result.Message);                    
+                },
+                error: function (xhr, status, error) {
+                    alert(xhr.responseText);
+                    //alert(status);
+                    //alert(error);
+                    return;
+                },
+            });
+        });
+
+    });
+>>>>>>> Stashed changes
+
+    $('.pagination li').on('click', function () {
+        $("#CheckboxHeader").prop("checked", true);
+
+        $('td .switch').each(function (index, item) {
+<<<<<<< Updated upstream
+            if (Math.floor(index / perPage) + 1 == lastPage) {
+=======
+            if (Math.floor(index / perPage) + 1 == lastPage) {               
+>>>>>>> Stashed changes
+                if (!$(item).find("#CheckboxDetail").is(":checked")) {
+                    $("#CheckboxHeader").prop("checked", false);
+                }
+            }
+        });
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+    });
+
+    function isCheckedAll(currentPage) {
+        $("#CheckboxHeader").prop("checked", true);
+
+        $('td .switch').each(function (index, item) {
+            if (Math.floor(index / perPage) + 1 == lastPage) {
+                if (!$(item).find("#CheckboxDetail").is(":checked")) {
+                    $("#CheckboxHeader").prop("checked", false);
+                }
+            }
+        });
+    }
+
+    function getSwitch(type, value) {
+        if (type == 'th') {
+            return '<label class="switch">' +
+                '<input id="CheckboxHeader" type="checkbox">' +
+                '<span class="slider round"></span>' +
+                '</label>';
+        }
+        else if (type == 'td') {
+            if (value == 1) {
+                return '<label class="switch">' +
+                    '<input id="CheckboxDetail" type="checkbox" checked>' +
+                    '<span class="slider round"></span>' +
+                    '</label>';
+            }
+            else {
+                return '<label class="switch">' +
+                    '<input id="CheckboxDetail" type="checkbox">' +
+                    '<span class="slider round"></span>' +
+                    '</label>';
+            }
+<<<<<<< Updated upstream
+        }
+    }
+
+=======
+
+            
+        }
+
+        //$('table tr').each(function () {
+        //    $(this).find('th').eq(-1).after('<th>' + thswitch + '</th>');
+        //    $(this).find('td').eq(-1).after('<td>' + tdswitch + '</td>');
+        //});
+    }
+    
+>>>>>>> Stashed changes
+</script>

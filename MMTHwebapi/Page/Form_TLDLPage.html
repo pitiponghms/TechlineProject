@@ -1,0 +1,689 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--<meta charset="utf-8">-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.css">
+    <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_rofontawesome470min.css">
+    <script src="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_rojquery3.5.1.min.js"></script>
+    <script src="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        body {
+            font-size: 10px;
+            color: #666666;
+            background: #D1D1D1;
+            font-family: 'Open Sans',sans-serif;
+            margin-top: 0px;
+            padding-top: 0px;
+        }
+
+        .bg-white {
+            padding: 10px;
+            background-color: white;
+        }
+
+        small, .small {
+            font-size: 85%;
+        }
+
+        input[type="text"] {
+            border-top-color: transparent;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-width:thin;
+        }
+
+        textarea {
+            font-size: 12px;
+        }
+
+        .loader {
+            position: fixed;
+            left: 45%;
+            top: 35%;
+            width: 150px;
+            height: 150px;
+            z-index: 9999;
+            border: 16px solid #f3f3f3; /*Light grey */
+            border-top: 16px solid #3498db; /*Blue */
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .styled-table {
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 1.2em;
+            font-family: sans-serif;
+            min-width: 400px;
+            /*box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);*/
+        }
+
+            .styled-table th,
+            .styled-table td {
+                padding: 5px 10px;
+            }
+
+            .styled-table th {
+                color: white;
+                background-color: #323232;
+                text-align: center;
+            }
+
+            .styled-table tr {
+                border-bottom-color: whitesmoke;
+                border-bottom-width: thin;
+                border-bottom-style: solid;
+            }
+
+                .styled-table tr td {
+                    vertical-align: top;
+                }
+
+        td input[type='radio'] {
+            margin: 3px;
+        }
+
+        td div div {
+            margin: 3px 0px;
+        }
+
+        /* Ratings widget */
+        /*.rate {
+            display: inline-block;
+            border: 0;
+        }*/
+        /* Hide radio */
+        /*.rate > input {
+                display: none;
+            }*/
+        /* Order correctly by floating highest to the right */
+        /*.rate > label {
+                float: right;
+            }*/
+        /* The star of the show */
+        /*.rate > label:before {
+                    display: inline-block;*/
+        /*font-size: 2rem;*/
+        /*padding: .0rem .2rem;
+                    margin: 0;
+                    cursor: pointer;
+                    font-family: FontAwesome;
+                    content: "\f005 ";*/ /* full star */
+        /*}*/
+
+        /* Half star trick */
+        /*.rate .half:before {
+                content: "\f089 ";*/ /* half star no outline */
+        /*position: absolute;
+                padding-right: 0;
+            }*/
+        /* Click + hover color */
+        /*input:checked ~ label,*/ /* color current and previous stars on checked */
+        /*label:hover, label:hover ~ label {
+            color: gold;
+        }*/
+        /* color previous stars on hover */
+
+        /* Hover highlights */
+        /*input:checked + label:hover, input:checked ~ label:hover,*/ /* highlight current and previous stars */
+        /*input:checked ~ label:hover ~ label,*/ /* highlight previous selected stars for new rating */
+        /*label:hover ~ input:checked ~ label*/ /* highlight previous selected stars */ /*{
+                color: gold;
+            }*/
+
+        .overlay {
+            background-color: #EFEFEF;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            top: 0px;
+            left: 0px;
+            opacity: .30; /* in FireFox */
+            /*filter: alpha(opacity=30);*/ /* in IE */
+        }
+    </style>
+</head>
+<body style="overflow-wrap: break-word;">
+    <div id="loader" class="loader"></div>
+    <div id="container" class="container bootstrap snippets bootdey">
+        <div class="row">
+            <div class="col-md-10 bg-white">
+                <div style="display: flex; justify-content: space-between;">
+                    <h2 id="title"></h2>
+                    <h4>
+                        <button id="SaveBtn"><i class="fa fa-save"></i></button>
+                    </h4>
+                </div>
+                <div style="overflow-y: auto; justify-content: space-between;">
+                    <table id="mytable" class="styled-table">
+                    </table>
+                </div>
+                <div>
+                    <h5>ข้อเสนอแนะ</h5>
+                    <textarea id="CommentArea" cols="100" rows="3" maxlength="250"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    //let api = "http://phoebe.hms-cloud.com:8033/api";
+    //let api = "https://phoebe.hms-cloud.com:4430/api";
+    let api = "https://" + window.location.hostname + ":4430/api";
+    let caseid = window.opener.Xrm.Page.getAttribute("hms_rocaseid").getValue();
+    let mytitle = "TL ประเมิณ DL. REV.01"; //TL ประเมิณ DL. REV.01
+    let assessmentform = 'DL_Scramble_Rev01'; //TL_DL_Rev01 //DL_TL_Rev01 //Scramble_TL_Rev01 //DL_Scramble_Rev01
+    let assessmenttype = 1; //1 //2
+    let userid = 2;
+
+    $(document).ready(function () {
+        document.title = mytitle;
+        $('#title').text(mytitle);
+        
+        if (isUpdate(caseid)) {
+            renderUpdate();
+        }
+        else {
+            renderCreate();
+        }
+
+        $('td').on('click', function () {
+            var input = $(this).find('input[type="radio"]');
+            $(input).prop("checked", true);
+        });
+
+        $("input").on('keyup', function () {
+            if (this.value.length >= this.maxLength) {
+                alert('จำกัด ' + this.maxLength + ' ตัวอักษรเท่านั้น');
+                this.value = this.value.slice(0, this.maxLength);
+            }
+        });
+
+        $("textarea").on('keyup', function () {
+            if (this.value.length >= this.maxLength) {
+                alert('จำกัด ' + this.maxLength + ' ตัวอักษรเท่านั้น');
+                this.value = this.value.slice(0, this.maxLength);
+            }
+        });
+    });
+
+    function showLoader(status) {
+        if (status) {
+            $("#loader").show();
+        }
+        else {
+            $("#loader").hide();
+        }
+    }
+
+    function isUpdate(caseid) {
+        var isupdate = false;
+
+        showLoader(true);
+        
+        $.ajax({
+            type: 'GET',
+            url: api + '/assessment/form/count/' + caseid + '/' + assessmentform,
+            async: false,
+            success: function (result) {
+                if (result > 0) {
+                    isupdate = true;
+                }
+            },
+            error: function (xhr, status, error) {
+                //alert(xhr.responseText);
+                alert(status);
+                //alert(error);
+            },
+            complete: function () {
+                showLoader(false);
+            }
+        });
+
+        return isupdate;
+    }
+
+    function renderCreate() {
+        AddHeader();
+        AddBody();
+    }
+
+    function renderUpdate() {
+        AddHeader();
+        AddBodyUpdate();
+        disableScreen();
+    }
+
+    function AddHeader() {
+        var thead = document.createElement("thead");
+        var tr = document.createElement("tr");
+
+        var th1 = document.createElement("th");
+        var th2 = document.createElement("th");
+        var th3 = document.createElement("th");
+
+        if (assessmenttype == 1) {
+            $(th1).text("No.");
+            $(th2).text("หัวข้อความพึงพอใจ");
+            $(th3).text("รายละเอียดการประเมิณ");
+            $(th3).attr("colspan", 3);
+        }
+        else {
+            $(th1).text("No.");
+            $(th2).text("หัวข้อความพึงพอใจ");
+            $(th3).text("ระดับความพึงพอใจ");
+            $(th3).attr("colspan", 3);
+        }
+
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+
+        thead.appendChild(tr);
+        $("#mytable").html(thead);
+    }
+
+    function AddBody() {
+        var tbody = document.createElement("tbody");
+
+        showLoader(true);
+
+        $.ajax({
+            type: 'GET',
+            url: api + '/assessment/master/get/' + assessmentform,
+            async: false,
+            success: function (result) {
+                $.each(result, function(index, item) {
+                    if (item.SeqNo != 0) {
+                        var groupname = "q" + item.GroupNo + "_" + item.SeqNo;
+                     
+                        tbody.append(AddQuestion(item.Subject, [
+                            { Class: groupname, Name: item.ChoiceName1, Value: item.ChoiceValue1, IsRadio: item.IsRadio1, IsOther: item.IsOther1 },
+                            { Class: groupname, Name: item.ChoiceName2, Value: item.ChoiceValue2, IsRadio: item.IsRadio2, IsOther: item.IsOther2 },
+                            { Class: groupname, Name: item.ChoiceName3, Value: item.ChoiceValue3, IsRadio: item.IsRadio3, IsOther: item.IsOther3 },
+                        ]));
+                    }
+                    else {
+                        tbody.append(AddSubject(item.GroupNo, item.Subject, [
+                            { Name: item.ChoiceName1, Value: item.ChoiceValue1, IsRadio: item.IsRadio1, IsOther: item.IsOther1 },
+                            { Name: item.ChoiceName2, Value: item.ChoiceValue2, IsRadio: item.IsRadio2, IsOther: item.IsOther2 },
+                            { Name: item.ChoiceName3, Value: item.ChoiceValue3, IsRadio: item.IsRadio3, IsOther: item.IsOther3 }
+                        ]));
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                //alert(xhr.responseText);
+                alert(status);
+                //alert(error);
+            },
+            complete: function () {
+                showLoader(false);
+            }
+        });
+
+        $("#mytable").append(tbody);
+    }
+
+    function AddBodyUpdate() {
+        var tbody = document.createElement("tbody");
+
+        showLoader(true);
+
+        $.ajax({
+            type: 'GET',
+            url: api + '/assessment/form/get/' + caseid + '/' + assessmentform,
+            async: false,
+            success: function (result) {
+                $.each(result, function (index, item) {
+                    if (item.IsComment) {                       
+                        $('#CommentArea').val(item.Message);
+                        return;
+                    }
+                    
+                    if (item.SeqNo != 0) {
+                        var groupname = "q" + item.GroupNo + "_" + item.SeqNo;
+                        
+                        tbody.append(AddQuestion(item.Subject, [
+                            { Class: groupname, Name: item.ChoiceName1, Value: item.ChoiceValue1, IsRadio: item.IsRadio1, IsOther: item.IsOther1, CheckValue: item.ChoiceValue, Message: item.Message },
+                            { Class: groupname, Name: item.ChoiceName2, Value: item.ChoiceValue2, IsRadio: item.IsRadio2, IsOther: item.IsOther2, CheckValue: item.ChoiceValue, Message: item.Message },
+                            { Class: groupname, Name: item.ChoiceName3, Value: item.ChoiceValue3, IsRadio: item.IsRadio3, IsOther: item.IsOther3, CheckValue: item.ChoiceValue, Message: item.Message },
+                        ]));
+                    }
+                    else {
+                        tbody.append(AddSubject(item.GroupNo, item.Subject, [
+                            { Name: item.ChoiceName1, Value: item.ChoiceValue1, IsRadio: item.IsRadio1, IsOther: item.IsOther1 },
+                            { Name: item.ChoiceName2, Value: item.ChoiceValue2, IsRadio: item.IsRadio2, IsOther: item.IsOther2 },
+                            { Name: item.ChoiceName3, Value: item.ChoiceValue3, IsRadio: item.IsRadio3, IsOther: item.IsOther3 }
+                        ]));
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                alert(status);
+                //alert(error);
+            },
+            complete: function () {
+                showLoader(false);
+            }
+        });
+        //alert(xhr.responseText);
+
+        $("#mytable").append(tbody);
+    }
+
+    function AddSubject(no, subject, list) {
+        var tr = document.createElement("tr");
+
+        var tdno = document.createElement("td");
+        var tdsj = document.createElement("td");
+
+        $(tr).attr("style", "font-weight: 700;");
+        $(tdno).text(no);
+        $(tdsj).text(subject);
+
+        tr.appendChild(tdno);
+        tr.appendChild(tdsj);
+
+        $.each(list, function (index, item) {
+            var td = document.createElement("td");
+
+            if (item.Name != null) {
+                if (item.IsRadio) {
+                    var input = document.createElement("input");
+
+                    $(input).attr("type", "radio");
+                    $(input).attr("name", item.Class);
+
+                    tr.appendChild(input);
+                }
+
+                $(td).text(item.Name);
+            }
+
+            tr.appendChild(td);
+        });
+
+        return tr;
+    }
+
+    function AddQuestion(subject, list) {
+        var tr = document.createElement("tr");
+
+        var tdno = document.createElement("td");
+        var tdsj = document.createElement("td");
+
+        $(tr).attr("class", "question");
+        $(tdno).text(null);
+        $(tdsj).text(subject);
+
+        tr.appendChild(tdno);
+        tr.appendChild(tdsj);
+
+        $.each(list, function (index, item) {
+            var td = document.createElement("td");
+            var div = document.createElement("div");
+
+            $(td).attr("class", "content");
+            $(div).attr("style", "display: inline-flex; width: 100%");
+
+            if (item.Name != null) {
+                if (item.IsRadio) {
+                    var input = document.createElement("input");
+
+                    $(input).attr("type", "radio");
+                    $(input).attr("name", item.Class);
+                    $(input).attr("value", item.Value);
+
+                    if (item.CheckValue != null && item.CheckValue == item.Value) {
+                        $(input).attr("checked", true);
+                    }
+
+                    div.appendChild(input);
+                }
+
+                div.append(item.Name);
+            }
+            
+            if (item.IsOther) {
+                var input = document.createElement("input");
+
+                if (index + 2 < list.length && list[index + 1].Name == null && list[index + 2].Name == null) {
+                    $(td).attr("colspan", 3);
+                }
+                else if (index + 1 < list.length && list[index + 1].Name == null) {
+                    $(td).attr("colspan", 2);
+                }
+
+                $(input).attr("type", "text");
+                $(input).attr("name", item.Class);
+                $(input).attr("maxLength", 250);
+                $(input).attr("style", "width: 100%");
+                $(input).val(item.Message);
+
+                div.appendChild(input);
+            }
+            else if (item.Value == null) {
+                return;
+            }
+
+            td.appendChild(div);
+            tr.appendChild(td);
+        });
+
+        return tr;
+    }
+
+    $('#SaveBtn').click(function () {
+        if (confirm('ยืนยันการบันทึก ?')) {
+            if (!isCheckAll()) {
+                alert("กรุณาประเมิณคะแนนให้ครบทุกหัวข้อ");
+                return;
+            }
+
+            ///////////////////////////////////////////////////////////////
+
+            $('.question').each(function (index, item) {               
+                var radioelement = $(this).find('.content input[type="radio"]');
+
+                if (radioelement.length > 0) {
+                    radioelement.each(function (index, item) {
+                        if ($(this).prop("checked")) {
+                            var formdata = new FormData();
+                            var msgelement = $(this).parent().find('input[type="text"]');
+                            var message = null;
+
+                            if (msgelement.length > 0) {
+                                message = msgelement.val() != "" ? msgelement.val() : null;
+                            }
+
+                            var data = {
+                                'ROCaseId': caseid,
+                                'Type': assessmentform,
+                                'GroupNo': radioelement.prop("name").split("_")[0].slice(1),
+                                'SeqNo': radioelement.prop("name").split("_")[1],
+                                'ChoiceValue': $(this).prop("value"),
+                                'Message': message,
+                                'IsComment': false,
+                                'CreatedBy': userid,
+                            };
+
+                            formdata.append('Model', JSON.stringify(data));
+
+                            $.ajax({
+                                type: 'POST',
+                                url: api + '/assessment/form/post/create',
+                                data: formdata,
+                                contentType: false,
+                                processData: false,
+                                async: false,
+                                success: function (result) {
+                                    //alert(result.Message);
+                                    //ratingid = result.Value;
+                                },
+                                error: function (xhr, status, error) {
+                                    //alert(xhr.responseText);
+                                    //alert(status);
+                                    //alert(error);
+                                },
+                            });
+
+                            return false;
+                        }
+                    });
+                }
+                else {
+                    var formdata = new FormData();
+                    var msgelement = $(this).find('.content input[type="text"]');
+
+                    if (msgelement.length > 0) {
+                        var data = {
+                            'ROCaseId': caseid,
+                            'Type': assessmentform,
+                            'GroupNo': msgelement.prop("name").split("_")[0].slice(1),
+                            'SeqNo': msgelement.prop("name").split("_")[1],
+                            'ChoiceValue': null,
+                            'Message': msgelement.val() != "" ? msgelement.val() : null,
+                            'IsComment': false,
+                            'CreatedBy': userid,
+                        };
+
+                        formdata.append('Model', JSON.stringify(data));
+
+                        $.ajax({
+                            type: 'POST',
+                            url: api + '/assessment/form/post/create',
+                            data: formdata,
+                            contentType: false,
+                            processData: false,
+                            async: false,
+                            success: function (result) {
+                                //alert(result.Message);
+                                //ratingid = result.Value;
+                            },
+                            error: function (xhr, status, error) {
+                                //alert(xhr.responseText);
+                                //alert(status);
+                                //alert(error);
+                            },
+                        });
+                    }
+                }
+            });
+
+            createComment();
+            disableScreen();
+        }
+    });
+
+    function createComment() {
+        var formdata = new FormData();
+
+        var data = {
+            'ROCaseId': caseid,
+            'Type': assessmentform,
+            'GroupNo': null,
+            'SeqNo': 1,
+            'ChoiceValue': null,
+            'Message': $('#CommentArea').val(),
+            'IsComment': true,
+            'CreatedBy': userid,
+        };
+
+        formdata.append('Model', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: api + '/assessment/form/post/create',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (result) {
+                //alert(result.Message);
+                //ratingid = result.Value;
+            },
+            error: function (xhr, status, error) {
+                //alert(xhr.responseText);
+                //alert(status);
+                //alert(error);
+            },
+        });
+    }
+
+    function isCheckAll() {
+        var pass;
+
+        $('.question').each(function (index, item) {            
+            var radioelement = $(this).find('.content input[type="radio"]');
+
+            pass = false;
+
+            if (radioelement.length > 0) {
+                radioelement.each(function (index, item) {
+                    if ($(this).prop("checked")) {
+                        var msgelement = $(this).parent().find('input[type="text"]');
+
+                        if (msgelement.length > 0) {
+                            if (msgelement.val() != null && msgelement.val() != "") {
+                                pass = true;
+                                return false;
+                            }
+                        }
+                        else {
+                            pass = true;
+                            return false;
+                        }
+                    }
+                });
+            }
+            else {
+                var msgelement = $(this).find('.content input[type="text"]');
+
+                if (msgelement.length > 0) {
+                    if (msgelement.val() != null && msgelement.val() != "") {
+                        pass = true;
+                    }
+                }
+            }
+
+            if (!pass) {
+                return false;
+            }
+        });
+
+        return pass;
+    }
+
+    function disableScreen() {
+        var div = document.createElement("div");
+        div.className += "overlay";
+        document.body.appendChild(div);
+
+        $("#SaveBtn").hide();
+    }
+
+</script>

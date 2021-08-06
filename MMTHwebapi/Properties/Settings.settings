@@ -1,0 +1,60 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TechLineCaseAPI.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="UserName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ad-mmth\crmapp</Value>
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">P@$$w0rd</Value>
+    </Setting>
+    <Setting Name="adfs_url_MMTH" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://tha-adfsqa.mmthqa.com/adfs/oauth2/token</Value>
+    </Setting>
+    <Setting Name="ConStringHMS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server=phoebe.hms-cloud.com;Database=mmthapi;user id=sa;password=pass@word1;</Value>
+    </Setting>
+    <Setting Name="ConString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server=phoebe.hms-cloud.com;Database=mmthapi;user id=sa;password=pass@word1;</Value>
+    </Setting>
+    <Setting Name="RO_WS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://pre-mmth.dms-ccp.com/WS_InterfaceCRM/WS_InterfaceCRM.asmx?op=WSCheckHistoryRO</Value>
+    </Setting>
+    <Setting Name="client_id_HMS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">00b67d18-32a3-4a69-9fe7-6613c969a0b7</Value>
+    </Setting>
+    <Setting Name="adfs_url_HMS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://phoebe.hms-cloud.com/adfs/oauth2/token</Value>
+    </Setting>
+    <Setting Name="client_id_MMTH" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">64cad534-b380-4ac3-8732-00d293c691b4</Value>
+    </Setting>
+    <Setting Name="WS_InterfaceCRMSoap" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://pre-mmth.dms-ccp.com/WS_InterfaceCRM/WS_InterfaceCRM.asmx</Value>
+    </Setting>
+    <Setting Name="ConStringMMTH" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server=10.146.138.167;Database=TECHLINECRM;user id=mtle;password=TpjD#NL8YhtLHOor5ARa2i15zFo8c;</Value>
+    </Setting>
+    <Setting Name="SoapOrgServiceUri" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://thcrmweb01.ad-mmth.th.mitsubishi-motors.com/mmthqas/XRMServices/2011/Organization.svc</Value>
+    </Setting>
+    <Setting Name="DEV" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Authorization" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">key=AAAA5Hpr2b4:APA91bFVRrUv7aDjXbYknpRxcDKiI5XJHVo0y979WSAwL7WEr5BTX5LfZ0SBLvjmS9W2tmRXjgq1M7JqoUcuQuPp2BmIQU14aVMqtGBVJBzs81r6gs9JTOsxIqG6EnjjkzmRypGsmF8m</Value>
+    </Setting>
+    <Setting Name="fcmsend" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://fcm.googleapis.com/fcm/send</Value>
+    </Setting>
+    <Setting Name="HMSUserName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">hms-cloud\administrator</Value>
+    </Setting>
+    <Setting Name="HMSPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">pass@word1</Value>
+    </Setting>
+    <Setting Name="HMSSoapOrgServiceUri" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://phoebe.hms-cloud.com:5555/mmthqas/XRMServices/2011/Organization.svc</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="WSCheckHistoryRO">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CMPCDE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OFFCDE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RONO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="REQUEST_NO" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WSCheckHistoryROResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WSCheckHistoryROResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DataTable" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+            <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="WSCheckHistoryROSoapIn">
+    <wsdl:part name="parameters" element="tns:WSCheckHistoryRO" />
+  </wsdl:message>
+  <wsdl:message name="WSCheckHistoryROSoapOut">
+    <wsdl:part name="parameters" element="tns:WSCheckHistoryROResponse" />
+  </wsdl:message>
+  <wsdl:message name="WSCheckHistoryROHttpGetIn">
+    <wsdl:part name="CMPCDE" type="s:string" />
+    <wsdl:part name="OFFCDE" type="s:string" />
+    <wsdl:part name="RONO" type="s:string" />
+    <wsdl:part name="REQUEST_NO" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="WSCheckHistoryROHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="WSCheckHistoryROHttpPostIn">
+    <wsdl:part name="CMPCDE" type="s:string" />
+    <wsdl:part name="OFFCDE" type="s:string" />
+    <wsdl:part name="RONO" type="s:string" />
+    <wsdl:part name="REQUEST_NO" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="WSCheckHistoryROHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:portType name="WS_InterfaceCRMSoap">
+    <wsdl:operation name="WSCheckHistoryRO">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check RO History</wsdl:documentation>
+      <wsdl:input message="tns:WSCheckHistoryROSoapIn" />
+      <wsdl:output message="tns:WSCheckHistoryROSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="WS_InterfaceCRMHttpGet">
+    <wsdl:operation name="WSCheckHistoryRO">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check RO History</wsdl:documentation>
+      <wsdl:input message="tns:WSCheckHistoryROHttpGetIn" />
+      <wsdl:output message="tns:WSCheckHistoryROHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="WS_InterfaceCRMHttpPost">
+    <wsdl:operation name="WSCheckHistoryRO">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check RO History</wsdl:documentation>
+      <wsdl:input message="tns:WSCheckHistoryROHttpPostIn" />
+      <wsdl:output message="tns:WSCheckHistoryROHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WS_InterfaceCRMSoap" type="tns:WS_InterfaceCRMSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WSCheckHistoryRO">
+      <soap:operation soapAction="http://tempuri.org/WSCheckHistoryRO" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WS_InterfaceCRMSoap12" type="tns:WS_InterfaceCRMSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WSCheckHistoryRO">
+      <soap12:operation soapAction="http://tempuri.org/WSCheckHistoryRO" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WS_InterfaceCRMHttpGet" type="tns:WS_InterfaceCRMHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="WSCheckHistoryRO">
+      <http:operation location="/WSCheckHistoryRO" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WS_InterfaceCRMHttpPost" type="tns:WS_InterfaceCRMHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="WSCheckHistoryRO">
+      <http:operation location="/WSCheckHistoryRO" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WS_InterfaceCRM">
+    <wsdl:port name="WS_InterfaceCRMSoap" binding="tns:WS_InterfaceCRMSoap">
+      <soap:address location="http://pre-mmth.dms-ccp.com/WS_InterfaceCRM/WS_InterfaceCRM.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WS_InterfaceCRMSoap12" binding="tns:WS_InterfaceCRMSoap12">
+      <soap12:address location="http://pre-mmth.dms-ccp.com/WS_InterfaceCRM/WS_InterfaceCRM.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WS_InterfaceCRMHttpGet" binding="tns:WS_InterfaceCRMHttpGet">
+      <http:address location="http://pre-mmth.dms-ccp.com/WS_InterfaceCRM/WS_InterfaceCRM.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WS_InterfaceCRMHttpPost" binding="tns:WS_InterfaceCRMHttpPost">
+      <http:address location="http://pre-mmth.dms-ccp.com/WS_InterfaceCRM/WS_InterfaceCRM.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

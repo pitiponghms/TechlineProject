@@ -1,0 +1,368 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.css">
+    <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_rofontawesome470min.css">
+    <script src="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_rojquery3.5.1.min.js"></script>
+    <script src="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.js"></script>
+
+    <link rel="stylesheet" href="css/A.style.css.pagespeed.cf.PCh1mHVDN3.css">
+
+    <title>Attach File List</title>
+    <style>
+        body {
+            padding-top: 0;
+            font-size: 12px;
+            color: #777;
+            background: #D1D1D1;
+            font-family: 'Open Sans',sans-serif;
+            margin-top: 0px;
+        }
+
+        .bg-white {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background-color: white;
+        }
+
+        small, .small {
+            font-size: 85%;
+        }
+
+        .chat-message {
+            padding: 0px 10px 0px 10px;
+            height: 350px;
+            max-height: 500px;
+            overflow-y: scroll;
+        }
+
+        .chat {
+            list-style: none;
+            margin: 0px;
+        }
+
+        .chat-message {
+            background: #f9f9f9;
+        }
+
+        .imgpreview {
+            text-align: center;
+        }
+
+            .imgpreview img {
+                max-height: 75px;
+                max-width: 75px;
+            }
+
+        .actionbtn {
+            text-align: center;
+        }
+
+        /*** Table Styles **/
+        table {
+            background: white;
+            border-radius: 3px;
+            border-collapse: collapse;
+            /*height: 320px;*/
+            margin: auto;
+            /*max-width: 600px;*/
+            padding: 5px;
+            width: 100%;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            animation: float 5s infinite;
+        }
+
+        th {
+            color: #D5DDE5;
+            background: #1b1e24;
+            /*border-bottom: 4px solid #9ea7af;*/
+            /*border-right: 1px solid #343a45;*/
+            /*font-size: 23px;*/
+            /*font-weight: 100;*/
+            padding: 10px;
+            text-align: left;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+            th:first-child {
+                border-top-left-radius: 3px;
+            }
+
+            th:last-child {
+                border-top-right-radius: 3px;
+                border-right: none;
+            }
+
+        tr {
+            /*border-top: 1px solid #C1C3D1;
+            border-bottom: 1px solid #C1C3D1;
+            color: #666B85;*/
+            /*font-size: 16px;*/
+            /*font-weight: normal;*/
+            /*text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);*/
+        }
+
+            tr:hover td {
+                background: #4E5066;
+                color: #FFFFFF;
+            }
+
+            tr:first-child {
+                border-top: none;
+            }
+
+            tr:last-child {
+                border-bottom: none;
+            }
+
+            tr:nth-child(odd) td {
+                background: #EBEBEB;
+            }
+
+            tr:nth-child(odd):hover td {
+                background: #4E5066;
+            }
+
+            tr:last-child td:first-child {
+                border-bottom-left-radius: 3px;
+            }
+
+            tr:last-child td:last-child {
+                border-bottom-right-radius: 3px;
+            }
+
+        td {
+            background: #FFFFFF;
+            padding: 10px;
+            text-align: left;
+            vertical-align: middle;
+            border-right: 1px solid #C1C3D1;
+        }
+
+            td:last-child {
+                border-right: 0px;
+            }
+
+        th.text-left {
+            text-align: left;
+        }
+
+        th.text-center {
+            text-align: center;
+        }
+
+        th.text-right {
+            text-align: right;
+        }
+
+        td.text-left {
+            text-align: left;
+        }
+
+        td.text-center {
+            text-align: center;
+        }
+
+        td.text-right {
+            text-align: right;
+        }
+
+        .loader {
+            position: fixed;
+            left: 45%;
+            top: 35%;
+            width: 150px;
+            height: 150px;
+            z-index: 9999;
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loader" class="loader"></div>
+    <div id="container" class="container bootstrap snippets bootdey">
+        <div class="row">
+            <div class="col-md-12 bg-white">
+                <div class="chat-message">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>File Name</th>
+                                <!--<th>Created By</th>-->
+                                <th>Created On</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    //let api = "http://phoebe.hms-cloud.com:8033/api";
+    let api = "https://phoebe.hms-cloud.com:4430/api";
+    let caseid = window.opener.Xrm.Page.getAttribute("hms_rocaseid").getValue();
+    let userid = 2;
+
+    $(document).ready(function () {
+        renderDisplay();
+    });
+
+    function showLoader(status) {
+        if (status) {
+            $("#loader").show();
+        }
+        else {
+            $("#loader").hide();
+        }
+    }
+
+    function renderDisplay() {
+        showLoader(true);
+
+        $.ajax({
+            type: 'GET',
+            url: api + '/attachfile/all/' + caseid,
+            async: false,
+            success: function (result) {
+                $("tbody").empty();
+
+                $.each(result, function (index, item) {
+                    var tr = document.createElement("tr");
+                    var td0 = document.createElement("td");
+                    var td1 = document.createElement("td");
+                    //var td2 = document.createElement("td");
+                    var td3 = document.createElement("td");
+                    var td4 = document.createElement("td");
+                    var td5 = document.createElement("td");
+
+                    td0.append(index + 1);
+                    td1.append(item.FileName);
+                    //td2.append(item.CREATED_BY);
+                    td3.append(dateFormat(new Date(item.CREATED_ON)));
+
+                    td0.setAttribute("style", "text-align: center");
+                    td4.setAttribute("class", "imgpreview");
+                    td5.setAttribute("class", "actionbtn");
+
+                    if (item.IsImage == "1") {
+                        var img = document.createElement("img");
+                        var imgSrc = "data:image/jpg;base64," + item.Thumbnail;
+                        img.src = imgSrc;
+                        td4.append(img);
+                    }
+                    else {
+                        td4.append('');
+                    }
+
+                    var btn = document.createElement("button");
+                    var icon = document.createElement("i");
+                    btn.id = item.id;
+                    btn.setAttribute("class", "btn btn-primary no-rounded");
+                    btn.setAttribute("onclick", "getFullFile(" + item.id + ")");
+                    icon.setAttribute("class", "fa fa-download");
+                    btn.append(icon);
+                    td5.append(btn);
+
+                    tr.appendChild(td0);
+                    tr.appendChild(td1);
+                    //tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    tr.appendChild(td5);
+
+                    $("tbody").append(tr);
+                });
+            },
+            error: function (xhr, status, error) {
+                //alert(xhr.responseText);
+                alert(status);
+                //alert(error);
+            },
+            complete: function () {
+                showLoader(false);
+            }
+        });
+    }
+
+    function getFullFile(attachfileid) {
+        $.ajax({
+            type: 'GET',
+            url: api + '/attachfile/get/' + attachfileid,
+            async: false,
+            success: function (result) {
+                var strBytes = _base64ToArrayBuffer(result.DocumentBody);
+
+                var saveByteArray = (function () {
+                    return function (data, name) {
+                        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                            var blob = new Blob(data, { type: result.MimeType });
+                            window.navigator.msSaveOrOpenBlob(blob, name);
+                        }
+                        else {
+                            var a = document.createElement("a");
+                            document.body.appendChild(a);
+                            a.style = "display: none";
+
+                            var blob = new Blob(data, { type: result.MimeType }),
+                                url = window.URL.createObjectURL(blob);
+                            a.href = url;
+                            a.download = name;
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        }
+                    };
+                }());
+
+                saveByteArray([strBytes], result.FileName);
+            },
+            error: function (xhr, status, error) {
+                //alert(xhr.responseText);
+                //alert(status);
+                //alert(error);
+            }
+        });
+    }
+
+    function _base64ToArrayBuffer(base64) {
+        var binary_string = window.atob(base64);
+        var len = binary_string.length;
+        var bytes = new Uint8Array(len);
+        for (var i = 0; i < len; i++) {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    function dateFormat(d) {
+        console.log(d);
+        return (d.getDate() + "").padStart(2, "0")
+            + "/" + ((d.getMonth() + 1) + "").padStart(2, "0")
+            + "/" + d.getFullYear();
+    }
+</script>

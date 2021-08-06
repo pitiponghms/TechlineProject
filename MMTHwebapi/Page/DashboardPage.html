@@ -1,0 +1,945 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="/CSS/bootstrap3.4.1.min.css">
+    <link rel="stylesheet" href="/CSS/font-awesome4.7.0.min.css">
+    <script src="/Script/jquery3.5.1.min.js"></script>
+    <script src="/Script/bootstrap3.4.1.min.js"></script>-->
+    <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.css">
+    <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_rofontawesome470min.css">
+    <script src="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_rojquery3.5.1.min.js"></script>
+    <script src="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {
+            packages: ['corechart']
+        });
+    </script>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.min.js"></script>
+
+    <title>DTS Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans',sans-serif;
+            font-size: 12px;
+            padding-top: 0;
+            /*color: #777;*/
+            background: #F6F6F6;
+            margin: 0% 1%;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            background-color: #2E2E2E;
+            opacity: 1;
+            color: white;
+            padding: 0.25% 10px;
+            margin: 0.25% 0px;
+        }
+
+        #efficiency {
+            width: 60%;
+        }
+
+        .mydashboard {
+            float: left;
+            width: 30%;
+            /*max-width: 60%;*/
+            padding: 2px 2px;
+        }
+
+            .mydashboard .content-box {
+                border-color: #F6F6F6;
+                border-style: solid;
+                border-width: thin;
+                margin: 5px;
+                box-shadow: 5px 5px #DDDDDD;
+            }
+
+                .mydashboard .content-box .header {
+                    font-size: 14px;
+                    font-weight: 600;
+                    width: 100%;
+                    background-color: white;
+                    opacity: 0.9;
+                    color: #2E2E2E;
+                    padding: 2px 10px;
+                    margin: 0px 0px 2px 0px;
+                }
+
+                    .mydashboard .content-box .header .subject {
+                        /*float: left;*/
+                    }
+
+                    .mydashboard .content-box .header .menu {
+                        float: right;
+                    }
+
+                        .mydashboard .content-box .header .menu button {
+                            font-size: 12px;
+                            color: #2E2E2E;
+                            background-color: transparent;
+                            border-color: transparent;
+                        }
+
+                .mydashboard .content-box .content {
+                    height: 150px;
+                    background-color: white;
+                }
+
+        .summary {
+            float: left;
+            width: 16%;
+            height: 55px;
+            margin: 0px 0.125%;
+            padding: 5px 5px 5px 5px;
+            color: white;
+        }
+
+            .summary .subject {
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+            .summary .content {
+                font-size: 22px;
+                font-weight: 700;
+                text-align: center;
+            }
+
+                .summary .content i {
+                    font-size: 11px;
+                }
+
+            .summary .content2 {
+                float: left;
+                font-weight: 500;
+                text-align: left;
+                color: #454545;
+            }
+
+                .summary .content2 button {
+                    font-size: 14px;
+                    background-color: transparent;
+                    border-width: 0px;
+                }
+
+            .summary button {
+                float: right;
+                font-size: 9px;
+                background-color: transparent;
+                border-color: white;
+                border-style: solid;
+                border-width: thin;
+            }
+
+        .summary-pair {
+            width: 13%;
+        }
+
+        .loader {
+            position: fixed;
+            left: 45%;
+            top: 35%;
+            width: 150px;
+            height: 150px;
+            z-index: 9999;
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body id="myBody">
+    <!--<div class="title">
+        DTS. Dashboard.
+    </div>-->
+    <div id="loader" class="loader"></div>
+    <div>
+        <div id="casetotal" class="summary" style="background-color: #454545">
+            <div class="subject">
+                Case Total
+            </div>
+            <div class="content"></div>
+        </div>
+        <div id="pendingtotal" class="summary" style="background-color: tomato">
+            <div class="subject">
+                Pending
+            </div>
+            <div class="content"></div>
+        </div>
+        <div id="dtsefftotal" class="summary" style="background-color: deepskyblue">
+            <div class="subject">
+                Efficiency DTS. team
+                <span>
+                    <button><i class="fa fa-plus"></i></button>
+                </span>
+            </div>
+            <div class="content"></div>
+        </div>
+        <div id="tlefftotal" class="summary summary-pair" style="background-color: lightseagreen">
+            <div class="subject">
+                TL. Eff.
+                <span>
+                    <button><i class="fa fa-plus"></i></button>
+                </span>
+            </div>
+            <div class="content"></div>
+        </div>
+        <div id="ftsefftotal" class="summary summary-pair" style="background-color: yellowgreen">
+            <div class="subject">
+                FTS. Eff.
+                <span>
+                    <button><i class="fa fa-plus"></i></button>
+                </span>
+            </div>
+            <div class="content"></div>
+        </div>
+        <div id="datesearch" class="summary" style="background-color: transparent">
+            <div class="content2">
+                <input id="datefrom" type="date" />
+                <button id="searchBtn"><i class="fa fa-search"></i></button>
+            </div>
+            <div class="content2">
+                <input id="dateto" type="date" />
+                <button id="printBtn"><i class="fa fa-print"></i></button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div id="dailycase" class="mydashboard">
+            <div class="content-box">
+                <div class="header">
+                    <span class="subject">
+                        Daily TL. Case
+                    </span>
+                </div>
+                <div id="barchart1" class="content"></div>
+            </div>
+        </div>
+        <div id="efficiency" class="mydashboard">
+            <div class="content-box">
+                <div class="header">
+                    <span class="subject">
+                        Efficiency of DTS. Team.
+                    </span>
+                    <span class="menu">
+                        <button><i class="fa fa-exchange"></i></button>
+                    </span>
+                </div>
+                <div id="graph1" class="content"></div>
+            </div>
+        </div>
+        <div class="mydashboard">
+            <div class="content-box">
+                <div class="header">
+                    <span class="subject">
+                        In Change Case
+                    </span>
+                </div>
+                <div id="piechart" class="content"></div>
+            </div>
+        </div>
+        <div class="mydashboard">
+            <div class="content-box">
+                <div class="header">
+                    <span class="subject">
+                        Category Case of TL.
+                    </span>
+                </div>
+                <div id="container1" class="content"></div>
+            </div>
+        </div>
+        <div class="mydashboard">
+            <div class="content-box">
+                <div class="header">
+                    <span class="subject">
+                        Scramble
+                    </span>
+                </div>
+                <div id="container2" class="content"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    //let api = "http://phoebe.hms-cloud.com:8034";
+    let api = "https://phoebe.hms-cloud.com:4434";
+    const today = new Date();
+    let effDTSTeamDashboardType;
+
+    $(document).ready(function () {
+        effDTSTeamDashboardType = 1;
+
+        setCurrentDate();
+        renderDashboard();
+    });
+
+    function renderDashboard() {
+        showLoader(true);        
+        getCaseTotal();
+
+        //$("#dailycase .subject").text("Daily TL. Case (" + formatDate(today, "dd/mm/yyyy") + ")");
+        //$("#efficiency .subject").text("Efficiency of DTS. Team. (" + formatDate(today, "dd/mm/yyyy") + ")");
+
+        google.charts.setOnLoadCallback(function () { getDailyTLCase() });
+        google.charts.setOnLoadCallback(function () { getEfficiencyDTSTeam() });
+        google.charts.setOnLoadCallback(function () { getInChargeCase() });
+        google.charts.setOnLoadCallback(function () { getCategoryCase() });
+        google.charts.setOnLoadCallback(function () { getScramble() });
+
+        google.charts.setOnLoadCallback(function () {
+            showLoader(false);
+        });
+    }
+
+    function setCurrentDate() {
+        var now = new Date();
+        var day = ("0" + now.getDate()).slice(-2);
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+        var firstday = now.getFullYear() + "-" + "01" + "-" + "01";
+        var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+        $("#datefrom").val(firstday);
+        $("#dateto").val(today);
+    }
+
+    function showLoader(status) {
+        if (status) {
+            $("#loader").show();
+        }
+        else {
+            $("#loader").hide();
+        }
+    }
+
+    function getCaseTotal() {
+        var formdata = new FormData();
+
+        var data = {
+            'DateFrom': $("#datefrom").val(),
+            'DateTo': $("#dateto").val()
+        };
+
+        formdata.append('Model', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: api + '/api/cdf/post/total',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (result) {
+                $("#casetotal").find(".content").html(result.CaseTotal.toLocaleString());
+                $("#pendingtotal").find(".content").html(result.Pending.toLocaleString());
+                $("#dtsefftotal").find(".content").html(result.DtsEff.toLocaleString() + '<i class="fa fa-percent"></i>');
+                $("#tlefftotal").find(".content").html(result.TlEff.toLocaleString() + '<i class="fa fa-percent"></i>');
+                $("#ftsefftotal").find(".content").html(result.FtsEff.toLocaleString() + '<i class="fa fa-percent"></i>');
+            },
+            error: function (xhr, status, error) {
+                $("#casetotal").find(".content").html(0);
+                $("#pendingtotal").find(".content").html(0);
+                $("#dtsefftotal").find(".content").html(0);
+                $("#tlefftotal").find(".content").html(0);
+                $("#ftsefftotal").find(".content").html(0);
+            }
+        });
+    }
+
+    function getDailyTLCase() {
+        var rawdata = [];
+        var formdata = new FormData();
+
+        var data = {
+            'DateFrom': $("#datefrom").val(),
+            'DateTo': $("#dateto").val()
+        };
+
+        formdata.append('Model', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: api + '/api/cdf/post/dailycase',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (result) {
+                rawdata.push(result.Header);
+
+                for (var i = 0; i < result.Detail.length; i++) {
+                    var temp = [];
+                    var chartsdata = result.Detail[i];
+
+                    temp.push(chartsdata.Subject);
+
+                    for (var j = 0; j < chartsdata.Value.length; j++) {
+                        temp.push(chartsdata.Value[j]);
+                    }
+
+                    rawdata.push(temp);
+                }
+            },
+            error: function (xhr, status, error) {
+                rawdata.push(null);
+            }
+        });
+
+        var data = new google.visualization.arrayToDataTable(rawdata);
+        drawColumnChart("barchart1", data);
+    }
+
+    function getEfficiencyDTSTeam() {
+        if (effDTSTeamDashboardType == 1) {
+            google.charts.setOnLoadCallback(function () { getEfficiencyDTSTeamByWeek() });
+            effDTSTeamDashboardType = 2;
+        }
+        else if (effDTSTeamDashboardType == 2) {
+            google.charts.setOnLoadCallback(function () { getEfficiencyDTSTeamByMonth() });
+            effDTSTeamDashboardType = 3;
+        }
+        else {
+            google.charts.setOnLoadCallback(function () { getEfficiencyDTSTeamByYear() });
+            effDTSTeamDashboardType = 1;
+        }
+    }
+
+    function getEfficiencyDTSTeamByWeek() {
+        var rawdata = [];
+        var formdata = new FormData();
+
+        var data = {
+            'DateFrom': $("#datefrom").val(),
+            'DateTo': $("#dateto").val()
+        };
+
+        formdata.append('Model', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: api + '/api/cdf/post/effdtsteamweek',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (result) {
+                rawdata.push(result.Header);
+
+                for (var i = 0; i < result.Detail.length; i++) {
+                    var temp = [];
+                    var chartsdata = result.Detail[i];
+
+                    temp.push(chartsdata.Subject);
+
+                    for (var j = 0; j < chartsdata.Value.length; j++) {
+                        temp.push(chartsdata.Value[j]);
+                    }
+
+                    rawdata.push(temp);
+                }
+            },
+            error: function (xhr, status, error) {
+                rawdata.push(null);
+            }
+        });
+
+        var data = new google.visualization.arrayToDataTable(rawdata);
+        drawLineChart("graph1", data);
+    }
+
+    function getEfficiencyDTSTeamByMonth() {
+        var rawdata = [];
+        var formdata = new FormData();
+
+        var data = {
+            'DateFrom': $("#datefrom").val(),
+            'DateTo': $("#dateto").val()
+        };
+
+        formdata.append('Model', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: api + '/api/cdf/post/effdtsteammonth',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (result) {
+                rawdata.push(result.Header);
+
+                for (var i = 0; i < result.Detail.length; i++) {
+                    var temp = [];
+                    var chartsdata = result.Detail[i];
+
+                    temp.push(chartsdata.Subject);
+
+                    for (var j = 0; j < chartsdata.Value.length; j++) {
+                        temp.push(chartsdata.Value[j]);
+                    }
+
+                    rawdata.push(temp);
+                }
+            },
+            error: function (xhr, status, error) {
+                rawdata.push(null);
+            }
+        });
+
+        var data = new google.visualization.arrayToDataTable(rawdata);
+        drawLineChart("graph1", data);
+    }
+
+    function getEfficiencyDTSTeamByYear() {
+        var rawdata = [];
+        var formdata = new FormData();
+
+        var data = {
+            'DateFrom': $("#datefrom").val(),
+            'DateTo': $("#dateto").val()
+        };
+
+        formdata.append('Model', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: api + '/api/cdf/post/effdtsteamyear',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (result) {
+                rawdata.push(result.Header);
+
+                for (var i = 0; i < result.Detail.length; i++) {
+                    var temp = [];
+                    var chartsdata = result.Detail[i];
+
+                    temp.push(chartsdata.Subject);
+
+                    for (var j = 0; j < chartsdata.Value.length; j++) {
+                        temp.push(chartsdata.Value[j]);
+                    }
+
+                    rawdata.push(temp);
+                }
+            },
+            error: function (xhr, status, error) {
+                rawdata.push(null);
+            }
+        });
+
+        var data = new google.visualization.arrayToDataTable(rawdata);
+        drawLineChart("graph1", data);
+    }
+
+    function getInChargeCase() {
+        var rawdata = [];
+        var formdata = new FormData();
+
+        var data = {
+            'DateFrom': $("#datefrom").val(),
+            'DateTo': $("#dateto").val()
+        };
+
+        formdata.append('Model', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: api + '/api/cdf/post/inchargecase',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (result) {
+                rawdata.push([result.Header, result.Detail]);
+
+                for (var i = 0; i < result.Value.length; i++) {
+                    var value = result.Value[i];
+                    rawdata.push([value.Key, value.Value]);
+                }
+            },
+            error: function (xhr, status, error) {
+                rawdata.push([null, null]);
+            }
+        });
+
+        // Changing legend
+        for (var i = 0; i < rawdata.length; i++) {
+            rawdata[i][0] = rawdata[i][0] + " (" + rawdata[i][1] + ")";
+        }
+
+        var data = new google.visualization.arrayToDataTable(rawdata);
+        drawPieChart("piechart", data);
+    }
+
+    function getCategoryCase() {
+        var rawdata = [];
+        var formdata = new FormData();
+
+        var data = {
+            'DateFrom': $("#datefrom").val(),
+            'DateTo': $("#dateto").val()
+        };
+
+        formdata.append('Model', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: api + '/api/cdf/post/categorycase',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (result) {
+                rawdata.push([result.Header, result.Detail]);
+
+                for (var i = 0; i < result.Value.length; i++) {
+                    var value = result.Value[i];
+                    rawdata.push([value.Key, value.Value]);
+                }
+            },
+            error: function (xhr, status, error) {
+                rawdata.push([null, null]);
+            }
+        });
+
+        var data = new google.visualization.arrayToDataTable(rawdata);
+        drawBarChart("container1", data);
+    }
+
+    function getScramble() {
+        var rawdata = [];
+        var formdata = new FormData();
+
+        var data = {
+            'DateFrom': $("#datefrom").val(),
+            'DateTo': $("#dateto").val()
+        };
+
+        formdata.append('Model', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: api + '/api/cdf/post/scramble',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (result) {
+                rawdata.push([result.Header, result.Detail]);
+
+                for (var i = 0; i < result.Value.length; i++) {
+                    var value = result.Value[i];
+                    rawdata.push([value.Key, value.Value]);
+                }
+            },
+            error: function (xhr, status, error) {
+                rawdata.push([null, null]);
+            }
+        });
+
+        var data = new google.visualization.arrayToDataTable(rawdata);
+        drawBarChart("container2", data);
+    }
+
+    function drawColumnChart(myid, data) {
+        var view = new google.visualization.DataView(data);
+        var viewColumns = [];
+
+        for (var i = 0; i < data.getNumberOfColumns(); i++) {
+            addViewColumn(i);
+        }
+
+        function addViewColumn(index) {
+            viewColumns.push(index);
+            if (index > 0) {
+                viewColumns.push({
+                    //calc: 'stringify',
+                    calc: function (dt, row) {
+                        return dt.getFormattedValue(row, index);
+                    },
+                    sourceColumn: index,
+                    type: 'string',
+                    role: 'annotation'
+                });
+            }
+        }
+        view.setColumns(viewColumns);
+
+        var options = {
+            bar: {
+                groupWidth: "50%"
+            },
+            chartArea: {
+                width: '80%',
+            },
+            legend: {
+                position: 'top',
+                alignment: 'center',
+            },
+            hAxis: {
+                title: 'Tech Line Case',
+                titleTextStyle: {
+                    top: 5,
+                    fontSize: 11,
+                    color: 'grey'
+                },
+                textStyle: {
+                    fontSize: 11
+                },
+                gridlines: {
+                    color: 'transparent'
+                },
+                //textPosition: 'none'
+            },
+            vAxis: {
+                gridlines: { color: 'transparent' },
+                minorGridlines: { color: 'transparent' },
+                textPosition: 'none'
+            },
+            colors: [
+                '#FDCB66', '#6CB0F2',
+                '#FCA481', '#aabf75',
+            ]
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById(myid));
+        chart.draw(view, options);
+    }
+
+    function drawLineChart(myid, data) {
+        var view = new google.visualization.DataView(data);
+        var viewColumns = [];
+
+        for (var i = 0; i < data.getNumberOfColumns(); i++) {
+            addViewColumn(i);
+        }
+
+        function addViewColumn(index) {
+            viewColumns.push(index);
+            if (index == 1) {
+                viewColumns.push({
+                    //calc: 'stringify',
+                    calc: function (dt, row) {
+                        return dt.getFormattedValue(row, index);
+                    },
+                    sourceColumn: index,
+                    type: 'string',
+                    role: 'annotation'
+                });
+            }
+        }
+        view.setColumns(viewColumns);
+
+        var options = {
+            chartArea: {
+                width: "95%",
+                height: "60%"
+            },
+            legend: {
+                position: 'top',
+                alignment: 'center',
+            },
+            hAxis: {
+                title: 'Performance of DTS. team',
+                titleTextStyle: {
+                    top: 5,
+                    fontSize: 11,
+                    color: 'grey'
+                },
+                textStyle: {
+                    fontSize: 9
+                },
+                gridlines: {
+                    color: 'transparent'
+                },
+            },
+            vAxis: {
+                gridlines: { color: 'transparent' },
+                minorGridlines: { color: 'transparent' },
+                textPosition: 'none',
+                viewWindowMode: 'explicit',
+                viewWindow: {
+                    //max: 100,
+                    min: 0
+                }
+            },
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                stemColor: 'none',
+            },
+            pointSize: 3,
+            colors: [
+                '#FDCB66', '#6CB0F2',
+                '#FCA481', '#aabf75',
+            ]
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById(myid));
+        chart.draw(view, options);
+    }
+
+    function drawPieChart(myid, data) {
+        var options = {
+            chartArea: {
+                width: '80%',
+                height: '80%'
+            },
+            pieSliceText: "none",
+            legend: {
+                position: 'labeled',
+                alignment: 'start',
+                textStyle: {
+                    fontSize: 11
+                },
+            },
+            tooltip: {
+                trigger: 'none'
+            },
+            isStacked: 'percent',
+            colors: [
+                '#9CDEF6', '#6CB0F2',
+                '#FCA481', '#FDCB66',
+                '#aabf75',
+            ],
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById(myid));
+        chart.draw(data, options);
+    }
+
+    function drawBarChart(myid, data) {
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0,
+            1,
+            {
+                calc: "stringify",
+                sourceColumn: 1,
+                type: "string",
+                role: "annotation"
+            }
+        ]);
+
+        var options = {
+            isStacked: true,
+            bar: {
+                groupWidth: "50%"
+            },
+            chartArea: {
+                left: 125,
+                width: '100%',
+                height: '80%'
+            },
+            legend: 'none',
+            hAxis: {
+                gridlines: {
+                    color: 'transparent'
+                },
+                textPosition: 'none'
+            },
+            vAxis: {
+                gridlines: { color: 'transparent' },
+                minorGridlines: { color: 'transparent' },
+                //textPosition: 'none'
+            },
+            //    annotations: {
+            //        textStyle: {
+            //            color: 'black'
+            //        },
+            //        stemColor: 'none',
+            //        alwaysOutside: true
+            //    },
+            tooltip: {
+                trigger: 'none'
+            },
+            colors: [
+                '#FDCB66', '#6CB0F2',
+                '#FCA481', '#aabf75',
+            ]
+        };
+        
+        var chart = new google.visualization.BarChart(document.getElementById(myid));
+        chart.draw(view, options);
+    }
+
+    function formatDate(date, format) {
+        const map = {
+            mm: padDigits(date.getMonth() + 1, 2),
+            dd: padDigits(date.getDate(), 2),
+            yy: date.getFullYear().toString().slice(-2),
+            yyyy: date.getFullYear()
+        }
+
+        return format.replace(/mm|dd|yyyy|yy|yyy/gi, matched => map[matched])
+    }
+
+    function padDigits(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+    }
+
+    $("#dtsefftotal button").click(function () {
+        //alert('hello 1');
+    });
+
+    $("#tlefftotal button").click(function () {
+        //alert('hello 2');
+    });
+
+    $("#ftsefftotal button").click(function () {
+        //alert('hello 3');
+    });
+
+    $("#efficiency button").click(function () {
+        getEfficiencyDTSTeam();
+    });
+
+    $("#searchBtn").click(function () {
+        renderDashboard();
+    });
+
+    $("#printBtn").click(function () {
+        html2canvas(document.querySelector("#myBody")).then(canvas => {
+            //var dataURL = canvas.toDataURL();
+            //var pdf = new jsPDF();
+            //pdf.addImage(dataURL, 'JPEG', 20, 20, 170, 120); //addImage(image, format, x-coordinate, y-coordinate, width, height)
+            //pdf.save("CanvasJS Charts.pdf");
+
+            var imageURL = canvas.toDataURL("image/png");
+            let a = document.createElement("a");
+            a.href = imageURL;
+            a.download = 'DTSDashboard.png';
+            a.click();
+            a.remove();
+        });
+    });
+</script>

@@ -1,0 +1,295 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.0.0/css/font-awesome.min.css">
+
+    <title>MITSUBISHI User Upload</title>
+
+    <style>
+        html {
+            box-sizing: border-box;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        .background {
+            padding: 0 25px 25px;
+            position: relative;
+            width: 100%;
+        }
+
+            .background::after {
+                content: '';
+                /*background: linear-gradient(-45deg,#ffec61,#f321d7);*/
+                background: linear-gradient(-45deg,#24ff72,#9a4eff);
+                /*background: #60a9ff;
+                background: -moz-linear-gradient(top, #60a9ff 0%, #4394f4 100%);
+                background: -webkit-linear-gradient(top, #60a9ff 0%,#4394f4 100%);
+                background: linear-gradient(to bottom, #60a9ff 0%,#4394f4 100%);*/
+                /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#60a9ff', endColorstr='#4394f4',GradientType=0 );*/
+                height: 350px;
+                left: 0;
+                position: absolute;
+                top: 0;
+                width: 100%;
+                z-index: 1;
+            }
+
+        @media (min-width: 1240px) {
+            .background {
+                padding: 0 0 25px;
+            }
+        }
+
+        .container {
+            margin: 0 auto;
+            padding: 50px 0 0;
+            max-width: 1240px;
+            width: 100%;
+
+            border-radius: 0px 0px 10px 10px;
+            box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
+        }
+
+        .panel-header {
+            background-color: #fff;
+            border-radius: 10px 10px 0px 0px;
+            padding: 10px 20px;
+            position: relative;
+            width: 100%;
+            z-index: 10;
+            overflow: auto;
+            opacity: 0.9;
+        }
+
+            .panel-header .subject {
+                font-size: 20px;
+                /*color: #2E2E2E;*/
+                background: -webkit-linear-gradient(-45deg,#24ff72,#9a4eff);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-transform: uppercase;
+                font-weight: 200;
+                text-align: left;
+            }
+
+            .panel-header .menu {
+                vertical-align: middle;
+            }
+
+        .panel-content {
+            background-color: #fff;
+            /*border-radius: 0px 0px 10px 10px;*/
+            padding: 15px 25px;
+            position: relative;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .panel-footer {
+            font-size: 11px;
+            color: darkgrey;
+            background-color: whitesmoke;
+            border-radius: 0px 0px 10px 10px;
+            padding: 15px 25px;
+            position: relative;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .pricing-table {
+            box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 1240px) {
+            .pricing-table {
+                /*flex-direction: row;*/
+            }
+        }
+
+        .pricing-table * {
+            /*text-align: center;*/
+            /*text-transform: uppercase;*/
+        }
+
+        /*h1 {
+            font-size: 18px;
+            color: #2E2E2E;*/
+           /* background: -webkit-linear-gradient(-45deg,#24ff72,#9a4eff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;*/
+            /*text-transform: uppercase;
+            font-weight: 300;
+            text-align: left;*/
+            /*margin-top: 5px;
+            margin-bottom: 10px;*/
+        /*}*/
+
+        table {
+            width: 100%;
+            /*table-layout: fixed;*/
+        }
+
+        .tbl-content {
+            height: 450px;
+            overflow-x: auto;
+            overflow-y: auto;
+            margin-top: 0px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        th {
+            padding: 5px 0px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 12px;
+            /*color: #fff;*/
+            color: #2E2E2E;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 5px 15px;
+            text-align: left;
+            vertical-align: middle;
+            font-weight: 300;
+            font-size: 12px;
+            /*color: #fff;*/
+            color: #2E2E2E;
+            border-bottom: solid 1px #E8E8E8;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 8px lightgrey;
+            /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+        }
+
+        ::-webkit-scrollbar-thumb {
+            -webkit-box-shadow: inset 0 0 8px silver;
+            /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="container">
+            <div class="panel-header">
+                <div class="subject" style="float: left;">
+                    User Upload
+                </div>
+                <div class="menu" style="float: right;">
+                    <input id="myfile" type="file" />
+                </div>
+            </div>
+            <div class="panel-content">
+                <div class="tbl-content">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                        <tbody id="mydata">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                    
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    let result = [
+        ["No.", "Firstname", "Lastname", "SAM", "Mail Domain", "OU", "Password", "Dealer Code", "Description 1", "Description 2", "Description 3"],
+        [1, "Niphon", "Anukulyuttahon", "110436.Niphon", "ad-mmthcloud.mitsubishi-motors.co.th", "OU=Dealer,OU=KM,DC=ad-mmthcloud,DC=mitsubishi-motors,DC=co,DC=th", "Initial@1", "110436", "", 3102200349983, 0],
+        [2, "Preeyanun", "Jiranuwatthanawong", "110436.Preeyanun", "ad-mmthcloud.mitsubishi-motors.co.th", "OU=Dealer,OU=KM,DC=ad-mmthcloud,DC=mitsubishi-motors,DC=co,DC=th", "Initial@1", 110436, "", 3100502354651, 0],
+        [3, "Sumet", "Taaut", "110436.Sumet", "ad-mmthcloud.mitsubishi-motors.co.th", "OU=Dealer,OU=KM,DC=ad-mmthcloud,DC=mitsubishi-motors,DC=co,DC=th", "Initial@1", 110436, "", 1103702623733, 0],
+        [4, "Chaipat", "Sangwirojpat", "110436.Chaipat", "ad-mmthcloud.mitsubishi-motors.co.th", "OU=Dealer,OU=KM,DC=ad-mmthcloud,DC=mitsubishi-motors,DC=co,DC=th", "Initial@1", 110436, "", 3101201253539, 0],
+        [5, "Aranya", "Donsrimon", "110436.Aranya", "ad-mmthcloud.mitsubishi-motors.co.th", "OU=Dealer,OU=KM,DC=ad-mmthcloud,DC=mitsubishi-motors,DC=co,DC=th", "Initial@1", 110436, "", 1500700117311, 0],
+        [6, "Phatcharanan", "Lanpitthayachaiyaphat", "110436.Phatcharanan", "ad-mmthcloud.mitsubishi - motors.co.th", "OU=Dealer,OU=KM,DC=ad-mmthcloud,DC=mitsubishi-motors,DC=co,DC=th", "Initial@1", 110436, "", 3400500061263, 0],
+        [7, "Jittanun", "Jiranuwatthanawong", "110436.Jittanun", "ad-mmthcloud.mitsubishi-motors.co.th", "OU=Dealer,OU=KM,DC=ad-mmthcloud,DC=mitsubishi-motors,DC=co,DC=th", "Initial@1", 110436, "", 3100502354678, 0],
+        [8, "Buntoon", "Thankamolroj", "110436.Buntoon", "ad-mmthcloud.mitsubishi-motors.co.th", "OU=Dealer,OU=KM,DC=ad-mmthcloud,DC=mitsubishi-motors,DC=co,DC=th", "Initial@1", 110436, "", 3100500715479, 0],
+        [9, "Prapatsorn", "Sae Tae", "120630.Prapatsorn", "ad-mmthcloud.mitsubishi-motors.co.th", "OU=Dealer,OU=KM,DC=ad-mmthcloud,DC=mitsubishi-motors,DC=co,DC=th", "Initial@1", 120630, "", 1869900107706, 0],
+        [10, "Thanongsak", "Thongdetch", "120630.Thanongsak", "ad-mmthcloud.mitsubishi-motors.co.th", "OU=Dealer,OU=KM,DC=ad-mmthcloud,DC=mitsubishi-motors,DC=co,DC=th", "Initial@1", 120630, "", 1869900273789, 0]
+    ];
+
+    $(document).ready(function () {
+        //$(".tbl-header").hide();
+        renderTable();
+    });
+
+    $('#myfile').change(function () {
+        //$(".tbl-header").show();
+        //renderTable();
+    });
+
+    function renderTable() {
+        var tbody = $("#mydata");
+
+        $.each(result, function (index, item) {
+            var tr = document.createElement('tr');
+
+            var td0 = document.createElement('td');
+            var td1 = document.createElement('td');
+            var td2 = document.createElement('td');
+            var td3 = document.createElement('td');
+            var td4 = document.createElement('td');
+            var td5 = document.createElement('td');
+            var td6 = document.createElement('td');
+            var td7 = document.createElement('td');
+            var td8 = document.createElement('td');
+            var td9 = document.createElement('td');
+            var td10 = document.createElement('td');
+
+            if (index == 0) {
+                $.each(item, function (index, subitem) {
+                    var th = document.createElement('th');
+                    th.append(subitem);
+                    item[index] = th;
+                });
+            }
+
+            td0.append(item[0]);
+            td1.append(item[1]);
+            td2.append(item[2]);
+            td3.append(item[3]);
+            td4.append(item[4]);
+            td5.append(item[5]);
+            td6.append(item[6]);
+            td7.append(item[7]);
+            td8.append(item[8]);
+            td9.append(item[9]);
+            td10.append(item[10]);
+
+            tr.appendChild(td0);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            tr.appendChild(td5);
+            tr.appendChild(td6);
+            tr.appendChild(td7);
+            tr.appendChild(td8);
+            tr.appendChild(td9);
+            tr.appendChild(td10);
+
+            tbody.append(tr);
+        });
+    }
+
+</script>

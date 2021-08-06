@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString>Data Source=phoebe.hms-cloud.com\MSCRM;Initial Catalog=MMTHQAS_MSCRM</ConnectString>
+        <Prompt>Specify a user name and password for data source DataSource:</Prompt>
+      </ConnectionProperties>
+      <rd:SecurityType>DataBase</rd:SecurityType>
+      <rd:DataSourceID>bcfc97c3-d1ef-481a-96a2-71e20c2f232c</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@ID">
+            <Value>=Parameters!ID.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT
+subject AS Subject,
+notetext AS NoteText,
+documentbody AS DocumentBody,
+filename AS FileName,
+filesize AS FileSize,
+mimetype AS MimeType,
+objectid AS ObjectId
+FROM Annotation AS CRMAF_FilteredAnnotation
+WHERE ObjectId = @ID
+AND FileName IS NOT NULL</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="Subject">
+          <DataField>Subject</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NoteText">
+          <DataField>NoteText</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DocumentBody">
+          <DataField>DocumentBody</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FileName">
+          <DataField>FileName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FileSize">
+          <DataField>FileSize</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MimeType">
+          <DataField>MimeType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ObjectId">
+          <DataField>ObjectId</DataField>
+          <rd:TypeName>System.Guid</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="Tablix1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>3.25cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>6.5cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>9.75cm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.8cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox10">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>File</Value>
+                                  <Style>
+                                    <FontFamily>Angsana New</FontFamily>
+                                    <FontSize>14pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="FileName1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!FileName.Value</Value>
+                                  <Style>
+                                    <FontFamily>Angsana New</FontFamily>
+                                    <FontSize>14pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>FileName1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>2</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>2.75cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Subject">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Picture</Value>
+                                  <Style>
+                                    <FontFamily>Angsana New</FontFamily>
+                                    <FontSize>14pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Subject</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Image Name="Image2">
+                          <Source>Database</Source>
+                          <Value>=Fields!DocumentBody.Value</Value>
+                          <MIMEType>=Fields!MimeType.Value</MIMEType>
+                          <Sizing>FitProportional</Sizing>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                          </Style>
+                        </Image>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="FileName">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!FileName.Value</Value>
+                                  <Style>
+                                    <FontFamily>Angsana New</FontFamily>
+                                    <FontSize>14pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>FileName</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details" />
+                  <TablixMembers>
+                    <TablixMember>
+                      <Visibility>
+                        <Hidden>= IIF(
+Fields!MimeType.Value.Contains("image")
+Or Fields!MimeType.Value.Contains("Image")
+Or Fields!MimeType.Value.Contains("IMAGE")
+,TRUE
+,FALSE
+)</Hidden>
+                      </Visibility>
+                    </TablixMember>
+                    <TablixMember>
+                      <Visibility>
+                        <Hidden>= IIF(
+Fields!MimeType.Value.Contains("image")
+Or Fields!MimeType.Value.Contains("Image")
+Or Fields!MimeType.Value.Contains("IMAGE")
+,FALSE
+,TRUE
+)</Hidden>
+                      </Visibility>
+                    </TablixMember>
+                  </TablixMembers>
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>DataSet</DataSetName>
+            <Height>3.55cm</Height>
+            <Width>19.5cm</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+        </ReportItems>
+        <Height>3.55cm</Height>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Body>
+      <Width>19.5cm</Width>
+      <Page>
+        <PageHeight>29.7cm</PageHeight>
+        <PageWidth>21cm</PageWidth>
+        <LeftMargin>2cm</LeftMargin>
+        <RightMargin>2cm</RightMargin>
+        <TopMargin>2cm</TopMargin>
+        <BottomMargin>2cm</BottomMargin>
+        <ColumnSpacing>0.13cm</ColumnSpacing>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="ID">
+      <DataType>String</DataType>
+      <Hidden>true</Hidden>
+    </ReportParameter>
+  </ReportParameters>
+  <EmbeddedImages>
+    <EmbeddedImage Name="MitsuLogo">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>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</ImageData>
+    </EmbeddedImage>
+  </EmbeddedImages>
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
+  <rd:ReportID>7bc5a087-c80d-44d9-b117-058a8ab96ff5</rd:ReportID>
+</Report>

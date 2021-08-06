@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="88f3cef1657449e48ca90e8757d9c0f0" Name="Diagram1" ZoomLevel="61">
+        <EntityTypeShape EntityType="mmthapiModel.a_code" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mmthapiModel.attachfile" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mmthapiModel.b_code" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mmthapiModel.c_code" Width="1.5" PointX="4.75" PointY="4.75" />
+        <EntityTypeShape EntityType="mmthapiModel.incident" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="mmthapiModel.mobile" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mmthapiModel.rating" Width="1.5" PointX="6.75" PointY="4.75" />
+        <EntityTypeShape EntityType="mmthapiModel.rating_master" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mmthapiModel.rating_subject" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="mmthapiModel.ro_case" Width="1.5" PointX="2.75" PointY="8.75" />
+        <EntityTypeShape EntityType="mmthapiModel.ro_case_log" Width="1.5" PointX="8.75" PointY="4.75" />
+        <EntityTypeShape EntityType="mmthapiModel.ro_dealer" Width="1.5" PointX="4.75" PointY="8.75" />
+        <EntityTypeShape EntityType="mmthapiModel.ro_images" Width="1.5" PointX="6.75" PointY="8.75" />
+        <EntityTypeShape EntityType="mmthapiModel.ro_messages" Width="1.5" PointX="8.75" PointY="8.75" />
+        <EntityTypeShape EntityType="mmthapiModel.ro_operation" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mmthapiModel.ro_subject" Width="1.5" PointX="10.75" PointY="5.75" />
+        <EntityTypeShape EntityType="mmthapiModel.ro_user" Width="1.5" PointX="10.75" PointY="9.75" />
+        <EntityTypeShape EntityType="mmthapiModel.vRoCase" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mmthapiModel.vROMessage" Width="1.5" PointX="4.75" PointY="12.75" />
+        <EntityTypeShape EntityType="mmthapiModel.assessmentform_master" Width="1.5" PointX="7.5" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="mmthapiModel.assessmentform" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="mmthapiModel.vAssessmentForm" Width="1.5" PointX="15.375" PointY="5.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
