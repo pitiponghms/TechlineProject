@@ -179,7 +179,6 @@ WHERE regardingobjectid = @ID</CommandText>
                             </Border>
                           </Style>
                         </Subreport>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -236,7 +235,7 @@ WHERE regardingobjectid = @ID</CommandText>
   <ReportParameters>
     <ReportParameter Name="ID">
       <DataType>String</DataType>
-      <Hidden>true</Hidden>
+      <Prompt>ID</Prompt>
     </ReportParameter>
   </ReportParameters>
   <EmbeddedImages>

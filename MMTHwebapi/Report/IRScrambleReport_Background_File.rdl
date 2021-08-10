@@ -248,7 +248,6 @@ AND FileName IS NOT NULL</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -326,7 +325,7 @@ Or Fields!MimeType.Value.Contains("IMAGE")
   <ReportParameters>
     <ReportParameter Name="ID">
       <DataType>String</DataType>
-      <Hidden>true</Hidden>
+      <Prompt>ID</Prompt>
     </ReportParameter>
   </ReportParameters>
   <EmbeddedImages>

@@ -235,7 +235,7 @@ WHERE regardingobjectid = @ID</CommandText>
   <ReportParameters>
     <ReportParameter Name="ID">
       <DataType>String</DataType>
-      <Hidden>true</Hidden>
+      <Prompt>ID</Prompt>
     </ReportParameter>
   </ReportParameters>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>

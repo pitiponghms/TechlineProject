@@ -6,6 +6,7 @@
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString>Data Source=phoebe.hms-cloud.com\MSCRM;Initial Catalog=MMTHQAS_MSCRM</ConnectString>
+        <Prompt>Specify a user name and password for data source DataSource:</Prompt>
       </ConnectionProperties>
       <rd:SecurityType>DataBase</rd:SecurityType>
       <rd:DataSourceID>bcfc97c3-d1ef-481a-96a2-71e20c2f232c</rd:DataSourceID>
@@ -1836,7 +1837,6 @@ DGM</Value>
                             </Border>
                           </Style>
                         </Subreport>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
