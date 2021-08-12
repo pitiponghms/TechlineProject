@@ -21,46 +21,102 @@
             <Value>=Parameters!ID.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT
-subject AS Subject,
-notetext AS NoteText,
-documentbody AS DocumentBody,
-filename AS FileName,
-filesize AS FileSize,
-mimetype AS MimeType,
-objectid AS ObjectId
-FROM Annotation AS CRMAF_FilteredAnnotation
-WHERE ObjectId = @ID
-AND FileName IS NOT NULL</CommandText>
+        <CommandText>SELECT *
+FROM 
+(
+	SELECT ROW_NUMBER() OVER (ORDER BY objectid) RowNum1,
+		subject AS Subject1,
+		notetext AS NoteText1,
+		documentbody AS DocumentBody1,
+		filename AS FileName1,
+		filesize AS FileSize1,
+		mimetype AS MimeType1,
+		objectid AS ObjectId1
+	FROM Annotation
+	WHERE ObjectId = @ID
+		AND FileName IS NOT NULL 
+) AS myTable1
+LEFT OUTER JOIN
+(
+	SELECT ROW_NUMBER() OVER (ORDER BY objectid) RowNum2,
+		subject AS Subject2,
+		notetext AS NoteText2,
+		documentbody AS DocumentBody2,
+		filename AS FileName2,
+		filesize AS FileSize2,
+		mimetype AS MimeType2,
+		objectid AS ObjectId2
+	FROM Annotation
+	WHERE ObjectId = @ID
+		AND FileName IS NOT NULL
+) AS myTable2
+ON myTable1.RowNum1 + 1 = myTable2.RowNum2
+WHERE myTable1.RowNum1 % 2 = 1</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
-        <Field Name="Subject">
-          <DataField>Subject</DataField>
+        <Field Name="RowNum1">
+          <DataField>RowNum1</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="Subject1">
+          <DataField>Subject1</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="NoteText">
-          <DataField>NoteText</DataField>
+        <Field Name="NoteText1">
+          <DataField>NoteText1</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="DocumentBody">
-          <DataField>DocumentBody</DataField>
+        <Field Name="DocumentBody1">
+          <DataField>DocumentBody1</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="FileName">
-          <DataField>FileName</DataField>
+        <Field Name="FileName1">
+          <DataField>FileName1</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="FileSize">
-          <DataField>FileSize</DataField>
+        <Field Name="FileSize1">
+          <DataField>FileSize1</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="MimeType">
-          <DataField>MimeType</DataField>
+        <Field Name="MimeType1">
+          <DataField>MimeType1</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="ObjectId">
-          <DataField>ObjectId</DataField>
+        <Field Name="ObjectId1">
+          <DataField>ObjectId1</DataField>
+          <rd:TypeName>System.Guid</rd:TypeName>
+        </Field>
+        <Field Name="RowNum2">
+          <DataField>RowNum2</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="Subject2">
+          <DataField>Subject2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NoteText2">
+          <DataField>NoteText2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DocumentBody2">
+          <DataField>DocumentBody2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FileName2">
+          <DataField>FileName2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FileSize2">
+          <DataField>FileSize2</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MimeType2">
+          <DataField>MimeType2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ObjectId2">
+          <DataField>ObjectId2</DataField>
           <rd:TypeName>System.Guid</rd:TypeName>
         </Field>
       </Fields>
@@ -74,93 +130,25 @@ AND FileName IS NOT NULL</CommandText>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>3.25cm</Width>
+                  <Width>1.25cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>6.5cm</Width>
+                  <Width>5.5cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>9.75cm</Width>
+                  <Width>3cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.25cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>5.5cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>3cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
-                <TablixRow>
-                  <Height>0.8cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox10">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>File</Value>
-                                  <Style>
-                                    <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>14pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox10</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="FileName1">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!FileName.Value</Value>
-                                  <Style>
-                                    <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>14pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>FileName1</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>2</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                  </TablixCells>
-                </TablixRow>
                 <TablixRow>
                   <Height>2.75cm</Height>
                   <TablixCells>
@@ -173,7 +161,15 @@ AND FileName IS NOT NULL</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Picture</Value>
+                                  <Value>=IIF(IsNothing(Fields!MimeType1.Value)
+	, Nothing
+	, IIF(InStr(Fields!MimeType1.Value, "image") &gt; 0
+		Or InStr(Fields!MimeType1.Value, "Image") &gt; 0
+		Or InStr(Fields!MimeType1.Value, "IMAGE") &gt; 0	
+		,"Image"
+		,"File"
+	)
+)</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
                                     <FontSize>14pt</FontSize>
@@ -203,10 +199,46 @@ AND FileName IS NOT NULL</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Image Name="Image2">
+                        <Textbox Name="FileName1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!FileName1.Value</Value>
+                                  <Style>
+                                    <FontFamily>Angsana New</FontFamily>
+                                    <FontSize>14pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>FileName1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Image Name="Image1">
                           <Source>Database</Source>
-                          <Value>=Fields!DocumentBody.Value</Value>
-                          <MIMEType>=Fields!MimeType.Value</MIMEType>
+                          <Value>=Fields!DocumentBody1.Value</Value>
+                          <MIMEType>=Fields!MimeType1.Value</MIMEType>
                           <Sizing>FitProportional</Sizing>
                           <Style>
                             <Border>
@@ -219,35 +251,99 @@ AND FileName IS NOT NULL</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FileName">
+                        <Textbox Name="Subject3">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FileName.Value</Value>
+                                  <Value>=IIF(IsNothing(Fields!MimeType2.Value)
+	, Nothing
+	, IIF(InStr(Fields!MimeType2.Value, "image") &gt; 0
+		Or InStr(Fields!MimeType2.Value, "Image") &gt; 0
+		Or InStr(Fields!MimeType2.Value, "IMAGE") &gt; 0	
+		,"Image"
+		,"File"
+	)
+)</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
                                     <FontSize>14pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FileName</rd:DefaultName>
+                          <rd:DefaultName>Subject</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="FileName2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!FileName2.Value</Value>
+                                  <Style>
+                                    <FontFamily>Angsana New</FontFamily>
+                                    <FontSize>14pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>FileName2</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Image Name="Image2">
+                          <Source>Database</Source>
+                          <Value>=Fields!DocumentBody2.Value</Value>
+                          <MIMEType>=Fields!MimeType2.Value</MIMEType>
+                          <Sizing>FitProportional</Sizing>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                          </Style>
+                        </Image>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -259,6 +355,9 @@ AND FileName IS NOT NULL</CommandText>
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -266,34 +365,13 @@ AND FileName IS NOT NULL</CommandText>
                 <TablixMember>
                   <Group Name="Details" />
                   <TablixMembers>
-                    <TablixMember>
-                      <Visibility>
-                        <Hidden>= IIF(
-Fields!MimeType.Value.Contains("image")
-Or Fields!MimeType.Value.Contains("Image")
-Or Fields!MimeType.Value.Contains("IMAGE")
-,TRUE
-,FALSE
-)</Hidden>
-                      </Visibility>
-                    </TablixMember>
-                    <TablixMember>
-                      <Visibility>
-                        <Hidden>= IIF(
-Fields!MimeType.Value.Contains("image")
-Or Fields!MimeType.Value.Contains("Image")
-Or Fields!MimeType.Value.Contains("IMAGE")
-,FALSE
-,TRUE
-)</Hidden>
-                      </Visibility>
-                    </TablixMember>
+                    <TablixMember />
                   </TablixMembers>
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet</DataSetName>
-            <Height>3.55cm</Height>
+            <Height>2.75cm</Height>
             <Width>19.5cm</Width>
             <Style>
               <Border>
@@ -302,7 +380,7 @@ Or Fields!MimeType.Value.Contains("IMAGE")
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>3.55cm</Height>
+        <Height>2.75cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -336,6 +414,13 @@ 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</ImageData>
+    </EmbeddedImage>
+    <EmbeddedImage Name="FileImg">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>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</ImageData>
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
