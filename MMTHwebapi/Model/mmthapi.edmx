@@ -304,6 +304,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_ON" Type="datetime" />
           <Property Name="STATUS_CODE" Type="nvarchar" MaxLength="2" />
+          <Property Name="isread" Type="bit" />
         </EntityType>
         <EntityType Name="ro_operation">
           <Key>
@@ -367,6 +368,10 @@ warning 6002: The table/view 'mmthapi.dbo.vAssessmentForm' does not have a prima
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="ro_caseid" Type="int" />
+          <Property Name="choicevalue" Type="int" />
+          <Property Name="message" Type="nvarchar" MaxLength="250" />
+          <Property Name="iscomment" Type="bit" />
           <Property Name="assessmentform_type" Type="nvarchar" MaxLength="50" />
           <Property Name="groupno" Type="int" />
           <Property Name="seqno" Type="int" />
@@ -383,10 +388,6 @@ warning 6002: The table/view 'mmthapi.dbo.vAssessmentForm' does not have a prima
           <Property Name="choicevalue3" Type="int" />
           <Property Name="isradio3" Type="bit" />
           <Property Name="isother3" Type="bit" />
-          <Property Name="ro_caseid" Type="int" />
-          <Property Name="choicevalue" Type="int" />
-          <Property Name="message" Type="nvarchar" MaxLength="250" />
-          <Property Name="iscomment" Type="bit" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="CREATED_ON" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
@@ -498,7 +499,17 @@ warning 6002: The table/view 'mmthapi.dbo.vROMessage' does not have a primary ke
           <Property Name="FileName" Type="nvarchar" MaxLength="255" />
           <Property Name="MimeType" Type="nvarchar" MaxLength="256" />
           <Property Name="Thumbnail" Type="varbinary(max)" />
+          <Property Name="isread" Type="bit" />
         </EntityType>
+        <Function Name="SpSelectVAssessmentFormByCaseId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CaseId" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SpUpdateROMessageMaskAsRead" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CaseId" Type="nvarchar" Mode="In" />
+          <Parameter Name="SenderId" Type="nvarchar" Mode="In" />
+          <Parameter Name="ModifiedBy" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsRead" Type="bit" Mode="In" />
+        </Function>
         <EntityContainer Name="mmthapiModelStoreContainer">
           <EntitySet Name="a_code" EntityType="Self.a_code" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="assessmentform" EntityType="Self.assessmentform" Schema="dbo" store:Type="Tables" />
@@ -522,6 +533,10 @@ warning 6002: The table/view 'mmthapi.dbo.vROMessage' does not have a primary ke
           <EntitySet Name="vAssessmentForm" EntityType="Self.vAssessmentForm" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
 [vAssessmentForm].[id] AS [id], 
+[vAssessmentForm].[ro_caseid] AS [ro_caseid], 
+[vAssessmentForm].[choicevalue] AS [choicevalue], 
+[vAssessmentForm].[message] AS [message], 
+[vAssessmentForm].[iscomment] AS [iscomment], 
 [vAssessmentForm].[assessmentform_type] AS [assessmentform_type], 
 [vAssessmentForm].[groupno] AS [groupno], 
 [vAssessmentForm].[seqno] AS [seqno], 
@@ -538,10 +553,6 @@ warning 6002: The table/view 'mmthapi.dbo.vROMessage' does not have a primary ke
 [vAssessmentForm].[choicevalue3] AS [choicevalue3], 
 [vAssessmentForm].[isradio3] AS [isradio3], 
 [vAssessmentForm].[isother3] AS [isother3], 
-[vAssessmentForm].[ro_caseid] AS [ro_caseid], 
-[vAssessmentForm].[choicevalue] AS [choicevalue], 
-[vAssessmentForm].[message] AS [message], 
-[vAssessmentForm].[iscomment] AS [iscomment], 
 [vAssessmentForm].[CREATED_BY] AS [CREATED_BY], 
 [vAssessmentForm].[CREATED_ON] AS [CREATED_ON], 
 [vAssessmentForm].[MODIFIED_BY] AS [MODIFIED_BY], 
@@ -639,7 +650,8 @@ FROM [dbo].[vRoCase] AS [vRoCase]</DefiningQuery>
 [vROMessage].[IsImage] AS [IsImage], 
 [vROMessage].[FileName] AS [FileName], 
 [vROMessage].[MimeType] AS [MimeType], 
-[vROMessage].[Thumbnail] AS [Thumbnail]
+[vROMessage].[Thumbnail] AS [Thumbnail], 
+[vROMessage].[isread] AS [isread]
 FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
@@ -669,6 +681,15 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
           <EntitySet Name="vROMessages" EntityType="mmthapiModel.vROMessage" />
           <EntitySet Name="assessmentform_master" EntityType="mmthapiModel.assessmentform_master" />
           <EntitySet Name="assessmentforms" EntityType="mmthapiModel.assessmentform" />
+          <FunctionImport Name="SpUpdateROMessageMaskAsRead">
+            <Parameter Name="CaseId" Mode="In" Type="String" />
+            <Parameter Name="SenderId" Mode="In" Type="String" />
+            <Parameter Name="ModifiedBy" Mode="In" Type="String" />
+            <Parameter Name="IsRead" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="SpSelectVAssessmentFormByCaseId" EntitySet="vAssessmentForms" ReturnType="Collection(mmthapiModel.vAssessmentForm)">
+          <Parameter Name="CaseId" Mode="In" Type="String" />
+          </FunctionImport>
           <EntitySet Name="vAssessmentForms" EntityType="mmthapiModel.vAssessmentForm" />
         </EntityContainer>
         <EntityType Name="a_code">
@@ -925,6 +946,7 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
           <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="isread" Type="Boolean" />
         </EntityType>
         <EntityType Name="ro_operation">
           <Key>
@@ -1082,6 +1104,7 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
           <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="MimeType" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Thumbnail" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="isread" Type="Boolean" />
         </EntityType>
         <EntityType Name="assessmentform_master">
           <Key>
@@ -1128,11 +1151,44 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
           <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
           <Property Name="STATUS_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
         </EntityType>
+        <ComplexType Name="SpSelectVAssessmentFormByCaseId_Result">
+          <Property Type="Int64" Name="ROW_NUM" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="Int32" Name="ro_caseid" Nullable="true" />
+          <Property Type="Int32" Name="choicevalue" Nullable="true" />
+          <Property Type="String" Name="message" Nullable="true" MaxLength="250" />
+          <Property Type="Boolean" Name="iscomment" Nullable="true" />
+          <Property Type="String" Name="assessmentform_type" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="groupno" Nullable="true" />
+          <Property Type="Int32" Name="seqno" Nullable="true" />
+          <Property Type="String" Name="subject" Nullable="true" />
+          <Property Type="String" Name="choicename1" Nullable="true" />
+          <Property Type="Int32" Name="choicevalue1" Nullable="true" />
+          <Property Type="Boolean" Name="isradio1" Nullable="true" />
+          <Property Type="Boolean" Name="isother1" Nullable="true" />
+          <Property Type="String" Name="choicename2" Nullable="true" />
+          <Property Type="Int32" Name="choicevalue2" Nullable="true" />
+          <Property Type="Boolean" Name="isradio2" Nullable="true" />
+          <Property Type="Boolean" Name="isother2" Nullable="true" />
+          <Property Type="String" Name="choicename3" Nullable="true" />
+          <Property Type="Int32" Name="choicevalue3" Nullable="true" />
+          <Property Type="Boolean" Name="isradio3" Nullable="true" />
+          <Property Type="Boolean" Name="isother3" Nullable="true" />
+          <Property Type="String" Name="CREATED_BY" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="CREATED_ON" Nullable="true" Precision="23" />
+          <Property Type="String" Name="MODIFIED_BY" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="MODIFIED_ON" Nullable="true" Precision="23" />
+          <Property Type="String" Name="STATUS_CODE" Nullable="true" MaxLength="2" />
+        </ComplexType>
         <EntityType Name="vAssessmentForm">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ro_caseid" Type="Int32" />
+          <Property Name="choicevalue" Type="Int32" />
+          <Property Name="message" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="iscomment" Type="Boolean" />
           <Property Name="assessmentform_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="groupno" Type="Int32" />
           <Property Name="seqno" Type="Int32" />
@@ -1149,10 +1205,6 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
           <Property Name="choicevalue3" Type="Int32" />
           <Property Name="isradio3" Type="Boolean" />
           <Property Name="isother3" Type="Boolean" />
-          <Property Name="ro_caseid" Type="Int32" />
-          <Property Name="choicevalue" Type="Int32" />
-          <Property Name="message" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="iscomment" Type="Boolean" />
           <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1419,6 +1471,7 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
           <EntitySetMapping Name="ro_messages">
             <EntityTypeMapping TypeName="mmthapiModel.ro_messages">
               <MappingFragment StoreEntitySet="ro_messages">
+                <ScalarProperty Name="isread" ColumnName="isread" />
                 <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
                 <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -1568,6 +1621,7 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
           <EntitySetMapping Name="vROMessages">
             <EntityTypeMapping TypeName="mmthapiModel.vROMessage">
               <MappingFragment StoreEntitySet="vROMessage">
+                <ScalarProperty Name="isread" ColumnName="isread" />
                 <ScalarProperty Name="Thumbnail" ColumnName="Thumbnail" />
                 <ScalarProperty Name="MimeType" ColumnName="MimeType" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
@@ -1635,6 +1689,9 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SpUpdateROMessageMaskAsRead" FunctionName="mmthapiModel.Store.SpUpdateROMessageMaskAsRead" />
+          <FunctionImportMapping FunctionImportName="SpSelectVAssessmentFormByCaseId" FunctionName="mmthapiModel.Store.SpSelectVAssessmentFormByCaseId">
+          </FunctionImportMapping>
           <EntitySetMapping Name="vAssessmentForms">
             <EntityTypeMapping TypeName="mmthapiModel.vAssessmentForm">
               <MappingFragment StoreEntitySet="vAssessmentForm">
@@ -1643,10 +1700,6 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="iscomment" ColumnName="iscomment" />
-                <ScalarProperty Name="message" ColumnName="message" />
-                <ScalarProperty Name="choicevalue" ColumnName="choicevalue" />
-                <ScalarProperty Name="ro_caseid" ColumnName="ro_caseid" />
                 <ScalarProperty Name="isother3" ColumnName="isother3" />
                 <ScalarProperty Name="isradio3" ColumnName="isradio3" />
                 <ScalarProperty Name="choicevalue3" ColumnName="choicevalue3" />
@@ -1663,6 +1716,10 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
                 <ScalarProperty Name="seqno" ColumnName="seqno" />
                 <ScalarProperty Name="groupno" ColumnName="groupno" />
                 <ScalarProperty Name="assessmentform_type" ColumnName="assessmentform_type" />
+                <ScalarProperty Name="iscomment" ColumnName="iscomment" />
+                <ScalarProperty Name="message" ColumnName="message" />
+                <ScalarProperty Name="choicevalue" ColumnName="choicevalue" />
+                <ScalarProperty Name="ro_caseid" ColumnName="ro_caseid" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1682,7 +1739,7 @@ FROM [dbo].[vROMessage] AS [vROMessage]</DefiningQuery>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="true" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Default" />
       </DesignerInfoPropertySet>

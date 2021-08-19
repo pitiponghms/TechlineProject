@@ -65,9 +65,8 @@ namespace TechLineCaseAPI.Controller
             using (mmthapiEntities entity = new mmthapiEntities())
             {
                 List<AssessmentFormModel> models = new List<AssessmentFormModel>();
-                var list = entity.vAssessmentForms
+                List<vAssessmentForm> list = entity.SpSelectVAssessmentFormByCaseId(rocaseid.ToString())
                     .Where(o => o.assessmentform_type.Contains(type))
-                    .Where(o => o.ro_caseid == rocaseid || (o.ro_caseid == null && o.seqno == 0)) //Get Header
                     .OrderBy(o => o.groupno)
                     .ThenBy(o => o.seqno)
                     .ToList();

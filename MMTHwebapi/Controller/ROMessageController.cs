@@ -98,7 +98,6 @@ namespace TechLineCaseAPI.Controller
             }               
         }
 
-
         [HttpPost]
         [Route("api/message/createTech")]
         public ResultMessage PostTech()
@@ -181,7 +180,6 @@ namespace TechLineCaseAPI.Controller
             }
         }
 
-
         [HttpPost]
         [Route("api/message/update")]
         public ResultMessage Update()
@@ -252,6 +250,63 @@ namespace TechLineCaseAPI.Controller
             }
         }
 
+        [HttpPost]
+        [Route("api/message/count/unread/{id}")]
+        public int CountUnreadById(int caseid, string senderid)
+        {
+            using (mmthapiEntities entity = new mmthapiEntities())
+            {
+                return entity.vROMessages
+                    .Where(o => o.caseid == caseid)
+                    .Where(o => !o.sender_id.Contains(senderid))
+                    .Where(o => o.isread == false)
+                    .ToList()
+                    .Count();
+            }
+        }
+
+        [HttpPost]
+        [Route("api/message/markasread")]
+        public ResultMessage PostMarkAsRead()
+        {
+            try
+            {
+                var js = new JavaScriptSerializer();
+                var json = HttpContext.Current.Request.Form["Model"];
+
+                vROMessageModel model = js.Deserialize<vROMessageModel>(json);
+
+                if (model.CaseId == null) return new ResultMessage() { Status = "E", Message = "Require Case Id" };
+                if (model.SenderId == null) return new ResultMessage() { Status = "E", Message = "Require Sender Id" };
+                if (model.ModifiedBy == null) return new ResultMessage() { Status = "E", Message = "Require Modified By" };
+
+                if (MarkAsRead(model))
+                {
+                    return new ResultMessage()
+                    {
+                        Status = "S",
+                        Message = "Mark As Read Completed"
+                    };
+                }
+                else
+                {
+                    return new ResultMessage()
+                    {
+                        Status = "E",
+                        Message = "Mark As Read Incompleted"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResultMessage()
+                {
+                    Status = "E",
+                    Message = "Mark As Read Incompleted (" + ex.Message + ")"
+                };
+            }
+        }
+
         public static int? CreateROMessage(vROMessageModel model)
         {
             try
@@ -273,6 +328,7 @@ namespace TechLineCaseAPI.Controller
                         text = model.Text,
                         attachfileid = model.AttachFileId,
                         time = DateTime.Now,
+                        isread = false,
 
                         CREATED_BY = model.CreatedBy,
                         CREATED_ON = DateTime.Now,
@@ -316,6 +372,7 @@ namespace TechLineCaseAPI.Controller
                     record.text = AssignStringData(record.text, model.Text);
                     record.attachfileid = AssignNumberData(record.attachfileid, model.AttachFileId);
                     //record.time = model.Time;
+                    //record.isread = true;
 
                     string sourceStatus = record.STATUS_CODE;
                     //CREATED_BY = model.CreatedBy;
@@ -381,6 +438,27 @@ namespace TechLineCaseAPI.Controller
                 case 0: return null;
                 case null: return source;
                 default: return data;
+            }
+        }
+
+        private static bool MarkAsRead(vROMessageModel model)
+        {
+            try
+            {
+                if (model.CaseId == null) return false;
+                if (model.SenderId == null) return false;
+                if (model.ModifiedBy == null) return false;
+
+                using (mmthapiEntities entity = new mmthapiEntities())
+                {
+                    entity.SpUpdateROMessageMaskAsRead(model.CaseId.ToString(), model.SenderId.ToString(), model.ModifiedBy, true);
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

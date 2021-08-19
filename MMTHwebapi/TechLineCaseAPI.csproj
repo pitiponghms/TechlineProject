@@ -237,6 +237,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Report\IRScrambleReport.rdl" />
+    <Content Include="Report\IRScrambleReport_ActionTaken.rdl" />
+    <Content Include="Report\IRScrambleReport_ActionTaken_File.rdl" />
+    <Content Include="Report\IRScrambleReport_Background.rdl" />
+    <Content Include="Report\IRScrambleReport_Background_File.rdl" />
+    <Content Include="Report\IRScrambleReport_Summary.rdl" />
+    <Content Include="Report\IRScrambleReport_Summary_File.rdl" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
