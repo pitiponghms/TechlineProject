@@ -250,8 +250,8 @@ namespace TechLineCaseAPI.Controller
             }
         }
 
-        [HttpPost]
-        [Route("api/message/count/unread/{id}")]
+        [HttpGet]
+        [Route("api/message/count/unread/{caseid}/{senderid}")]
         public int CountUnreadById(int caseid, string senderid)
         {
             using (mmthapiEntities entity = new mmthapiEntities())

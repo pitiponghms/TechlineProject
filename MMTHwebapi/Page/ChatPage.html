@@ -1,9 +1,5 @@
 <html>
 <head>
-</head>
-<body style="overflow-wrap: break-word;">
-    ﻿
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.css">
@@ -73,6 +69,28 @@
             -moz-border-radius: 0em;
             -webkit-border-radius: 0em;
         }
+
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: gray;
+        }
+
+            .separator::before,
+            .separator::after {
+                content: '';
+                flex: 1;
+                border-bottom: 1px solid silver;
+            }
+
+            .separator:not(:empty)::before {
+                margin-right: .25em;
+            }
+
+            .separator:not(:empty)::after {
+                margin-left: .25em;
+            }
 
         img {
             max-width: 100%;
@@ -220,8 +238,8 @@
             }
         }
     </style>
-
-
+</head>
+<body style="overflow-wrap: break-word;">
     <div id="loader" class="loader"></div>
     <div id="container" class="container bootstrap snippets bootdey">
         <div class="row">
@@ -249,7 +267,6 @@
             </div>
         </div>
     </div>
-
 
 
     <script type="text/javascript">
@@ -289,6 +306,9 @@
                 url: api + '/message/get/' + caseid,
                 async: false,
                 success: function (result) {
+                    var isunread = false;
+                    var unreadindex = 0;
+
                     $(".chat").empty();
 
                     $.each(result, function (index, item) {
@@ -328,6 +348,21 @@
                             '</div > ' +
                             '</li>';
 
+                        var delimiter =
+                            '<li class="clearfix">' +
+                            '<div id="separator" class="separator"> unread message </div>' +
+                            '</li>';
+
+                        if (item.sender_id != userid && item.isread == false && !isunread) {
+                            isunread = true;
+                            unreadindex = index;
+
+                            if (index > 0) {
+                                usermsg = delimiter + usermsg;
+                                someonemsg = delimiter + someonemsg;
+                            }
+                        }
+
                         if (item.sender_id == userid) {
                             $(".chat").append(usermsg);
                         }
@@ -335,9 +370,14 @@
                             $(".chat").append(someonemsg);
                         }
                     });
-
-                    var element = document.querySelector(".chat-message");
-                    element.scrollTop = element.scrollHeight;
+                    
+                    if (unreadindex > 0) {
+                        document.getElementById("separator").focus({ preventScroll: false });
+                    }
+                    else {
+                        var element = document.querySelector(".chat-message");
+                        element.scrollTop = element.scrollHeight;
+                    }
                 },
                 error: function (xhr, status, error) {
                     //alert(xhr.responseText);
@@ -345,11 +385,39 @@
                     //alert(error);
                 },
                 complete: function () {
+                    markASRead();
                     showLoader(false);
                 }
             });
+        }
 
-            //showLoader(false);
+        function markASRead() {
+            var formdata = new FormData();
+
+            var data = {
+                'CaseId': caseid,
+                'SenderId': userid,
+                'ModifiedBy': 'Tech Line',
+            };
+
+            formdata.append('Model', JSON.stringify(data));
+
+            $.ajax({
+                type: 'POST',
+                url: api + '/message/markasread',
+                data: formdata,
+                contentType: false,
+                processData: false,
+                async: false,
+                success: function (result) {
+                    //alert(result);
+                },
+                error: function (xhr, status, error) {
+                    //alert(xhr.responseText);
+                    //alert(status);
+                    //alert(error);
+                }
+            });
         }
 
         function getMsgTime(datetime) {
@@ -449,7 +517,7 @@
                                 //alert(3);
                                 a.setAttribute('download', name);
                                 //alert(4);
-                                document.body.appendChild(a);
+                                //document.body.appendChild(a);
                                 //alert(5);
                                 a.click();
                                 //alert(6);
@@ -475,7 +543,7 @@
                                 }
                                 else {
                                     var a = document.createElement("a");
-                                    document.body.appendChild(a);
+                                    //document.body.appendChild(a);
                                     a.style = "display: none";
 
                                     var blob = new Blob(data, { type: result.MimeType }),

@@ -155,6 +155,7 @@
     <Content Include="Font\fontawesome-webfont.woff.css" />
     <Content Include="Global.asax" />
     <Content Include="Image\Picture\attach.png" />
+    <Content Include="Image\Picture\chat2.png" />
     <Content Include="Image\Picture\chat.png" />
     <Content Include="Image\Picture\rating.png" />
     <Content Include="Image\Picture\user1.png" />
