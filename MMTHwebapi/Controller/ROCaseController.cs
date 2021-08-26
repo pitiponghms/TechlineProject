@@ -1363,7 +1363,16 @@ namespace TechLineCaseAPI.Controller
                     string statusBody = "Techline เปลี่ยนสถานะเป็น " + model.StatusCode;
                     if (model.StatusCode == "2" || model.StatusCode == "3" || model.StatusCode == "4" || model.StatusCode == "5" || model.StatusCode == "6" || model.StatusCode == "7")
                     {
-                        SendUpdateStatus(statusBody, statusHeader);
+                        using (mmthapiEntities entity = new mmthapiEntities())
+                        {
+                            var caseObj = entity.ro_case
+                                .Where(o => o.CREATED_BY == model.CaseId.ToString())
+                                .ToList();
+                            var userObj = entity.ro_user
+                                .Where(o => o.id == caseObj[0].id)
+                                .ToList();
+                            SendUpdateStatus(statusHeader, statusBody, userObj[0].MOBILE_KEY);
+                        }
                     }
                     
                             return new ResultModel() { Status = "S", Message = "Create Complete", Result = json };
@@ -1440,7 +1449,16 @@ namespace TechLineCaseAPI.Controller
 
                     if (model.StatusCode == "2" || model.StatusCode == "3" || model.StatusCode == "4" || model.StatusCode == "5" || model.StatusCode == "6" || model.StatusCode == "7")
                     {
-                        SendUpdateStatus(statusHeader,statusBody);
+                        using (mmthapiEntities entity = new mmthapiEntities())
+                        {
+                            var caseObj = entity.ro_case
+                                .Where(o => o.CREATED_BY == model.CaseId.ToString())
+                                .ToList();
+                            var userObj = entity.ro_user
+                                .Where(o => o.id == caseObj[0].id)
+                                .ToList();
+                            SendUpdateStatus(statusHeader, statusBody, userObj[0].MOBILE_KEY);
+                        }
                     }
 
                     return new ResultMessage()
@@ -1536,7 +1554,7 @@ namespace TechLineCaseAPI.Controller
                 };
             }
         }
-        public static void SendUpdateStatus(string Message,string sBody)
+        public static void SendUpdateStatus(string Message, string sBody, string usertoken)
         {
             var client = new RestClient(TechLineCaseAPI.Properties.Settings.Default.fcmsend);
             client.Timeout = -1;
@@ -1544,13 +1562,13 @@ namespace TechLineCaseAPI.Controller
             request.AddHeader("Authorization", TechLineCaseAPI.Properties.Settings.Default.Authorization);
             request.AddHeader("Content-Type", "application/json");
             var body = @"{" + "\n" +
-            @"  ""to"": ""cBWH-nMQTv6qkxFSTyilas:APA91bGRJZ2JTvnxfYKE0ENhmuSL4OLE399OyyxbVv72fNnX9S4gGe7NMbW5R_xmfyTZJiFQSZDtPgkK5PULCZndU_3z39bF8p_7M58n_-Rsk1DcfrM_TcsOl6tYBvID7tA8KfsMuCfV""," + "\n" +
+            @"  ""to"": ""#TOKEN""," + "\n" +
             @"  ""notification"": {" + "\n" +
             @"    ""title"": ""#Message""," + "\n" +
             @"    ""body"": ""#Body""" + "\n" +
             @"  }" + "\n" +
             @"}";
-            body=body.Replace("#Message", Message).Replace("#Body", sBody);
+            body = body.Replace("#Message", Message).Replace("#Body", sBody).Replace("#TOKEN", usertoken);
             request.AddParameter("application/json", body, ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);

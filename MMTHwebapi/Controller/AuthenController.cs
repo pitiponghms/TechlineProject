@@ -158,10 +158,10 @@ namespace TechLineCaseAPI.Controller
                             {
                                 var rec = entity.ro_user.Where(o => o.id == userId).FirstOrDefault();
 
-                                rec.MOBILE_KEY = AssignStringData(rec.MOBILE_KEY, u.mobile_key);
-                                rec.PIN = AssignStringData(rec.PIN, u.pin);
-                                
-                                
+                                rec.MOBILE_KEY = AssignStringData(rec.MOBILE_KEY, au.MobileKey);
+                                rec.PIN = AssignStringData(rec.PIN, au.Pin);
+
+
 
                                 //entity.ro_case.Attach(record);
                                 //entity.ObjectStateManager.ChangeObjectState(record, System.Data.EntityState.Modified);

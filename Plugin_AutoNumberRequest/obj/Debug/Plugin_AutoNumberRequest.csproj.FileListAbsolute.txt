@@ -9,3 +9,11 @@ D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\bin\Debug\Mic
 D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.csproj.CopyComplete
 D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.dll
 D:\Pie Project\Mitsubishi\TechLine\github\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.pdb
+C:\flutter\TechlineProject\Plugin_AutoNumberRequest\bin\Debug\Plugin_AutoNumberRequest.dll
+C:\flutter\TechlineProject\Plugin_AutoNumberRequest\bin\Debug\Plugin_AutoNumberRequest.pdb
+C:\flutter\TechlineProject\Plugin_AutoNumberRequest\bin\Debug\Microsoft.Xrm.Sdk.Deployment.xml
+C:\flutter\TechlineProject\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.csprojAssemblyReference.cache
+C:\flutter\TechlineProject\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.csproj.CoreCompileInputs.cache
+C:\flutter\TechlineProject\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.csproj.CopyComplete
+C:\flutter\TechlineProject\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.dll
+C:\flutter\TechlineProject\Plugin_AutoNumberRequest\obj\Debug\Plugin_AutoNumberRequest.pdb

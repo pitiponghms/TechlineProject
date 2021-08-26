@@ -16,8 +16,8 @@ namespace TechLineCaseAPI.Controller
             using (mmthapiEntities entity = new mmthapiEntities())
             {
                 List<ACodeModel> models = new List<ACodeModel>();
-                var list = entity.a_code.ToList();
-                
+                var list = entity.a_code.OrderBy(a => a.id).ToList();
+
                 foreach (var item in list)
                 {
                     ACodeModel model = new ACodeModel()

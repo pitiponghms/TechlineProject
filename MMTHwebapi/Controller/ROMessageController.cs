@@ -129,7 +129,16 @@ namespace TechLineCaseAPI.Controller
                         string statusHeader = "มีข้อความใหม่จาก Techline";
                         string statusBody = model.Text;
 
-                        ROCaseController.SendUpdateStatus(statusHeader, statusBody);
+                        using (mmthapiEntities entity = new mmthapiEntities())
+                        {
+                            var caseObj = entity.ro_case
+                                .Where(o => o.CREATED_BY == model.CaseId.ToString())
+                                .ToList();
+                            var userObj = entity.ro_user
+                                .Where(o => o.id == caseObj[0].id)
+                                .ToList();
+                            ROCaseController.SendUpdateStatus(statusHeader, statusBody, userObj[0].MOBILE_KEY);
+                        }
 
                     }
                     else
@@ -148,9 +157,18 @@ namespace TechLineCaseAPI.Controller
                     myid = CreateROMessage(model);
                     string statusHeader = "มีข้อความใหม่จาก Techline";
                     string statusBody = model.Text;
-                    
-                        ROCaseController.SendUpdateStatus(statusHeader, statusBody);
-                    
+
+                    using (mmthapiEntities entity = new mmthapiEntities())
+                    {
+                        var caseObj = entity.ro_case
+                            .Where(o => o.CREATED_BY == model.CaseId.ToString())
+                            .ToList();
+                        var userObj = entity.ro_user
+                            .Where(o => o.id == caseObj[0].id)
+                            .ToList();
+                        ROCaseController.SendUpdateStatus(statusHeader, statusBody, userObj[0].MOBILE_KEY);
+                    }
+
                 }
 
                 if (myid != null)
@@ -192,9 +210,6 @@ namespace TechLineCaseAPI.Controller
                 vROMessageModel model = js.Deserialize<vROMessageModel>(json);
 
                 if (model.Id == null) return new ResultMessage() { Status = "E", Message = "Require Id" };
-                //if (model.CaseId == null) return new ResultMessage() { Status = "E", Message = "Require Case Id" };
-                //if (model.SenderId == null) return new ResultMessage() { Status = "E", Message = "Require Sender Id" };
-                //if (model.SenderName == null) return new ResultMessage() { Status = "E", Message = "Require Sender Name" };
                 if (model.ModifiedBy == null) return new ResultMessage() { Status = "E", Message = "Require Modified By" };
 
                 if (UpdateROMessage(model))

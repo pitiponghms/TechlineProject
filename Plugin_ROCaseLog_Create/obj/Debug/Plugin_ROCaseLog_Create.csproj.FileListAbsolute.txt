@@ -10,3 +10,12 @@ D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\obj\Debug\Plug
 D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.dll
 D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.pdb
 D:\Pie Project\Mitsubishi\TechLine\github\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.csproj.AssemblyReference.cache
+C:\flutter\TechlineProject\Plugin_ROCaseLog_Create\bin\Debug\Plugin_ROCaseLog_Create.dll.config
+C:\flutter\TechlineProject\Plugin_ROCaseLog_Create\bin\Debug\Plugin_ROCaseLog_Create.dll
+C:\flutter\TechlineProject\Plugin_ROCaseLog_Create\bin\Debug\Plugin_ROCaseLog_Create.pdb
+C:\flutter\TechlineProject\Plugin_ROCaseLog_Create\bin\Debug\Microsoft.Xrm.Sdk.Deployment.xml
+C:\flutter\TechlineProject\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.csprojAssemblyReference.cache
+C:\flutter\TechlineProject\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.csproj.CoreCompileInputs.cache
+C:\flutter\TechlineProject\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.csproj.CopyComplete
+C:\flutter\TechlineProject\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.dll
+C:\flutter\TechlineProject\Plugin_ROCaseLog_Create\obj\Debug\Plugin_ROCaseLog_Create.pdb
