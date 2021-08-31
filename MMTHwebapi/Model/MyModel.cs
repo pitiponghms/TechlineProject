@@ -594,8 +594,11 @@ namespace TechLineCaseAPI.Model
 
 
         }
-
     }
 
-
+    public class GroupCountModel
+    {
+        public string Name { get; set; }
+        public int Value { get; set; }
+    }
 }
