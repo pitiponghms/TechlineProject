@@ -280,6 +280,23 @@ namespace TechLineCaseAPI.Controller
             }
         }
 
+        [HttpGet]
+        [Route("api/message/get/unread/{senderid}")]
+        public List<CaseUnreadMessageModel> GetUnreadById(string senderid)
+        {
+            using (mmthapiEntities entity = new mmthapiEntities())
+            {
+                List<CaseUnreadMessageModel> models = entity.vROMessages
+                    .Where(o => !o.sender_id.Contains(senderid))
+                    .Where(o => o.isread == false)
+                    .GroupBy(o => o.caseid)
+                    .Select(o => new CaseUnreadMessageModel { CaseId = o.Key, Count = o.Count() })
+                    .ToList();
+
+                return models;
+            }
+        }
+
         [HttpPost]
         [Route("api/message/markasread")]
         public ResultMessage PostMarkAsRead()

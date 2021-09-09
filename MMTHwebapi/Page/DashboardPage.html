@@ -22,6 +22,8 @@
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/st.action-panel.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
     <title>DTS Dashboard</title>
 
@@ -172,11 +174,111 @@
             }
         }
     </style>
+    <style>
+        @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+
+        .st-actionContainer {
+            z-index: 9999;
+            position: fixed;
+            display: inline-block;
+        }
+
+        .right-bottom {
+            bottom: 2em;
+            right: 2em;
+            float: right !important;
+        }
+
+        .left-bottom {
+            bottom: 2em;
+            left: 2em;
+            float: left !important;
+        }
+
+        .st-panel {
+            width: auto;
+            margin-bottom: 10%;
+            color: #2E2E2E;
+            border: 2px solid #F6F6F6;
+            box-shadow: 5px 5px #DDDDDD;
+            display: none;
+        }
+
+            .st-panel > .header {
+                font-size: 14px;
+                font-weight: 600;
+                background-color: white;
+                opacity: 0.9;
+                padding: 2px 10px;
+                margin: 0px 0px 2px 0px;
+            }
+
+            .st-panel > .content {
+                /*height: 300px;*/
+                background-color: white;
+                padding: 2px 10px;
+            }
+
+        .st-button-main {
+            font-size: 24px;
+            color: #ffffff;
+            font-size: 24px;
+            text-align: center;
+            line-height: 60px;
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+            display: table;
+        }
+
+            .st-button-main > i {
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+        .st-btn-container {
+            background: tomato;
+            width: 60px;
+            height: 60px;
+            border-radius: 100%;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        }
+        /*option grid in panel*/
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;           
+        }
+
+        .gridChild {
+            flex: 0 0 100%;
+            height: 40px;
+            background-color: white;
+            text-align: center;
+            text-decoration: none;
+            color: black;
+            line-height: 40px;
+        }
+
+            .gridChild:hover {
+                background-color: gainsboro;
+                color: black;
+            }
+
+        .gridChild .content {
+            color: tomato
+        }
+
+        .scrollbar-thin {
+            height: auto;
+            max-height: 275px;
+            width: 225px;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body id="myBody">
-    <!--<div class="title">
-        DTS. Dashboard.
-    </div>-->
     <div id="loader" class="loader"></div>
     <div>
         <div id="casetotal" class="summary" style="background-color: #454545">
@@ -284,12 +386,27 @@
             </div>
         </div>
     </div>
+    <div class="st-actionContainer right-bottom">        
+        <div class="st-panel">
+            <div class="header">
+                New Message
+            </div>
+            <div class="content scrollbar-thin">
+                <div id="newmessagegrid" class="grid">
+                </div>
+            </div>
+        </div>
+        <div class="st-btn-container right-bottom">
+            <div class="st-button-main"><i class="fa fa-comment" aria-hidden="true"></i></div>
+        </div>
+    </div>
 </body>
 </html>
 
 <script type="text/javascript">
-    //let api = "http://phoebe.hms-cloud.com:8034";
+    var crmurl = "http://phoebe.hms-cloud.com:5555/MMTHQAS/main.aspx";
     let api = "https://phoebe.hms-cloud.com:4434";
+    let dbapi = "https://phoebe.hms-cloud.com:4430";
     const today = new Date();
     let effDTSTeamDashboardType;
 
@@ -298,6 +415,16 @@
 
         setCurrentDate();
         renderDashboard();
+        getNewMessage();
+
+        var intervalId = window.setInterval(function () {
+            renderDashboard();
+            getNewMessage();
+            parent.Xrm.Page.ui.controls.get("grid_dtscase").refresh();
+        }, 10000);
+        //clearInterval(intervalId)
+
+        $('st-actionContainer').launchBtn({ openDuration: 500, closeDuration: 300 });        
     });
 
     function renderDashboard() {
@@ -350,7 +477,7 @@
 
         $.ajax({
             type: 'POST',
-            url: api + '/api/cdf/post/total',
+            url: api + '/api/incident/post/total',
             data: formdata,
             contentType: false,
             processData: false,
@@ -385,23 +512,31 @@
 
         $.ajax({
             type: 'POST',
-            url: api + '/api/cdf/post/dailycase',
+            url: api + '/api/incident/post/dailycase',
             data: formdata,
             contentType: false,
             processData: false,
             async: false,
             success: function (result) {
                 rawdata.push(result.Header);
-
+                
                 for (var i = 0; i < result.Detail.length; i++) {
                     var temp = [];
                     var chartsdata = result.Detail[i];
-
+                    
                     temp.push(chartsdata.Subject);
 
                     for (var j = 0; j < chartsdata.Value.length; j++) {
                         temp.push(chartsdata.Value[j]);
                     }
+                    //if (chartsdata.Value.length > 0) {
+                    //    for (var j = 0; j < chartsdata.Value.length; j++) {
+                    //        temp.push(chartsdata.Value[j]);
+                    //    }
+                    //}
+                    //else {
+                    //    temp.push(0);
+                    //}
 
                     rawdata.push(temp);
                 }
@@ -410,7 +545,7 @@
                 rawdata.push(null);
             }
         });
-
+        
         var data = new google.visualization.arrayToDataTable(rawdata);
         drawColumnChart("barchart1", data);
     }
@@ -443,7 +578,7 @@
 
         $.ajax({
             type: 'POST',
-            url: api + '/api/cdf/post/effdtsteamweek',
+            url: api + '/api/incident/post/effdtsteamweek',
             data: formdata,
             contentType: false,
             processData: false,
@@ -486,7 +621,7 @@
 
         $.ajax({
             type: 'POST',
-            url: api + '/api/cdf/post/effdtsteammonth',
+            url: api + '/api/incident/post/effdtsteammonth',
             data: formdata,
             contentType: false,
             processData: false,
@@ -529,7 +664,7 @@
 
         $.ajax({
             type: 'POST',
-            url: api + '/api/cdf/post/effdtsteamyear',
+            url: api + '/api/incident/post/effdtsteamyear',
             data: formdata,
             contentType: false,
             processData: false,
@@ -572,7 +707,7 @@
 
         $.ajax({
             type: 'POST',
-            url: api + '/api/cdf/post/inchargecase',
+            url: api + '/api/incident/post/inchargecase',
             data: formdata,
             contentType: false,
             processData: false,
@@ -612,7 +747,7 @@
 
         $.ajax({
             type: 'POST',
-            url: api + '/api/cdf/post/categorycase',
+            url: api + '/api/incident/post/categorycase',
             data: formdata,
             contentType: false,
             processData: false,
@@ -647,7 +782,7 @@
 
         $.ajax({
             type: 'POST',
-            url: api + '/api/cdf/post/scramble',
+            url: api + '/api/incident/post/scramble',
             data: formdata,
             contentType: false,
             processData: false,
@@ -672,7 +807,7 @@
     function drawColumnChart(myid, data) {
         var view = new google.visualization.DataView(data);
         var viewColumns = [];
-
+        
         for (var i = 0; i < data.getNumberOfColumns(); i++) {
             addViewColumn(i);
         }
@@ -729,7 +864,7 @@
                 '#FCA481', '#aabf75',
             ]
         };
-
+        
         var chart = new google.visualization.ColumnChart(document.getElementById(myid));
         chart.draw(view, options);
     }
@@ -942,4 +1077,143 @@
             a.remove();
         });
     });
+
+    function getNewMessage() {        
+        $.ajax({
+            type: 'GET',
+            url: dbapi + '/api/message/get/unread/' + 2,
+            async: false,
+            success: function (result) {
+                var list = $("#newmessagegrid");
+
+                list.html(null);
+
+                $.each(result, function (index, item) {
+                    $.ajax({
+                        type: 'GET',
+                        url: api + '/api/incident/get/caseid/' + item.CaseId,
+                        async: false,
+                        success: function (data) {
+                            var entity = 'incident';
+                            var guid = ($(data)[0]).Id;
+                            var title = null;
+
+                            $.each(($(data)[0]).Attributes, function (index, item2) {
+                                if (item2.Key == 'title') {
+                                    title = item2.Value;
+                                    return false;
+                                }
+                            });
+
+                            var recordurl = crmurl + '?etn=' + entity +'&pagetype=entityrecord&id=' + guid;
+                            var mycase = '<a href="' + recordurl + '" target="_top" class="gridChild">' +
+                                '<div class="subject" style="float:left">' +
+                                title +
+                                '</div>' +
+                                '<div class="content" style="float:right">' +
+                                item.Count + ' ' +
+                                '<i class="fa fa-comment-o" aria-hidden="true"></i>' +
+                                '</div>' +
+                                '</a>';
+
+                            list.append(mycase);
+                        },
+                        error: function (xhr, status, error) {
+                            //alert(xhr.responseText);
+                            //alert(status);
+                            //alert(error);
+                        }
+                    });
+                });
+            },
+            error: function (xhr, status, error) {
+                //alert(xhr.responseText);
+                alert(status);
+                //alert(error);
+            }
+        });
+
+        if ($("#newmessagegrid .gridChild").length > 0) {
+            $('.st-actionContainer').show();
+        }
+        else {
+            $('.st-actionContainer').hide();
+        }
+    }
+
+    (function ($) {
+        'use strict';
+
+        $.fn.launchBtn = function (options) {
+            var mainBtn, panel, clicks, settings, launchPanelAnim, closePanelAnim, openPanel, boxClick;
+
+            mainBtn = $(".st-button-main");
+            panel = $(".st-panel");
+            clicks = 0;
+
+            //default settings
+            settings = $.extend({
+                openDuration: 600,
+                closeDuration: 200,
+                rotate: true
+            }, options);
+
+            //Open panel animation
+            launchPanelAnim = function () {
+                panel.animate({
+                    opacity: "toggle",
+                    height: "toggle"
+                }, settings.openDuration);
+            };
+
+            //Close panel animation
+            closePanelAnim = function () {
+                panel.animate({
+                    opacity: "hide",
+                    height: "hide"
+                }, settings.closeDuration);
+            };
+
+            //Open panel and rotate icon
+            openPanel = function (e) {
+                if (clicks === 0) {
+                    if (settings.rotate) {
+                        $(this).removeClass('rotateBackward').toggleClass('rotateForward');
+                    }
+
+                    launchPanelAnim();
+                    clicks++;
+                } else {
+                    if (settings.rotate) {
+                        $(this).removeClass('rotateForward').toggleClass('rotateBackward');
+                    }
+
+                    closePanelAnim();
+                    clicks--;
+                }
+                e.preventDefault();
+                return false;
+            };
+
+            //Allow clicking in panel
+            boxClick = function (e) {
+                e.stopPropagation();
+            };
+
+            //Main button click
+            mainBtn.on('click', openPanel);
+
+            //Prevent closing panel when clicking inside
+            panel.click(boxClick);
+
+            //Click away closes panel when clicked in document
+            $(document).click(function () {
+                closePanelAnim();
+                if (clicks === 1) {
+                    mainBtn.removeClass('rotateForward').toggleClass('rotateBackward');
+                }
+                clicks = 0;
+            });
+        };
+    }(jQuery));
 </script>

@@ -47,16 +47,8 @@ namespace CrmAPI2.Controller
             }
         }
 
-        [HttpGet]
-        public IHttpActionResult Get()
-        {
-            List<Entity> items = QueryEntityList("contact", "jobtitle", ConditionOperator.Equal, "หัวหน้าช่าง");
-
-            return Json(items);
-        }
-
         [HttpPost]
-        [Route("api/cdf/post/total")]
+        [Route("api/incident/post/total")]
         public IHttpActionResult GetTotal()
         {
             var js = new JavaScriptSerializer();
@@ -112,7 +104,7 @@ namespace CrmAPI2.Controller
         }
 
         [HttpPost]
-        [Route("api/cdf/post/dailycase")]
+        [Route("api/incident/post/dailycase")]
         public IHttpActionResult GetDailyCase()
         {
             var js = new JavaScriptSerializer();
@@ -132,57 +124,67 @@ namespace CrmAPI2.Controller
             submodel2.Subject = "Complete";
             submodel3.Subject = "On Process";
 
-            foreach (Entity entity in list)
+            if(list.Count() > 0)
             {
-                string name = ((EntityReference)entity["ownerid"]).Name;
-
-                if (!header.Contains(name))
+                foreach (Entity entity in list)
                 {
-                    header.Add(name);
+                    string name = ((EntityReference)entity["ownerid"]).Name;
 
-                    int pick = 0;
-                    int complete = 0;
-                    int process = 0;
-
-                    if (entity.Contains("hms_newsystemstatus"))
+                    if (!header.Contains(name))
                     {
-                        int value = ((OptionSetValue)(entity["hms_newsystemstatus"])).Value;
+                        header.Add(name);
 
-                        switch (value)
+                        int pick = 0;
+                        int complete = 0;
+                        int process = 0;
+
+                        if (entity.Contains("hms_newsystemstatus"))
                         {
-                            case 177980000: pick++; break;
-                            case 177980001: process++; break;
-                            case 177980002: process++; break;
-                            case 177980003: complete++; break;
-                            case 177980004: process++; break;
-                            case 177980005: complete++; break;
-                            case 177980006: complete++; break;
-                        };
-                    }
+                            int value = ((OptionSetValue)(entity["hms_newsystemstatus"])).Value;
 
-                    submodel1.Value.Add(pick);
-                    submodel2.Value.Add(complete);
-                    submodel3.Value.Add(process);
-                }
-                else
-                {
-                    if (entity.Contains("hms_newsystemstatus"))
+                            switch (value)
+                            {
+                                case 177980000: pick++; break;
+                                case 177980001: process++; break;
+                                case 177980002: process++; break;
+                                case 177980003: complete++; break;
+                                case 177980004: process++; break;
+                                case 177980005: complete++; break;
+                                case 177980006: complete++; break;
+                            };
+                        }
+
+                        submodel1.Value.Add(pick);
+                        submodel2.Value.Add(complete);
+                        submodel3.Value.Add(process);
+                    }
+                    else
                     {
-                        int index = header.FindIndex(o => o.Contains(name)) - 1;
-                        int value = ((OptionSetValue)(entity["hms_newsystemstatus"])).Value;
-
-                        switch (value)
+                        if (entity.Contains("hms_newsystemstatus"))
                         {
-                            case 177980000: submodel1.Value[index] += 1; break;
-                            case 177980001: submodel3.Value[index] += 1; break;
-                            case 177980002: submodel3.Value[index] += 1; break;
-                            case 177980003: submodel2.Value[index] += 1; break;
-                            case 177980004: submodel3.Value[index] += 1; break;
-                            case 177980005: submodel2.Value[index] += 1; break;
-                            case 177980006: submodel2.Value[index] += 1; break;
-                        };
+                            int index = header.FindIndex(o => o.Contains(name)) - 1;
+                            int value = ((OptionSetValue)(entity["hms_newsystemstatus"])).Value;
+
+                            switch (value)
+                            {
+                                case 177980000: submodel1.Value[index] += 1; break;
+                                case 177980001: submodel3.Value[index] += 1; break;
+                                case 177980002: submodel3.Value[index] += 1; break;
+                                case 177980003: submodel2.Value[index] += 1; break;
+                                case 177980004: submodel3.Value[index] += 1; break;
+                                case 177980005: submodel2.Value[index] += 1; break;
+                                case 177980006: submodel2.Value[index] += 1; break;
+                            };
+                        }
                     }
                 }
+            }
+            else
+            {
+                header.Add("N/A");
+                submodel1.Value.Add(0);
+                submodel2.Value.Add(0);
+                submodel3.Value.Add(0);
             }
 
             model.Header = header;
@@ -194,7 +196,7 @@ namespace CrmAPI2.Controller
         }
 
         [HttpPost]
-        [Route("api/cdf/post/effdtsteamweek")]
+        [Route("api/incident/post/effdtsteamweek")]
         public IHttpActionResult GetEfficiencyDTSTeamWeek()
         {
             var js = new JavaScriptSerializer();
@@ -226,12 +228,12 @@ namespace CrmAPI2.Controller
 
                 model.Detail.Insert(0, submodel);
             }
-            
+
             return Json(model);
         }
 
         [HttpPost]
-        [Route("api/cdf/post/effdtsteammonth")]
+        [Route("api/incident/post/effdtsteammonth")]
         public IHttpActionResult GetEfficiencyDTSTeamMonth()
         {
             var js = new JavaScriptSerializer();
@@ -268,7 +270,7 @@ namespace CrmAPI2.Controller
         }
 
         [HttpPost]
-        [Route("api/cdf/post/effdtsteamyear")]
+        [Route("api/incident/post/effdtsteamyear")]
         public IHttpActionResult GetEfficiencyDTSTeamYear()
         {
             var js = new JavaScriptSerializer();
@@ -304,16 +306,18 @@ namespace CrmAPI2.Controller
             return Json(model);
         }
 
-        private string GetDateOn(string type, int end, int start) {
+        private string GetDateOn(string type, int end, int start)
+        {
             switch (type)
             {
                 case "Week": return "Week " + (start / 7);
-                case "Month": {
+                case "Month":
+                    {
                         DateTime date = DateTime.Now.AddMonths(end * -1);
 
                         switch (date.Month)
                         {
-                            case 1 : return "JAN," + date.Year;
+                            case 1: return "JAN," + date.Year;
                             case 2: return "FEB," + date.Year;
                             case 3: return "MAR," + date.Year;
                             case 4: return "APL," + date.Year;
@@ -370,7 +374,7 @@ namespace CrmAPI2.Controller
         }
 
         [HttpPost]
-        [Route("api/cdf/post/inchargecase")]
+        [Route("api/incident/post/inchargecase")]
         public IHttpActionResult GetInChargeCase()
         {
             var js = new JavaScriptSerializer();
@@ -435,7 +439,7 @@ namespace CrmAPI2.Controller
         }
 
         [HttpPost]
-        [Route("api/cdf/post/categorycase")]
+        [Route("api/incident/post/categorycase")]
         public IHttpActionResult getCategoryCase()
         {
             var js = new JavaScriptSerializer();
@@ -451,13 +455,13 @@ namespace CrmAPI2.Controller
             model.Value.Add(new KeyValuePair<string, int>("Close case delay", 2));
             model.Value.Add(new KeyValuePair<string, int>("New problem & New car.", 4));
             model.Value.Add(new KeyValuePair<string, int>("Difficult investigation", 5));
-            model.Value.Add(new KeyValuePair<string, int>("Waiting data from DLR", 29));
+            model.Value.Add(new KeyValuePair<string, int>("Waiting data from DLR", 19));
 
             return Json(model);
         }
 
         [HttpPost]
-        [Route("api/cdf/post/scramble")]
+        [Route("api/incident/post/scramble")]
         public IHttpActionResult getScramble()
         {
             var js = new JavaScriptSerializer();
@@ -479,14 +483,37 @@ namespace CrmAPI2.Controller
                     Value = ((OptionSetValue)o["hms_lop"]).Value
                 })
                 .OrderBy(o => o.Value)
-                .GroupBy(o => o.Text);                
+                .GroupBy(o => o.Text);
 
-            foreach (var group in levelgroups)
+            if (levelgroups.Count() > 0)
             {
-                model.Value.Add(new KeyValuePair<string, int>(group.Key, group.Count()));
+                foreach (var group in levelgroups)
+                {
+                    model.Value.Add(new KeyValuePair<string, int>(group.Key, group.Count()));
+                }
+            }
+            else
+            {
+                model.Value.Add(new KeyValuePair<string, int>("N/A", 0));
             }
 
             return Json(model);
+        }
+
+        [HttpGet]
+        [Route("api/incident/get/caseid/{caseid}")]
+        public IHttpActionResult GetCaseByCaseId(string caseid)
+        {
+            List<Entity> list = QueryEntityList("incident", "hms_rocaseid", ConditionOperator.Equal, caseid);
+
+            if (list.Count() > 0)
+            {
+                return Json(list[0]);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////

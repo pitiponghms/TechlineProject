@@ -106,6 +106,12 @@ namespace TechLineCaseAPI.Model
         public string StatusCode { get; set; }
     }
 
+    public class CaseUnreadMessageModel
+    {
+        public int? CaseId { get; set; }
+        public int Count { get; set; }
+    }
+
     public class ROCaseModel
     {
         public int? Id { get; set; }
