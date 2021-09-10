@@ -1,0 +1,1012 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSourceCRM">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString>Data Source=phoebe.hms-cloud.com\MSCRM;Initial Catalog=MMTHQAS_MSCRM</ConnectString>
+        <Prompt>Specify a user name and password for data source DataSourceCRM:</Prompt>
+      </ConnectionProperties>
+      <rd:SecurityType>DataBase</rd:SecurityType>
+      <rd:DataSourceID>bcfc97c3-d1ef-481a-96a2-71e20c2f232c</rd:DataSourceID>
+    </DataSource>
+    <DataSource Name="DataSourceMMTHAPI">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString>Data Source=phoebe.hms-cloud.com;Initial Catalog=mmthapi</ConnectString>
+        <Prompt>Specify a user name and password for data source DataSourceMMTHAPI:</Prompt>
+      </ConnectionProperties>
+      <rd:SecurityType>DataBase</rd:SecurityType>
+      <rd:DataSourceID>351c0006-16eb-4228-bafe-cfe18dd08edc</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_AssessmentForm">
+      <Query>
+        <DataSourceName>DataSourceMMTHAPI</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@DealerCode">
+            <Value>=Parameters!DealerCode.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@ReportType">
+            <Value>=Parameters!ReportType.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@DateFrom">
+            <Value>=Parameters!DateFrom.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@DateTo">
+            <Value>=Parameters!DateTo.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT ROW_NUMBER() OVER (ORDER BY aform.groupno,aform.seqno) as rowno, 
+aform.groupno, aform.seqno, aform.choicevalue, 
+formmaster.subject ,SUM(aform.choicevalue) as total
+FROM assessmentform aform
+	LEFT OUTER JOIN assessmentform_master formmaster 
+	ON aform.assessmentform_type = formmaster.assessmentform_type
+	AND aform.groupno = formmaster.groupno
+	AND aform.seqno = formmaster.seqno
+LEFT OUTER JOIN ro_case rocase ON aform.ro_caseid = rocase.id
+WHERE 1=1
+	AND aform.groupno is not null
+	AND aform.choicevalue is not null
+	AND aform.assessmentform_type = @ReportType
+	AND rocase.DEALER = @DealerCode
+	AND (
+		aform.CREATED_ON is null
+		OR
+		CAST(aform.CREATED_ON as date) BETWEEN CAST(@DateFrom as date) AND CAST(@DateTo as date)
+	)
+GROUP BY aform.groupno,aform.seqno,aform.choicevalue, formmaster.subject
+ORDER BY aform.groupno,aform.seqno</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="subject">
+          <DataField>subject</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="rowno">
+          <DataField>rowno</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="groupno">
+          <DataField>groupno</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="seqno">
+          <DataField>seqno</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="choicevalue">
+          <DataField>choicevalue</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="total">
+          <DataField>total</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet_Dealer">
+      <Query>
+        <DataSourceName>DataSourceCRM</DataSourceName>
+        <CommandText>SELECT DISTINCT	hms_code,hms_accountname, hms_code + ' : ' + isnull(hms_accountname, '') as name
+FROM account
+WHERE hms_code is not null
+ORDER BY hms_code</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="hms_accountname">
+          <DataField>hms_accountname</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="hms_code">
+          <DataField>hms_code</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="name">
+          <DataField>name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet_Comment">
+      <Query>
+        <DataSourceName>DataSourceMMTHAPI</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@DateFrom">
+            <Value>=Parameters!DateFrom.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@DateTo">
+            <Value>=Parameters!DateTo.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT aform.message
+FROM assessmentform aform
+LEFT OUTER JOIN ro_case rocase ON aform.ro_caseid = rocase.id
+WHERE 1=1
+AND aform.groupno is null
+AND aform.message is not null
+AND aform.iscomment = 1
+AND (
+	aform.CREATED_ON is null
+	OR
+	CAST(aform.CREATED_ON as date) BETWEEN CAST(@DateFrom as date) AND CAST(@DateTo as date)
+)</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="message">
+          <DataField>message</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="Tablix1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>4.77132cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>9.19889cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>5.52979cm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox3">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Parameters!ReportType.Label</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox3</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <rd:Selected>true</rd:Selected>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox5">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Parameters!DealerCode.Label</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox5</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <rd:Selected>true</rd:Selected>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox7">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=
+DAY(Parameters!DateFrom.Value) &amp; " " &amp;
+SWITCH(
+	MONTH(Parameters!DateFrom.Value) = 1, "มกราคม",
+	MONTH(Parameters!DateFrom.Value) = 2, "กุมภาพันธ์",
+	MONTH(Parameters!DateFrom.Value) = 3, "มีนาคม",
+	MONTH(Parameters!DateFrom.Value) = 4, "เมษายน",
+	MONTH(Parameters!DateFrom.Value) = 5, "พฤษภาคม",
+	MONTH(Parameters!DateFrom.Value) = 6, "มิถุนายน",
+	MONTH(Parameters!DateFrom.Value) = 7, "กรกฏาคม",
+	MONTH(Parameters!DateFrom.Value) = 8, "สิงหาคม",
+	MONTH(Parameters!DateFrom.Value) = 9, "กันยายน",
+	MONTH(Parameters!DateFrom.Value) = 10, "ตุลาคม",
+	MONTH(Parameters!DateFrom.Value) = 11, "พฤศจิกายน",
+	MONTH(Parameters!DateFrom.Value) = 12, "ธันวาคม"
+)
+&amp; " " &amp;
+(YEAR(Parameters!DateFrom.Value)+543)</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> - </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=
+DAY(Parameters!DateTo.Value) &amp; " " &amp;
+SWITCH(
+	MONTH(Parameters!DateTo.Value) = 1, "มกราคม",
+	MONTH(Parameters!DateTo.Value) = 2, "กุมภาพันธ์",
+	MONTH(Parameters!DateTo.Value) = 3, "มีนาคม",
+	MONTH(Parameters!DateTo.Value) = 4, "เมษายน",
+	MONTH(Parameters!DateTo.Value) = 5, "พฤษภาคม",
+	MONTH(Parameters!DateTo.Value) = 6, "มิถุนายน",
+	MONTH(Parameters!DateTo.Value) = 7, "กรกฏาคม",
+	MONTH(Parameters!DateTo.Value) = 8, "สิงหาคม",
+	MONTH(Parameters!DateTo.Value) = 9, "กันยายน",
+	MONTH(Parameters!DateTo.Value) = 10, "ตุลาคม",
+	MONTH(Parameters!DateTo.Value) = 11, "พฤศจิกายน",
+	MONTH(Parameters!DateTo.Value) = 12, "ธันวาคม"
+)
+&amp; " " &amp;
+(YEAR(Parameters!DateTo.Value)+543)</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox7</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>DataSet_Dealer</DataSetName>
+            <Top>0.17639cm</Top>
+            <Left>0.76412cm</Left>
+            <Height>0.6cm</Height>
+            <Width>19.5cm</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+          <Tablix Name="Tablix2">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>2cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>17.5cm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox10">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=RowNumber(nothing)</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="message">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!message.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>message</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>DataSet_Comment</DataSetName>
+            <Top>11.7962cm</Top>
+            <Left>0.76412cm</Left>
+            <Height>0.6cm</Height>
+            <Width>19.5cm</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+          <Chart Name="Chart1">
+            <ChartCategoryHierarchy>
+              <ChartMembers>
+                <ChartMember>
+                  <Group Name="Chart1_CategoryGroup1">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!rowno.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!rowno.Value</Value>
+                    </SortExpression>
+                  </SortExpressions>
+                  <ChartMembers>
+                    <ChartMember>
+                      <Group Name="Chart1_CategoryGroup">
+                        <GroupExpressions>
+                          <GroupExpression>=Fields!groupno.Value</GroupExpression>
+                          <GroupExpression>=Fields!seqno.Value</GroupExpression>
+                        </GroupExpressions>
+                      </Group>
+                      <SortExpressions>
+                        <SortExpression>
+                          <Value>=Fields!groupno.Value</Value>
+                        </SortExpression>
+                        <SortExpression>
+                          <Value>=Fields!seqno.Value</Value>
+                        </SortExpression>
+                      </SortExpressions>
+                      <Label>=Fields!subject.Value</Label>
+                    </ChartMember>
+                  </ChartMembers>
+                  <Label>=Fields!rowno.Value</Label>
+                </ChartMember>
+              </ChartMembers>
+            </ChartCategoryHierarchy>
+            <ChartSeriesHierarchy>
+              <ChartMembers>
+                <ChartMember>
+                  <Group Name="Chart1_SeriesGroup">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!choicevalue.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!choicevalue.Value</Value>
+                      <Direction>Descending</Direction>
+                    </SortExpression>
+                  </SortExpressions>
+                  <Label>=
+SWITCH(
+Fields!choicevalue.Value=1, "ระดับความพึงพอใจ น้อย",
+Fields!choicevalue.Value=2, "ระดับความพึงพอใจ ปานกลาง",
+Fields!choicevalue.Value=3, "ระดับความพึงพอใจ  มาก"
+)</Label>
+                </ChartMember>
+              </ChartMembers>
+            </ChartSeriesHierarchy>
+            <ChartData>
+              <ChartSeriesCollection>
+                <ChartSeries Name="total">
+                  <ChartDataPoints>
+                    <ChartDataPoint>
+                      <ChartDataPointValues>
+                        <Y>=Sum(Fields!total.Value)</Y>
+                      </ChartDataPointValues>
+                      <ChartDataLabel>
+                        <Style>
+                          <FontSize>8pt</FontSize>
+                        </Style>
+                        <UseValueAsLabel>true</UseValueAsLabel>
+                        <Visible>true</Visible>
+                      </ChartDataLabel>
+                      <Style />
+                      <ChartMarker>
+                        <Style />
+                      </ChartMarker>
+                      <DataElementOutput>Output</DataElementOutput>
+                    </ChartDataPoint>
+                  </ChartDataPoints>
+                  <Style />
+                  <ChartEmptyPoints>
+                    <Style />
+                    <ChartMarker>
+                      <Style />
+                    </ChartMarker>
+                    <ChartDataLabel>
+                      <Style />
+                    </ChartDataLabel>
+                  </ChartEmptyPoints>
+                  <ValueAxisName>Primary</ValueAxisName>
+                  <CategoryAxisName>Primary</CategoryAxisName>
+                  <ChartSmartLabel>
+                    <CalloutLineColor>Black</CalloutLineColor>
+                    <MinMovingDistance>0pt</MinMovingDistance>
+                  </ChartSmartLabel>
+                </ChartSeries>
+              </ChartSeriesCollection>
+            </ChartData>
+            <ChartAreas>
+              <ChartArea Name="Default">
+                <ChartCategoryAxes>
+                  <ChartAxis Name="Primary">
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption />
+                      <Style>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </ChartAxisTitle>
+                    <ChartMajorGridLines>
+                      <Enabled>False</Enabled>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                      <IntervalOffset>0.5</IntervalOffset>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Enabled>False</Enabled>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                      <Length>3</Length>
+                      <IntervalOffset>0.5</IntervalOffset>
+                    </ChartMajorTickMarks>
+                    <ChartMinorTickMarks>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <MinFontSize>8pt</MinFontSize>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                  <ChartAxis Name="Secondary">
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption>Axis Title</Caption>
+                      <Style>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </ChartAxisTitle>
+                    <ChartMajorGridLines>
+                      <Enabled>False</Enabled>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMinorTickMarks>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Location>Opposite</Location>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                </ChartCategoryAxes>
+                <ChartValueAxes>
+                  <ChartAxis Name="Primary">
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption>ความถี่</Caption>
+                      <Style>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </ChartAxisTitle>
+                    <Interval>10</Interval>
+                    <ChartMajorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMinorTickMarks>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                  <ChartAxis Name="Secondary">
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption>Axis Title</Caption>
+                      <Style>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </ChartAxisTitle>
+                    <ChartMajorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMinorTickMarks>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Location>Opposite</Location>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                </ChartValueAxes>
+                <Style>
+                  <BackgroundGradientType>None</BackgroundGradientType>
+                </Style>
+              </ChartArea>
+            </ChartAreas>
+            <ChartLegends>
+              <ChartLegend Name="Default">
+                <Style>
+                  <BackgroundGradientType>None</BackgroundGradientType>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <Position>BottomCenter</Position>
+                <ChartLegendTitle>
+                  <Caption />
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </ChartLegendTitle>
+                <HeaderSeparatorColor>Black</HeaderSeparatorColor>
+                <ColumnSeparatorColor>Black</ColumnSeparatorColor>
+              </ChartLegend>
+            </ChartLegends>
+            <ChartTitles>
+              <ChartTitle Name="Default">
+                <Caption>Chart Title</Caption>
+                <Hidden>true</Hidden>
+                <Style>
+                  <BackgroundGradientType>None</BackgroundGradientType>
+                  <FontWeight>Bold</FontWeight>
+                  <TextAlign>General</TextAlign>
+                  <VerticalAlign>Top</VerticalAlign>
+                </Style>
+              </ChartTitle>
+            </ChartTitles>
+            <Palette>BrightPastel</Palette>
+            <ChartBorderSkin>
+              <Style>
+                <BackgroundColor>Gray</BackgroundColor>
+                <BackgroundGradientType>None</BackgroundGradientType>
+                <Color>White</Color>
+              </Style>
+            </ChartBorderSkin>
+            <ChartNoDataMessage Name="NoDataMessage">
+              <Caption>No Data Available</Caption>
+              <Style>
+                <BackgroundGradientType>None</BackgroundGradientType>
+                <TextAlign>General</TextAlign>
+                <VerticalAlign>Top</VerticalAlign>
+              </Style>
+            </ChartNoDataMessage>
+            <DataSetName>DataSet_AssessmentForm</DataSetName>
+            <Top>0.95278cm</Top>
+            <Left>0.76412cm</Left>
+            <Height>10.40245cm</Height>
+            <Width>19.5cm</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Color>LightGrey</Color>
+                <Style>Solid</Style>
+              </Border>
+              <BackgroundColor>White</BackgroundColor>
+              <BackgroundGradientType>None</BackgroundGradientType>
+            </Style>
+          </Chart>
+        </ReportItems>
+        <Height>15.5cm</Height>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Body>
+      <Width>21cm</Width>
+      <Page>
+        <PageHeader>
+          <Height>2.25cm</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="ReportTitle">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>MITSUBISHI MOTORS (THAILAND) CO.,LTD.</Value>
+                      <Style>
+                        <FontSize>20pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>INVESTIGATION REPORT</Value>
+                      <Style>
+                        <FontSize>20pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:WatermarkTextbox>Title</rd:WatermarkTextbox>
+              <rd:DefaultName>ReportTitle</rd:DefaultName>
+              <Top>2.73611mm</Top>
+              <Left>3.26412cm</Left>
+              <Height>1.8cm</Height>
+              <Width>17cm</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Image Name="Image2">
+              <Source>Embedded</Source>
+              <Value>MitsuLogo</Value>
+              <Sizing>FitProportional</Sizing>
+              <Top>0.27361cm</Top>
+              <Left>0.76412cm</Left>
+              <Height>1.8cm</Height>
+              <Width>2cm</Width>
+              <ZIndex>1</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Image>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageHeader>
+        <PageFooter>
+          <Height>10mm</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="ExecutionTime">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Globals!PageNumber &amp; " / " &amp; Globals!TotalPages</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>ExecutionTime</rd:DefaultName>
+              <Top>1.76389mm</Top>
+              <Left>162.64117mm</Left>
+              <Height>6.35mm</Height>
+              <Width>40mm</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
+        <PageHeight>29.7cm</PageHeight>
+        <PageWidth>21cm</PageWidth>
+        <LeftMargin>2cm</LeftMargin>
+        <RightMargin>2cm</RightMargin>
+        <TopMargin>2cm</TopMargin>
+        <BottomMargin>2cm</BottomMargin>
+        <ColumnSpacing>0.13cm</ColumnSpacing>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="DealerCode">
+      <DataType>String</DataType>
+      <Prompt>Dealer</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>DataSet_Dealer</DataSetName>
+          <ValueField>hms_code</ValueField>
+          <LabelField>name</LabelField>
+        </DataSetReference>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="ReportType">
+      <DataType>String</DataType>
+      <Prompt>Report</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>TL_DL_Rev01</Value>
+            <Label>TL ประเมิณ DL.</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>DL_TL_Rev01</Value>
+            <Label>TL ประเมิน DL. (TL ขอข้อมูลเพิ่ม)</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Scramble_TL_Rev01</Value>
+            <Label>Scramble ประเมิน </Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>DL_Scramble_Rev01</Value>
+            <Label>Scramble ประเมิน DL.</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="DateFrom">
+      <DataType>DateTime</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>=DateSerial(Year(Now), Month(Now), 1)</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Date From</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DateTo">
+      <DataType>DateTime</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>=CDate(Today())</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Date To</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <EmbeddedImages>
+    <EmbeddedImage Name="MitsuLogo">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>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</ImageData>
+    </EmbeddedImage>
+  </EmbeddedImages>
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
+  <rd:ReportID>7bc5a087-c80d-44d9-b117-058a8ab96ff5</rd:ReportID>
+</Report>
