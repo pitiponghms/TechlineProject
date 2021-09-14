@@ -218,7 +218,6 @@ AND (
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -251,7 +250,6 @@ AND (
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -961,19 +959,19 @@ Fields!choicevalue.Value=3, "ระดับความพึงพอใจ  �
         <ParameterValues>
           <ParameterValue>
             <Value>TL_DL_Rev01</Value>
-            <Label>TL ประเมิณ DL.</Label>
+            <Label>แบบประเมิน Tech-line ประเมิน Dealer</Label>
           </ParameterValue>
           <ParameterValue>
             <Value>DL_TL_Rev01</Value>
-            <Label>TL ประเมิน DL. (TL ขอข้อมูลเพิ่ม)</Label>
+            <Label>แบบประเมินความความพึงพอใจในการให้บริการ Tech-line</Label>
           </ParameterValue>
           <ParameterValue>
             <Value>Scramble_TL_Rev01</Value>
-            <Label>Scramble ประเมิน </Label>
+            <Label>แบบประเมิน Scramble ประเมิน Dealer</Label>
           </ParameterValue>
           <ParameterValue>
             <Value>DL_Scramble_Rev01</Value>
-            <Label>Scramble ประเมิน DL.</Label>
+            <Label>แบบประเมินความความพึงพอใจในการให้บริการ Scramble</Label>
           </ParameterValue>
         </ParameterValues>
       </ValidValues>
