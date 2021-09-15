@@ -2,28 +2,43 @@
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="DataSourceMMTHAPI">
+    <DataSource Name="DataSource_CRM">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=phoebe.hms-cloud.com;Initial Catalog=mmthapi</ConnectString>
-        <Prompt>Specify a user name and password for data source DataSource:</Prompt>
+        <ConnectString>Data Source=phoebe.hms-cloud.com\MSCRM;Initial Catalog=MMTHQAS_MSCRM</ConnectString>
+        <Prompt>Specify a user name and password for data source DataSource_CRM:</Prompt>
       </ConnectionProperties>
       <rd:SecurityType>DataBase</rd:SecurityType>
       <rd:DataSourceID>bcfc97c3-d1ef-481a-96a2-71e20c2f232c</rd:DataSourceID>
     </DataSource>
-    <DataSource Name="DataSourceCRM">
+    <DataSource Name="DataSource_MMTHAPI">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=phoebe.hms-cloud.com\MSCRM;Initial Catalog=MMTHQAS_MSCRM</ConnectString>
+        <ConnectString>Data Source=phoebe.hms-cloud.com;Initial Catalog=mmthapi</ConnectString>
+        <Prompt>Specify a user name and password for data source DataSource_MMTHAPI:</Prompt>
       </ConnectionProperties>
       <rd:SecurityType>DataBase</rd:SecurityType>
-      <rd:DataSourceID>53966327-4aa3-4e8c-b277-fe31bc251c8b</rd:DataSourceID>
+      <rd:DataSourceID>29e16f78-ab07-458c-a8d0-145d85b1bea7</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DataSet">
+    <DataSet Name="DS_Case">
       <Query>
-        <DataSourceName>DataSourceMMTHAPI</DataSourceName>
+        <DataSourceName>DataSource_CRM</DataSourceName>
+        <CommandText>SELECT hms_rocaseid
+FROM FilteredIncident AS CRMAF_FilteredIncident</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="hms_rocaseid">
+          <DataField>hms_rocaseid</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DS_AssessmentForm">
+      <Query>
+        <DataSourceName>DataSource_MMTHAPI</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@ReportType">
             <Value>=Parameters!ReportType.Value</Value>
@@ -63,7 +78,6 @@ BEGIN
 	FROM [assessmentform_master]
 	WHERE [assessmentform_type] = @ReportType
 END</CommandText>
-        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="id">
@@ -172,9 +186,9 @@ END</CommandText>
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="DataSet_Comment">
+    <DataSet Name="DS_Comment">
       <Query>
-        <DataSourceName>DataSourceMMTHAPI</DataSourceName>
+        <DataSourceName>DataSource_MMTHAPI</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@ReportType">
             <Value>=Parameters!ReportType.Value</Value>
@@ -194,19 +208,6 @@ AND [ro_caseid] = @CaseId</CommandText>
       <Fields>
         <Field Name="message">
           <DataField>message</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="DataSet_CRM">
-      <Query>
-        <DataSourceName>DataSourceCRM</DataSourceName>
-        <CommandText>SELECT hms_rocaseid
-FROM FilteredIncident AS CRMAF_FilteredIncident</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="hms_rocaseid">
-          <DataField>hms_rocaseid</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -237,8 +238,8 @@ FROM FilteredIncident AS CRMAF_FilteredIncident</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>0.03528cm</Top>
-            <Left>0.76412cm</Left>
+            <Top>0.10904cm</Top>
+            <Left>0.75cm</Left>
             <Height>0.95278cm</Height>
             <Width>28.5cm</Width>
             <Style>
@@ -1788,9 +1789,9 @@ IsNothing(Fields!assessmentform_type.Value)= False AND Fields!assessmentform_typ
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>DataSet</DataSetName>
-            <Top>1.16444cm</Top>
-            <Left>0.76412cm</Left>
+            <DataSetName>DS_AssessmentForm</DataSetName>
+            <Top>1.2382cm</Top>
+            <Left>0.75cm</Left>
             <Height>4.6cm</Height>
             <Width>28.5cm</Width>
             <ZIndex>1</ZIndex>
@@ -1902,8 +1903,8 @@ IsNothing(Fields!assessmentform_type.Value)= False AND Fields!assessmentform_typ
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>DataSet_Comment</DataSetName>
-            <Top>6.23187cm</Top>
+            <DataSetName>DS_Comment</DataSetName>
+            <Top>6.16222cm</Top>
             <Left>0.76412cm</Left>
             <Height>2.54056cm</Height>
             <Width>28.5cm</Width>
@@ -1963,7 +1964,7 @@ IsNothing(Fields!assessmentform_type.Value)= False AND Fields!assessmentform_typ
               <Top>2.73611mm</Top>
               <Left>3.26412cm</Left>
               <Height>1.8cm</Height>
-              <Width>25.73125cm</Width>
+              <Width>25.98588cm</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2019,7 +2020,7 @@ IsNothing(Fields!assessmentform_type.Value)= False AND Fields!assessmentform_typ
               </Paragraphs>
               <rd:DefaultName>ExecutionTime</rd:DefaultName>
               <Top>1.76389mm</Top>
-              <Left>252.6412mm</Left>
+              <Left>252.5mm</Left>
               <Height>6.35mm</Height>
               <Width>40mm</Width>
               <Style>
@@ -2053,11 +2054,6 @@ IsNothing(Fields!assessmentform_type.Value)= False AND Fields!assessmentform_typ
   <ReportParameters>
     <ReportParameter Name="ReportType">
       <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>TL_DL_Rev01</Value>
-        </Values>
-      </DefaultValue>
       <Prompt>Report Type</Prompt>
       <ValidValues>
         <ParameterValues>
@@ -2083,14 +2079,15 @@ IsNothing(Fields!assessmentform_type.Value)= False AND Fields!assessmentform_typ
     <ReportParameter Name="CaseId">
       <DataType>String</DataType>
       <DefaultValue>
-        <Values>
-          <Value>100046</Value>
-        </Values>
+        <DataSetReference>
+          <DataSetName>DS_Case</DataSetName>
+          <ValueField>hms_rocaseid</ValueField>
+        </DataSetReference>
       </DefaultValue>
-      <Prompt>CaseId</Prompt>
+      <Hidden>true</Hidden>
       <ValidValues>
         <DataSetReference>
-          <DataSetName>DataSet_CRM</DataSetName>
+          <DataSetName>DS_Case</DataSetName>
           <ValueField>hms_rocaseid</ValueField>
           <LabelField>hms_rocaseid</LabelField>
         </DataSetReference>
@@ -2105,18 +2102,6 @@ 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</ImageData>
-    </EmbeddedImage>
-    <EmbeddedImage Name="uncheck">
-      <MIMEType>image/png</MIMEType>
-      <ImageData>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAA5mAAAOZgFdzmCVAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAACpQTFRF////AAAAAAAHBAAEAwADAwAFAgAFAwIDAwEEAgEEAwEEAwEEAwEEAwEECHTQHQAAAA10Uk5TABskQFhlcJPL0+jy+x8W1TYAAAAtSURBVAhbY2CqvgsE2xUYOFtdgCBiAoONAAMQMB5myGIAg2XUZ8CtgFsKcwYAonEbXRK8/00AAAAASUVORK5CYII=</ImageData>
-    </EmbeddedImage>
-    <EmbeddedImage Name="uncheck2">
-      <MIMEType>image/png</MIMEType>
-      <ImageData>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAbwAAAG8B8aLcQwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAB9SURBVDiN7dOxDcJAEETRt5ZDQwUuAzogdU0WXdAAZRCTUIRr4MiX5BIy+whIGGmkTf6XNhgYcUFBrmypzBj1OOCMp3XZY8ZDtU2ZaUsxoXQYqmRrCoauAfzIX/BjwYJb30pn5oLTVy9ERN/hhV0DfMS9xxVzRNA4pq/m/AYaUFHP293egQAAAABJRU5ErkJggg==</ImageData>
-    </EmbeddedImage>
-    <EmbeddedImage Name="checkbox">
-      <MIMEType>image/png</MIMEType>
-      <ImageData>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAWQAAAFkBqp2phgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAADrSURBVDiNpdOhSkRREMbx31wWBVm0GDcYxGJVm6BgXbsmo89gWbYKYvUFRLFarSZ9BYvFYBC8SUTH4BF2ZWX3rgMD55w53z98MwMdnKFGTph10XSiHNbQx6vJYh493Cu0bmZqkuiirtAukKZRo101VUVEOyLi594IEBE7eMFiY0BELOMKJ5n53AgQEQu4xi2OBmvVr4+zI8QVLvCB/cz8/BOAh4g4HTQJx9jAbmaO7FZiq/R207dJl5jBAd6xPWIOlnAzBCiFVTziCW84HDNQw4DyOIc9rIwRt5h+lNdx18I5esW3qZbpX+v8BbRC2OWpLPmMAAAAAElFTkSuQmCC</ImageData>
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
