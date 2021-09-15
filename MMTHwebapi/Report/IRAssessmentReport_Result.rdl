@@ -47,7 +47,7 @@ FROM FilteredIncident AS CRMAF_FilteredIncident</CommandText>
             <Value>=Parameters!CaseId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>IF EXISTS(SELECT * FROM vAssessmentForm v WHERE v.[assessmentform_type] = @ReportType)
+        <CommandText>IF EXISTS(SELECT * FROM vAssessmentForm v WHERE v.[assessmentform_type] = @ReportType AND [ro_caseid] = @CaseId)
 BEGIN
 	-- Header --
 	SELECT	mymaster.id AS id, myform.ro_caseid, myform.choicevalue, myform.message, myform.iscomment, 
