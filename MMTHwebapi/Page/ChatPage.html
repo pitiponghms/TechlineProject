@@ -202,6 +202,10 @@
             -o-transition: all .5s ease;
         }
 
+        .timelap {
+            color: teal;
+        }
+
         ul.chat {
             padding: 0px 10px 0px 10px;
         }
@@ -240,7 +244,7 @@
     </style>
 </head>
 <body style="overflow-wrap: break-word;">
-    <div id="loader" class="loader"></div>
+    <!--<div id="loader" class="loader"></div>-->
     <div id="container" class="container bootstrap snippets bootdey">
         <div class="row">
             <div class="col-md-12 bg-white">
@@ -262,7 +266,7 @@
                                 <i class="fa fa-send"></i>
                             </button>
                         </span>
-                    </div><!-- /input-group -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -270,20 +274,14 @@
 
 
     <script type="text/javascript">
-        //let api = "http://phoebe.hms-cloud.com:8033/api";
-
-        //let api = "https://10.146.138.166:44300/api";
-        //alert(window.opener);
-        //alert(window.opener.Xrm);
-        //alert(window.opener.Xrm.Page);
-
-        let caseid = window.opener.Xrm.Page.getAttribute("hms_rocaseid").getValue();
-        //alert(caseid);
-
         let api = "https://phoebe.hms-cloud.com:4430/api";
-        //let caseid = 100001;
-
+        let caseid = window.opener.Xrm.Page.getAttribute("hms_rocaseid").getValue();
+        //let caseid = 100046;
+        
         let userid = 2;
+
+        var usericon = "http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_img_user1";
+        var someoneicon = "http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_img_user2";
 
         $(document).ready(function () {
             renderDisplay();
@@ -300,7 +298,7 @@
 
         function renderDisplay() {
             showLoader(true);
-
+            
             $.ajax({
                 type: 'GET',
                 url: api + '/message/get/' + caseid,
@@ -308,19 +306,18 @@
                 success: function (result) {
                     var isunread = false;
                     var unreadindex = 0;
+                    var previoustime = null;
 
                     $(".chat").empty();
 
-                    $.each(result, function (index, item) {
-                        var usericon = "http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_img_user1";
-                        var someoneicon = "http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_img_user2";
-
+                    $.each(result, function (index, item) {                        
                         var usermsg =
                             '<li class="right clearfix">' +
                             //'<span class="chat-img pull-right">' +
                             '<span class="chat-img pull-right">' +
                             '<img src="' + usericon + '" alt="User Avatar">' +
                             '</span>' +
+                            '<small class="pull-left content timelap">' + " " + getMsgDiffDate(previoustime, item.CREATED_ON) + '</small>' +
                             '<div class="chat-body clearfix">' +
                             '<div class="header">' +
                             '<strong class="primary-font" style="color: DarkTurquoise">' + item.sender_name + '</strong>' +
@@ -337,6 +334,7 @@
                             '<span class="chat-img pull-left">' +
                             '<img src="' + someoneicon + '" alt="User Avatar">' +
                             '</span>' +
+                            '<small class="pull-right content timelap">' + " " + getMsgDiffDate(previoustime, item.CREATED_ON) + '</small>' +
                             '<div class="chat-body clearfix">' +
                             '<div class="header">' +
                             '<strong class="primary-font" style="color: orangered">' + item.sender_name + '</strong>' +
@@ -348,11 +346,13 @@
                             '</div > ' +
                             '</li>';
 
+                        previoustime = item.CREATED_ON;
+
                         var delimiter =
                             '<li class="clearfix">' +
                             '<div id="separator" class="separator"> unread message </div>' +
                             '</li>';
-
+                        
                         if (item.sender_id != userid && item.isread == false && !isunread) {
                             isunread = true;
                             unreadindex = index;
@@ -424,6 +424,39 @@
             var mydate = new Date(datetime);
             return pad(mydate.getDate(), 2) + "/" + pad(mydate.getMonth(), 2) + "/" + pad(mydate.getFullYear(), 4) +
                 "   " + pad(mydate.getHours(), 2) + ":" + pad(mydate.getMinutes(), 2);
+        }
+
+        function getMsgDiffDate(datestart, dateend) {
+            if (datestart != null && dateend != null) {
+                var day = getDiffDate("Day", datestart, dateend);
+                if (day > 0) {
+                    return day + " day(s) ago";
+                }
+
+                var hour = getDiffDate("Hour", datestart, dateend);
+                if (hour > 0) {
+                    return hour + " hour(s) ago";
+                }
+
+                var minute = getDiffDate("Minute", datestart, dateend);
+                if (minute > 0) {
+                    return minute + " minute(s) ago";
+                }
+            }
+
+            return "";
+        }
+
+        function getDiffDate(mycase, datestart, dateend) {
+            var mydatestart = new Date(datestart);
+            var mydateend = new Date(dateend);
+            const diffTime = mydateend.getTime() - mydatestart.getTime(); //Math.abs(mydateend - mydatestart);
+
+            switch (mycase) {
+                case "Day": return Math.round(diffTime / (1000 * 60 * 60 * 24));
+                case "Hour": return Math.round(diffTime / (1000 * 60 * 60)) % 24;
+                case "Minute": return Math.round(diffTime / (1000 * 60)) % (24 * 60);
+            }
         }
 
         function pad(n, width, z) {
