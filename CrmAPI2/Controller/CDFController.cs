@@ -221,12 +221,15 @@ namespace CrmAPI2.Controller
             for (int i = 0; i < 4; i++)
             {
                 ChartCaseSubModel submodel = new ChartCaseSubModel();
-                submodel.Subject = GetDateOn("Week", i * 7, (i + 1) * 7);
-                submodel.Value.Add(techLinelist.Where(o => IsWeekOn(o["createdon"], i * 7, (i + 1) * 7)).Count());
-                submodel.Value.Add(scramblelist.Where(o => IsWeekOn(o["createdon"], i * 7, (i + 1) * 7)).Count());
-                submodel.Value.Add(dealerlist.Where(o => IsWeekOn(o["createdon"], i * 7, (i + 1) * 7)).Count());
+                var datesource = mymodel.DateFrom;
 
-                model.Detail.Insert(0, submodel);
+                submodel.Subject = GetDateOn("Week", datesource, i * 7, (i + 1) * 7);
+                submodel.Value.Add(techLinelist.Where(o => IsWeekOn(datesource, o["createdon"], i * 7, (i + 1) * 7)).Count());
+                submodel.Value.Add(scramblelist.Where(o => IsWeekOn(datesource, o["createdon"], i * 7, (i + 1) * 7)).Count());
+                submodel.Value.Add(dealerlist.Where(o => IsWeekOn(datesource, o["createdon"], i * 7, (i + 1) * 7)).Count());
+
+                model.Detail.Add(submodel);
+                //model.Detail.Insert(0, submodel);
             }
 
             return Json(model);
@@ -241,6 +244,8 @@ namespace CrmAPI2.Controller
 
             DateFromModel mymodel = js.Deserialize<DateFromModel>(json);
             List<Entity> list = QueryEntityDateList("incident", "createdon", mymodel.DateFrom, mymodel.DateTo);
+            var dateSpan = DateTimeSpan.CompareDates(mymodel.DateFrom, mymodel.DateTo);
+            int period = dateSpan.Years == 0 ? (dateSpan.Months != 0 ? dateSpan.Months + 1 : 4) : 12;
 
             ChartCaseModel model = new ChartCaseModel();
             List<string> header = new List<string>();
@@ -255,13 +260,15 @@ namespace CrmAPI2.Controller
 
             model.Header = header;
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < period; i++)
             {
                 ChartCaseSubModel submodel = new ChartCaseSubModel();
-                submodel.Subject = GetDateOn("Month", i, i + 1);
-                submodel.Value.Add(techLinelist.Where(o => IsMonthOn(o["createdon"], i, i + 1)).Count());
-                submodel.Value.Add(scramblelist.Where(o => IsMonthOn(o["createdon"], i, i + 1)).Count());
-                submodel.Value.Add(dealerlist.Where(o => IsMonthOn(o["createdon"], i, i + 1)).Count());
+                var datesource = mymodel.DateTo;
+
+                submodel.Subject = GetDateOn("Month", datesource, i, i + 1);
+                submodel.Value.Add(techLinelist.Where(o => IsMonthOn(datesource, o["createdon"], i, i + 1)).Count());
+                submodel.Value.Add(scramblelist.Where(o => IsMonthOn(datesource, o["createdon"], i, i + 1)).Count());
+                submodel.Value.Add(dealerlist.Where(o => IsMonthOn(datesource, o["createdon"], i, i + 1)).Count());
 
                 model.Detail.Insert(0, submodel);
             }
@@ -278,6 +285,8 @@ namespace CrmAPI2.Controller
 
             DateFromModel mymodel = js.Deserialize<DateFromModel>(json);
             List<Entity> list = QueryEntityDateList("incident", "createdon", mymodel.DateFrom, mymodel.DateTo);
+            var dateSpan = DateTimeSpan.CompareDates(mymodel.DateFrom, mymodel.DateTo);
+            int period = dateSpan.Years != 0 ? dateSpan.Years + 1 : 1;
 
             ChartCaseModel model = new ChartCaseModel();
             List<string> header = new List<string>();
@@ -292,13 +301,15 @@ namespace CrmAPI2.Controller
 
             model.Header = header;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < period; i++)
             {
                 ChartCaseSubModel submodel = new ChartCaseSubModel();
-                submodel.Subject = GetDateOn("Year", i, i + 1);
-                submodel.Value.Add(techLinelist.Where(o => IsYearOn(o["createdon"], i, i + 1)).Count());
-                submodel.Value.Add(scramblelist.Where(o => IsYearOn(o["createdon"], i, i + 1)).Count());
-                submodel.Value.Add(dealerlist.Where(o => IsYearOn(o["createdon"], i, i + 1)).Count());
+                var datesource = DateTime.Now;
+
+                submodel.Subject = GetDateOn("Year", datesource, i, i + 1);
+                submodel.Value.Add(techLinelist.Where(o => IsYearOn(datesource, o["createdon"], i, i + 1)).Count());
+                submodel.Value.Add(scramblelist.Where(o => IsYearOn(datesource, o["createdon"], i, i + 1)).Count());
+                submodel.Value.Add(dealerlist.Where(o => IsYearOn(datesource, o["createdon"], i, i + 1)).Count());
 
                 model.Detail.Insert(0, submodel);
             }
@@ -306,14 +317,14 @@ namespace CrmAPI2.Controller
             return Json(model);
         }
 
-        private string GetDateOn(string type, int end, int start)
+        private string GetDateOn(string type, DateTime datesource, int end, int start)
         {
             switch (type)
             {
                 case "Week": return "Week " + (start / 7);
                 case "Month":
                     {
-                        DateTime date = DateTime.Now.AddMonths(end * -1);
+                        DateTime date = datesource.AddMonths(end * -1);
 
                         switch (date.Month)
                         {
@@ -332,27 +343,25 @@ namespace CrmAPI2.Controller
                             default: return date.Year.ToString();
                         }
                     }
-                case "Year": return DateTime.Now.AddYears(end * -1).Year.ToString();
+                case "Year": return datesource.AddYears(end * -1).Year.ToString();
                 default: return null;
             }
         }
 
-        private bool IsWeekOn(object obj, int end, int start)
+        private bool IsWeekOn(DateTime datesource, object obj, int start, int end)
         {
-            DateTime datenow = DateTime.Now;
-            DateTime mydatenow = new DateTime(datenow.Year, datenow.Month, datenow.Day);
+            DateTime mydatenow = new DateTime(datesource.Year, datesource.Month, datesource.Day);
 
             DateTime mydate = (DateTime)obj;
-            DateTime datefrom = mydatenow.AddDays(start * -1);
-            DateTime dateto = mydatenow.AddDays(end * -1);
+            DateTime datefrom = mydatenow.AddDays(start);
+            DateTime dateto = mydatenow.AddDays(end);
 
             return datefrom <= mydate && mydate <= dateto ? true : false;
         }
 
-        private bool IsMonthOn(object obj, int end, int start)
+        private bool IsMonthOn(DateTime datesource, object obj, int end, int start)
         {
-            DateTime datenow = DateTime.Now;
-            DateTime mydatenow = new DateTime(datenow.Year, datenow.Month, datenow.Day);
+            DateTime mydatenow = new DateTime(datesource.Year, datesource.Month, datesource.Day);
 
             DateTime mydate = (DateTime)obj;
             DateTime datefrom = mydatenow.AddMonths(start * -1);
@@ -361,10 +370,9 @@ namespace CrmAPI2.Controller
             return datefrom <= mydate && mydate <= dateto ? true : false;
         }
 
-        private bool IsYearOn(object obj, int end, int start)
+        private bool IsYearOn(DateTime datesource, object obj, int end, int start)
         {
-            DateTime datenow = DateTime.Now;
-            DateTime mydatenow = new DateTime(datenow.Year, datenow.Month, datenow.Day);
+            DateTime mydatenow = new DateTime(datesource.Year, datesource.Month, datesource.Day);
 
             DateTime mydate = (DateTime)obj;
             DateTime datefrom = mydatenow.AddYears(start * -1);

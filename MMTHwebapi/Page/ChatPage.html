@@ -427,35 +427,59 @@
         }
 
         function getMsgDiffDate(datestart, dateend) {
+            var msg = "";
+
             if (datestart != null && dateend != null) {
                 var day = getDiffDate("Day", datestart, dateend);
-                if (day > 0) {
-                    return day + " day(s) ago";
-                }
-
                 var hour = getDiffDate("Hour", datestart, dateend);
-                if (hour > 0) {
-                    return hour + " hour(s) ago";
-                }
-
                 var minute = getDiffDate("Minute", datestart, dateend);
-                if (minute > 0) {
-                    return minute + " minute(s) ago";
+                var second = getDiffDate("Second", datestart, dateend);
+
+                if (day > 0) {
+                    msg += day + " day(s) ";
+                    //msg += hour + " hour(s) ";
+                    //msg += minute + " minute(s) ";
+                    msg += " ago";
                 }
+                else {
+                    if (hour > 0) {
+                        msg += hour + " hour(s) ";
+                        //msg += minute + " minute(s) ";
+                        msg += " ago";
+                    }
+                    else {
+                        if (minute > 0) {
+                            msg += minute + " minute(s) ";
+                            //msg += second + " second(s) ";
+                            msg += " ago";
+                        }
+                        else {
+                            if (second > 0) {
+                                msg += second + " second(s) ";
+                                msg += " ago";
+                            }
+                        }
+                    }
+                }
+                
             }
 
-            return "";
+            return msg;
         }
 
         function getDiffDate(mycase, datestart, dateend) {
-            var mydatestart = new Date(datestart);
-            var mydateend = new Date(dateend);
-            const diffTime = mydateend.getTime() - mydatestart.getTime(); //Math.abs(mydateend - mydatestart);
-
+            const startDate = new Date(datestart);
+            const endDate = new Date(dateend);
+            const days = parseInt((endDate - startDate) / (1000 * 60 * 60 * 24));
+            const hours = parseInt(Math.abs(endDate - startDate) / (1000 * 60 * 60) % 24);
+            const minutes = parseInt(Math.abs(endDate.getTime() - startDate.getTime()) / (1000 * 60) % 60);
+            const seconds = parseInt(Math.abs(endDate.getTime() - startDate.getTime()) / (1000) % 60);
+            
             switch (mycase) {
-                case "Day": return Math.round(diffTime / (1000 * 60 * 60 * 24));
-                case "Hour": return Math.round(diffTime / (1000 * 60 * 60)) % 24;
-                case "Minute": return Math.round(diffTime / (1000 * 60)) % (24 * 60);
+                case "Day": return days;
+                case "Hour": return hours;
+                case "Minute": return minutes;
+                case "Second": return seconds;
             }
         }
 
