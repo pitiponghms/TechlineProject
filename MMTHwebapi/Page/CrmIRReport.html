@@ -1,0 +1,837 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.css">
+    <link rel="stylesheet" href="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_rofontawesome470min.css">
+    <script src="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_rojquery3.5.1.min.js"></script>
+    <script src="http://phoebe.hms-cloud.com:5555/MMTHQAS/WebResources/hms_robootstrap3.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+
+    <style>
+        body {
+            font-size: 10px;
+            color: #666666;
+            background: #D1D1D1;
+            font-family: 'Open Sans',sans-serif;
+            margin-top: 0px;
+            padding-top: 0px;
+        }
+
+        .bg-white {
+            padding: 10px;
+            background-color: white;
+        }
+
+        h2 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        small, .small {
+            font-size: 85%;
+        }
+
+        input[type="text"] {
+            border-top-color: transparent;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-width: thin;
+        }
+
+        textarea {
+            font-size: 12px;
+        }
+
+        .loader {
+            position: fixed;
+            left: 45%;
+            top: 35%;
+            width: 150px;
+            height: 150px;
+            z-index: 9999;
+            border: 16px solid #f3f3f3; /*Light grey */
+            border-top: 16px solid #3498db; /*Blue */
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .entity .menu {
+            color: dodgerblue;
+        }
+
+        .attachtable {
+            padding: 0px 10px 0px 10px;
+            height: 225px;
+            max-height: 400px;
+            overflow-y: scroll;
+        }
+
+            .attachtable .attachitem {
+                border-bottom: thin solid gainsboro;
+                margin: 5px 0px;
+                padding: 5px 0px;
+            }
+
+        div[disabled=disabled] {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+
+    <title>CRM IR Report</title>
+</head>
+<body style="overflow-wrap: break-word;">
+    <div id="loader" class="loader"></div>
+    <div id="container" class="container bootstrap snippets bootdey">
+        <div class="row">
+            <div class="col-md-12 bg-white">
+                <div class="header">
+                    <h2 name="title">IR Report</h2>
+                    <h4>
+                        <button id="SaveBtn"><i class="fa fa-save"></i></button>
+                    </h4>
+                </div>
+                <div>
+                    <div id="entitygroup" class="col-md-6">
+                        <div id="reportname">
+                            <h5>
+                                <b>Name<text style="color: red">*</text>:</b>
+                                <input id="irreportname" type="text" style="width: 50%" />
+                            </h5>
+                        </div>
+                        <div name="AResult" class="entity">
+                            <div class="header">
+                                <h6>Action and Result</h6>
+                                <h6 class="menu">
+                                    <text></text>
+                                    <i></i>
+                                </h6>
+                            </div>
+                            <textarea style="width: 100%" rows="4" maxlength="2000"></textarea>
+                        </div>
+                        <div name="CComplain" class="entity">
+                            <div class="header">
+                                <h6>Customer Complain</h6>
+                                <h6 class="menu">
+                                    <text></text>
+                                    <i></i>
+                                </h6>
+                            </div>
+                            <textarea style="width: 100%" rows="4" maxlength="2000"></textarea>
+                        </div>
+                        <div name="ROSummary" class="entity">
+                            <div class="header">
+                                <h6>RO Summary</h6>
+                                <h6 class="menu">
+                                    <text></text>
+                                    <i></i>
+                                </h6>
+                            </div>
+                            <textarea style="width: 100%" rows="4" maxlength="2000"></textarea>
+                        </div>
+                    </div>
+                    <div id="attachgroup" class="col-md-6" style="border-left: thin solid gainsboro;">
+                        <h5>
+                            <b>Attach Files</b>
+                        </h5>
+                        <div style="width: 100%; border: thin solid dodgerblue">
+                            <div style="margin:5px;">
+                                <textarea id="attachtext" style="width: 100%" rows="2" maxlength="2000"></textarea>
+                            </div>
+                            <div style="margin: 5px; background-color: ghostwhite ">
+                                <div class="header">
+                                    <input id="attachFile" type="file" />
+                                    <button id="attachBtn">attach</button>
+                                </div>
+                            </div>
+                        </div>
+                        <p />
+                        <ul name="myattachtable" class="attachtable" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    let caseid = window.opener.Xrm.Page.data.entity.getId();
+    let crmservice = window.opener.Xrm.Page.context.getClientUrl() + "/XRMServices/2011/OrganizationData.svc/";
+    var irreportid = null;
+    var irreportname = null;
+
+    var aresultentity = "hms_actionandresult";
+    var ccomplainentity = "hms_customercomplain";
+    var rosummaryentity = "hms_rosummary";
+
+    var aresultname = "AResult";
+    var ccomplainname = "CComplain";
+    var rosummaryname = "ROSummary";
+
+    var aresult = $('[name="' + aresultname +'"]');
+    var ccomplain = $('[name="' + ccomplainname + '"]');
+    var rosummary = $('[name="' + rosummaryname + '"]');
+
+    $(document).ready(function () {
+        showLoader(true);
+
+        if (isUpdateIR()) {
+            $("#irreportname").val(irreportname);
+            renderUpdate();
+        }
+        else {
+            renderCreate();
+        }
+
+        showLoader(false);
+    });
+
+    function showLoader(status) {
+        if (status) {
+            $("#loader").show();
+        }
+        else {
+            $("#loader").hide();
+        }
+    }
+
+    function isUpdateIR() {
+        var result = false;
+
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            url: crmservice + "hms_irreportSet?$select=hms_irreportId,hms_name&$filter=hms_incident/Id eq (guid'" + caseid + "')",
+            beforeSend: function (XMLHttpRequest) {
+                XMLHttpRequest.setRequestHeader("Accept", "application/json");
+            },
+            async: false,
+            success: function (data, textStatus, xhr) {
+                var results = data.d.results;
+
+                if (results.length > 0) {
+                    irreportid = results[0].hms_irreportId;
+                    irreportname = results[0].hms_name;
+                    result = true;
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
+            }
+        });
+
+        return result;
+    }
+
+    function isUpdateSubIR(element, entity, idfield, descfield, irreportid) {
+        var result = false;
+
+        if (irreportid == null) {
+            return false;
+        }
+
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            url: crmservice + entity + "Set?$select=" + idfield + "," + descfield + "&$filter=hms_irreport/Id eq (guid'" + irreportid + "')",
+            beforeSend: function (XMLHttpRequest) {
+                XMLHttpRequest.setRequestHeader("Accept", "application/json");
+            },
+            async: false,
+            success: function (data, textStatus, xhr) {
+                var results = data.d.results;
+
+                if (results.length > 0) {
+                    element.attr("id", results[0][idfield]);
+                    element.attr("entityname", entity);
+                    element.find("textarea").val(results[0][descfield]);
+                    result = true;
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
+            }
+        });
+
+        return result;
+    }
+
+    function renderCreate() {
+        aresult.attr("disabled", true);
+        ccomplain.attr("disabled", true);
+        rosummary.attr("disabled", true);
+
+        $("#attachgroup").attr("disabled", true);
+        $("#attachgroup").hide();
+    }
+
+    function renderUpdate() {
+        var createtype = "Create";
+        var attachtype = "Attach";
+        var createclass = "fa fa-plus pointer";
+        var attachclass = "fa fa-file-o pointer";
+
+        $("#reportname").attr("disabled", true);
+        $("#attachgroup").hide();
+        aresult.find(".menu").show();
+        ccomplain.find(".menu").show();
+        rosummary.find(".menu").show();
+
+        if (isUpdateSubIR(aresult, aresultentity, aresultentity + "Id", "hms_description", irreportid)) {
+            var id = aresult.attr("id");
+
+            aresult.find(".menu text").text(CountAttactFile(id));
+            aresult.find(".menu i").attr("type", attachtype);
+            aresult.find(".menu i").attr("class", attachclass);
+        }
+        else {
+            aresult.find(".menu i").attr("type", createtype);
+            aresult.find(".menu i").attr("class", createclass);
+            aresult.find("textarea").attr("disabled", true);
+        }
+
+        if (isUpdateSubIR(ccomplain, ccomplainentity, ccomplainentity + "Id", "hms_description", irreportid)) {
+            var id = ccomplain.attr("id");
+
+            ccomplain.find(".menu text").text(CountAttactFile(id));
+            ccomplain.find(".menu i").attr("type", attachtype);
+            ccomplain.find(".menu i").attr("class", attachclass);
+        }
+        else {
+            ccomplain.find(".menu i").attr("type", createtype);
+            ccomplain.find(".menu i").attr("class", createclass);
+            ccomplain.find("textarea").attr("disabled", true);
+        }
+
+        if (isUpdateSubIR(rosummary, rosummaryentity, rosummaryentity + "Id", "hms_description", irreportid)) {
+            var id = rosummary.attr("id");
+
+            rosummary.find(".menu text").text(CountAttactFile(id));
+            rosummary.find(".menu i").attr("type", attachtype);
+            rosummary.find(".menu i").attr("class", attachclass);
+        }
+        else {
+            rosummary.find(".menu i").attr("type", createtype);
+            rosummary.find(".menu i").attr("class", createclass);
+            rosummary.find("textarea").attr("disabled", true);
+        }
+    }
+
+    $(".menu i").on("click", function () {
+        var entity = $(this).closest(".entity");
+        var type = $(this).attr("type");
+        var id = entity.attr("id");
+        var name = entity.attr("name");
+        var entityname = entity.attr("entityname");                
+        var tableid = $('[name="myattachtable"]').attr("id");
+        var isvisible = $("#attachgroup").is(":visible");
+
+        if (type == "Attach") {
+            // attachType
+            if (tableid != id || !isvisible) {
+                loadAttachFile(entityname, id);
+                $("#attachgroup").show();
+            }
+            else {
+                $("#attachgroup").hide();
+            }
+        }
+        else {
+            // createType
+            switch (name) {
+                case aresultname: createSubIRReport(aresultname, aresultentity, irreportid); break;
+                case ccomplainname: createSubIRReport(ccomplainname, ccomplainentity, irreportid); break;
+                case rosummaryname: createSubIRReport(rosummaryname, rosummaryentity, irreportid); break;
+            }
+
+            location.reload();
+        }
+    });
+
+    function createSubIRReport(name, entityname, id) {
+        var entity = {};
+
+        entity.hms_name = irreportname + " (" + name + ")";
+        entity.hms_irreport = {
+            Id: id,
+            LogicalName: "hms_irreport"
+        };
+
+        window.opener.SDK.REST.createRecord(
+            entity,
+            entityname,
+            function (result) {
+                var newEntityId = result[entityname + 'Id'];
+                var updateentity = {};
+
+                updateentity[entityname] = {
+                    Id: newEntityId,
+                    LogicalName: entityname
+                };
+
+                window.opener.SDK.REST.updateRecord(
+                    id,
+                    updateentity,
+                    "hms_irreport",
+                    function () {
+                        //Success - No Return Data - Do Something
+                    },
+                    function (error) {
+                        alert(error.message);
+                    }
+                );
+            },
+            function (error) {
+                alert(error.message);
+            }
+        );
+    }
+
+    $("#SaveBtn").on("click", function () {
+        var irreportname = $("#irreportname").val();
+
+        if (irreportname == null || irreportname == "") {
+            alert("Require name");
+            return;
+        }
+
+        if (isUpdateIR()) {
+            showLoader(true);
+            updateSubIRReport();
+            showLoader(false);
+
+            location.reload();
+        }
+        else {
+            showLoader(true);
+            createIRReport(caseid, irreportname);
+            showLoader(false);
+
+            location.reload();
+        }
+    });
+
+    function createIRReport(id, name) {
+        var entity = {};
+        entity.hms_name = name;
+
+        window.opener.SDK.REST.createRecord(
+            entity,
+            "hms_irreport",
+            function (result) {
+                var newEntityId = result.hms_irreportId;
+                var updateentity1 = {};
+                var updateentity2 = {};
+
+                updateentity1.hms_incident = {
+                    Id: id,
+                    LogicalName: "incident"
+                };
+
+                updateentity2.hms_irreport = {
+                    Id: newEntityId,
+                    LogicalName: "hms_irreport"
+                };
+
+                window.opener.SDK.REST.updateRecord(
+                    newEntityId,
+                    updateentity1,
+                    "hms_irreport",
+                    function () {
+                        //Success - No Return Data - Do Something
+                    },
+                    function (error) {
+                        alert(error.message);
+                    }
+                );
+
+                window.opener.SDK.REST.updateRecord(
+                    id,
+                    updateentity2,
+                    "Incident",
+                    function () {
+                        //Success - No Return Data - Do Something
+                    },
+                    function (error) {
+                        alert(error.message);
+                    }
+                );
+            },
+            function (error) {
+                alert(error.message);
+            }
+        );
+    }
+
+    function updateSubIRReport() {
+        //Description Field
+
+        if (!aresult.find("textarea").is(':disabled')) {
+            var entity = {};
+            entity.hms_description = aresult.find("textarea").val();
+
+            window.opener.SDK.REST.updateRecord(
+                aresult.attr("id"),
+                entity,
+                aresultentity,
+                function () {
+                    //Success - No Return Data - Do Something
+                },
+                function (error) {
+                    alert(error.message);
+                }
+            );
+        }
+
+        if (!ccomplain.find("textarea").is(':disabled')) {
+            var entity = {};
+            entity.hms_description = ccomplain.find("textarea").val();
+
+            window.opener.SDK.REST.updateRecord(
+                ccomplain.attr("id"),
+                entity,
+                ccomplainentity,
+                function () {
+                    //Success - No Return Data - Do Something
+                },
+                function (error) {
+                    alert(error.message);
+                }
+            );
+        }
+
+        if (!rosummary.find("textarea").is(':disabled')) {
+            var entity = {};
+            entity.hms_description = rosummary.find("textarea").val();
+
+            window.opener.SDK.REST.updateRecord(
+                rosummary.attr("id"),
+                entity,
+                rosummaryentity,
+                function () {
+                    //Success - No Return Data - Do Something
+                },
+                function (error) {
+                    alert(error.message);
+                }
+            );
+        }
+    }
+
+    function loadAttachFile(entityname, id) {
+        $("#attachBtn").attr("entityid", id);
+        $("#attachBtn").attr("entityname", entityname);
+
+        $(".attachtable").attr("id", id);
+        $(".attachtable").html(null);
+
+        window.opener.SDK.REST.retrieveMultipleRecords(
+            "Annotation",
+            "?$select=AnnotationId,FileName,FileSize,IsDocument,MimeType,NoteText,Subject,CreatedBy,CreatedOn" +
+            "&$filter=ObjectId/Id eq (guid'" + id + "')&$orderby=CreatedOn desc",
+            function (results) {
+                for (var i = 0; i < results.length; i++) {
+                    var annotationId = results[i].AnnotationId;
+                    var fileName = results[i].FileName;
+                    var fileSize = results[i].FileSize;
+                    var isDocument = results[i].IsDocument;
+                    var mimeType = results[i].MimeType;
+                    var noteText = results[i].NoteText != null ? results[i].NoteText : '';
+                    //var subject = results[i].Subject;
+                    var createdBy = results[i].CreatedBy.Name;
+                    var createdOn = results[i].CreatedOn;
+
+                    var date = createdOn.format("MM/dd/yyyy H:mm");
+
+                    var item = '<li>' +
+                        '<div id="' + annotationId + '" class="attachitem" mimetype="' + mimeType + '">' +
+                        '<div class="header">' +
+                        '<div name="title">' + noteText.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</div>' +
+                        '<a><i id="removeBtn" class="fa fa-remove pointer"></i></a>' +
+                        '</div>' +
+                        getMsgContent(fileName, fileSize, isDocument) +
+                        '<div>' + createdBy + ' - ' + date + '</div>' +
+                        '</div>' +
+                        '</li>';
+
+                    $(".attachtable").append(item);
+                }
+            },
+            function (error) {
+                alert(error.message);
+            },
+            function () {
+                //On Complete - Do Something
+            }
+        );
+    }
+
+    function CountAttactFile(id) {
+        var count = 0;
+
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            url: crmservice + "AnnotationSet?$select=AnnotationId&$filter=ObjectId/Id eq (guid'" + id + "')",
+            beforeSend: function (XMLHttpRequest) {
+                XMLHttpRequest.setRequestHeader("Accept", "application/json");
+            },
+            async: false,
+            success: function (data, textStatus, xhr) {
+                var results = data.d.results;
+                count = results.length;
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
+            }
+        });
+
+        return count;
+    }
+
+    function getMsgContent(fileName, fileSize, isDocument) {
+        var item = '';
+
+        if (isDocument) {
+            item = '<a class="attachfile pointer"><i class="fa fa-paperclip"></i> ' + fileName +
+                ' (' + bytesForHuman(fileSize) + ')</a>';
+        }
+
+        return item;
+    }
+
+    function bytesForHuman(bytes) {
+        let units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+        let i = 0
+
+        for (i; bytes > 1024; i++) {
+            bytes /= 1024;
+        }
+
+        return bytes.toFixed(1) + ' ' + units[i]
+    }
+
+    $("#attachgroup #attachBtn").on("click", function () {
+        var entityid = $(this).attr("entityid");
+        var entityname = $(this).attr("entityname");
+
+        var myfiles = $('#attachFile').prop('files');
+        var noteText = $("#attachtext").val();
+
+        if (myfiles.length == 0 && (noteText == null || noteText == "")) {
+            alert("Please input you file or text");
+            return;
+        }
+
+        showLoader(true);
+
+        var entity = {};
+        entity.ObjectId = {
+            Id: entityid,
+            LogicalName: entityname
+        };
+        entity.NoteText = noteText;
+        entity.IsDocument = false;
+
+        if (myfiles.length > 0) {
+            readFile(myfiles[0], function (e) {
+                const base64String = e.target.result
+                    .replace('data:', '')
+                    .replace(/^.+,/, '');
+
+                entity.Subject = "AttachFile";
+                entity.FileName = myfiles[0].name;
+                entity.MimeType = myfiles[0].type;
+                entity.IsDocument = true;
+                entity.DocumentBody = base64String;
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    datatype: "json",
+                    url: crmservice + "AnnotationSet",
+                    data: window.opener.JSON.stringify(entity),
+                    beforeSend: function (XMLHttpRequest) {
+                        XMLHttpRequest.setRequestHeader("Accept", "application/json");
+                    },
+                    async: false,
+                    success: function (data, textStatus, xhr) {
+                        //var result = data.d;
+                        //var newEntityId = result.AnnotationId;
+                        //alert(newEntityId);
+
+                        $("#attachFile").val(null);
+                        $("#attachtext").val(null);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        alert(textStatus + " " + errorThrown);
+                    },
+                    complete: function () {
+                        showLoader(false);
+                    }
+                });
+
+                loadAttachFile(entityname, entityid);
+            });
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                url: crmservice + "AnnotationSet",
+                data: window.opener.JSON.stringify(entity),
+                beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader("Accept", "application/json");
+                },
+                async: false,
+                success: function (data, textStatus, xhr) {
+                    $("#attachFile").val(null);
+                    $("#attachtext").val(null);
+                    showLoader(false);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert(textStatus + " " + errorThrown);
+                }
+            });
+
+            loadAttachFile(entityname, entityid);
+        }
+    });
+
+    function readFile(file, onLoadCallback) {
+        var reader = new FileReader();
+        reader.onload = onLoadCallback;
+        reader.readAsDataURL(file);
+    }
+
+    $(document).on("click", ".attachtable #removeBtn", function () {
+        var tableid = $(this).closest(".attachtable").attr("id");
+        var itemid = $(this).closest(".attachitem").attr("id");
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            url: crmservice + "AnnotationSet(guid'" + itemid + "')",
+            beforeSend: function (XMLHttpRequest) {
+                XMLHttpRequest.setRequestHeader("Accept", "application/json");
+                XMLHttpRequest.setRequestHeader("X-HTTP-Method", "DELETE");
+            },
+            async: false,
+            success: function (data, textStatus, xhr) {
+                //Success - No Return Data - Do Something
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
+            }
+        });
+
+        loadAttachFile(tableid);
+    });
+
+    $(document).on("click", ".attachfile", function () {
+        var itemid = $(this).closest(".attachitem").attr("id");
+
+        getFullFile(itemid);
+    });
+
+    function getFullFile(id) {
+        window.opener.SDK.REST.retrieveRecord(
+            id,
+            "Annotation",
+            "DocumentBody,FileName,MimeType",
+            null,
+            function (result) {
+                var strBytes = _base64ToArrayBuffer(result.DocumentBody);
+                var saveByteArray = (function (data, name) {
+                    var a = document.createElement("a");
+                    a.style = "display: none";
+                    
+                    return function () {
+                        try {
+                            var blob = new Blob(data, { type: result.MimeType }),
+                                url = window.URL.createObjectURL(blob);
+                            a.setAttribute('href', url);
+                            a.setAttribute('download', name);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        } catch (E) {
+                            alert(E);
+                        }
+
+                        return function (data, name) {
+                            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                                var blob = new Blob(data, { type: result.MimeType });
+                                window.navigator.msSaveOrOpenBlob(blob, name);
+                            }
+                            else {
+                                var a = document.createElement("a");
+                                a.style = "display: none";
+
+                                var blob = new Blob(data, { type: result.MimeType }),
+                                    url = window.URL.createObjectURL(blob);
+                                a.href = url;
+                                a.download = name;
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                            }
+
+                        };
+                    }()
+                });
+                
+                saveByteArray([strBytes], result.FileName);
+            },
+            function (error) {
+                alert(error.message);
+            }
+        );
+    }
+
+    function _base64ToArrayBuffer(base64) {
+        var binary_string = window.atob(base64);
+        var len = binary_string.length;
+        var bytes = new Uint8Array(len);
+        for (var i = 0; i < len; i++) {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+</script>

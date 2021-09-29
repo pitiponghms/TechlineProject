@@ -547,60 +547,37 @@
         }
 
         function getFullFile(attachfileid) {
-            //alert(attachfileid);
             $.ajax({
                 type: 'GET',
                 url: api + '/attachfile/get/' + attachfileid,
                 async: false,
                 success: function (result) {
                     var strBytes = _base64ToArrayBuffer(result.DocumentBody);
-                    //alert(attachfileid);
                     var saveByteArray = (function () {
 
                         var a = document.createElement("a");
 
                         a.style = "display: none";
                         return function (data, name) {
-                            //alert(attachfileid);
                             try {
-                                var blob = new Blob(data, { type: result.MimeType }),
-                                    url = window.URL.createObjectURL(blob);
-                                //	alert(1);
-                                //alert(url);
-                                //a.href = url;
-                                //a.download = name;
-                                //alert(2);
+                                var blob = new Blob(data, { type: result.MimeType });
+                                var url = window.URL.createObjectURL(blob);
+
                                 a.setAttribute('href', url);
-                                //alert(3);
                                 a.setAttribute('download', name);
-                                //alert(4);
-                                //document.body.appendChild(a);
-                                //alert(5);
                                 a.click();
-                                //alert(6);
                                 window.URL.revokeObjectURL(url);
-                                //alert(7);
                             } catch (E) {
                                 alert(E);
                             }
 
-                            //var a = document.createElement("a");
-                            //document.body.appendChild(a);
-                            //a.style = "display: none";
                             return function (data, name) {
-                                //var blob = new Blob(data, { type: result.MimeType }),
-                                //    url = window.URL.createObjectURL(blob);
-                                //a.href = url;
-                                //a.download = name;
-                                //a.click();
-                                //window.URL.revokeObjectURL(url);
                                 if (window.navigator && window.navigator.msSaveOrOpenBlob) {
                                     var blob = new Blob(data, { type: result.MimeType });
                                     window.navigator.msSaveOrOpenBlob(blob, name);
                                 }
                                 else {
                                     var a = document.createElement("a");
-                                    //document.body.appendChild(a);
                                     a.style = "display: none";
 
                                     var blob = new Blob(data, { type: result.MimeType }),
@@ -614,8 +591,7 @@
                             };
                         }()
                     });
-                    //alert([strBytes]);
-                    //alert( result.FileName);
+
                     saveByteArray([strBytes], result.FileName);
                 },
                 error: function (xhr, status, error) {
@@ -624,7 +600,6 @@
                     //alert(error);
                 }
             });
-            //alert(11);
         }
 
         function _base64ToArrayBuffer(base64) {
