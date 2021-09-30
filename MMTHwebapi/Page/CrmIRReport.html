@@ -133,7 +133,7 @@
                         </div>
                         <div name="AResult" class="entity">
                             <div class="header">
-                                <h6>Action and Result</h6>
+                                <h6 class="subject">Action and Result</h6>
                                 <h6 class="menu">
                                     <text></text>
                                     <i></i>
@@ -143,7 +143,7 @@
                         </div>
                         <div name="CComplain" class="entity">
                             <div class="header">
-                                <h6>Customer Complain</h6>
+                                <h6 class="subject">Customer Complain</h6>
                                 <h6 class="menu">
                                     <text></text>
                                     <i></i>
@@ -153,7 +153,7 @@
                         </div>
                         <div name="ROSummary" class="entity">
                             <div class="header">
-                                <h6>RO Summary</h6>
+                                <h6 class="subject">RO Summary</h6>
                                 <h6 class="menu">
                                     <text></text>
                                     <i></i>
@@ -164,7 +164,7 @@
                     </div>
                     <div id="attachgroup" class="col-md-6" style="border-left: thin solid gainsboro;">
                         <h5>
-                            <b>Attach Files</b>
+                            <b class="subject">Attach Files</b>
                         </h5>
                         <div style="width: 100%; border: thin solid dodgerblue">
                             <div style="margin:5px;">
@@ -357,6 +357,7 @@
         var type = $(this).attr("type");
         var id = entity.attr("id");
         var name = entity.attr("name");
+        var subject = entity.find(".subject").text();
         var entityname = entity.attr("entityname");                
         var tableid = $('[name="myattachtable"]').attr("id");
         var isvisible = $("#attachgroup").is(":visible");
@@ -364,6 +365,8 @@
         if (type == "Attach") {
             // attachType
             if (tableid != id || !isvisible) {
+                $("#attachgroup").find(".subject").text("Attach Files: " + subject);
+
                 loadAttachFile(entityname, id);
                 $("#attachgroup").show();
             }
